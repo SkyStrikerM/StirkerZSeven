@@ -49,7 +49,7 @@ namespace StrikerZ
             if (!string.IsNullOrEmpty(custom)) return custom;
             var p = new List<string>();
             if (atk != 0) p.Add($"ATK {(atk > 0 ? "+" : "")}{atk}");
-            if (enemyAtk != 0) p.Add($"상대 ATK -{enemyAtk}(배틀 엔드까지)");
+            if (enemyAtk != 0) p.Add($"약화 {enemyAtk}");   // 상대 ATK -n, 배틀 엔드까지 (룬 해설 [약화])
             if (hp != 0) p.Add($"HP {(hp > 0 ? "+" : "")}{hp}");
             if (guard) p.Add("파괴되지 않음");
             if (wound) p.Add("상처");
