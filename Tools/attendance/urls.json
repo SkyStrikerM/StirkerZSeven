@@ -1,0 +1,19 @@
+{
+ "cp_common": "72a16548951813792b6d2d4f83940c65",
+ "cp_uncommon": "1250eeafbcb96192b35a66743a1cfed8",
+ "reward_rare_card": "d94ddc93519e0e63b5eb1a5abc947973",
+ "alternatives": {
+  "common_b": "6e9ef190e7aa651779aa8c11b702b773",
+  "unc_b": "66be2fc253013c001cd9e3f705fa7a76",
+  "rare_a": "8512ff26fc7f2cab58854c0e833e9986",
+  "rcp_a": "8634a2eb1705c13d8ed94683be5bf4a7",
+  "seven_b": "b36cd02c68fa9bbcad29e24d5a277a19",
+  "uniq_b": "5433db57d430f6f042dce5deeef8110f"
+ },
+ "base": "https://3d.varco.ai/api/objects/{hash}.png",
+ "flow": "ee5e795a-d641-4313-8a04-2564d5e955d2",
+ "model": "nano-banana-pro",
+ "cp_rare": "463925239468fb1ce369c6f83789fd0a",
+ "reward_seven_card": "b81e0253c16b6f99655684f634152040",
+ "reward_unique_card": "12decc9be15471d88c6a3907ab8c8d27"
+}

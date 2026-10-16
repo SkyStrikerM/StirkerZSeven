@@ -1,0 +1,229 @@
+{
+ "workflow": "9deaad8d-ad02-4fe5-8ea8-2d02a40b8c2a",
+ "schematic": "35a44474-c76d-403e-af2f-ced24229782f",
+ "F022": {
+  "pmText": "4ff30c2a-c8f6-4c71-ada1-38852e52d191",
+  "pmImg": "7cdb23f5-179c-46ce-830f-c656149251ca",
+  "envText": "efc2d6d4-fd25-44ec-89c9-dbab2b4b856d",
+  "envImg": "10b5b0a6-fcbd-47ea-a932-d4038ee38aab",
+  "cleanImg": "4a639e2a-e373-4ce3-b097-375859d71826",
+  "pmUrl": "https://3d.varco.ai/api/objects/bd51ff455059df74b4e6bdace67d95e0.png"
+ },
+ "F001": {
+  "pmText": "c1528739-008c-461f-8524-5960b5840e39",
+  "envText": "4b21f203-51e6-4e65-bb66-294566a8039c",
+  "pmImg": "2fab40c8-31d0-4d6b-9197-6bc0d8ef3b99",
+  "envImg": "9a1bf877-d1ed-4570-8ff8-57ce9bc90c33",
+  "pmUrl": "https://3d.varco.ai/api/objects/af1bc5d19bf5d2e44ac74ec32c36d54f.png",
+  "envUrl": "https://3d.varco.ai/api/objects/a621bf0466835165eb1c8399dfdc4690.png",
+  "cleanImg": "484b2357-cc73-42c7-ab1c-28be8072a02c"
+ },
+ "F002": {
+  "pmText": "51f39a0d-91c7-4ab3-ba92-c204e6c56764",
+  "envText": "8574355e-cf0d-490a-bb5c-84e33cfe58f3",
+  "pmImg": "3e7afb16-3fb3-42a8-845e-7db425a2d26c",
+  "envImg": "f3256a54-b3b9-458e-8cfd-c686d0eeae73",
+  "pmUrl": "https://3d.varco.ai/api/objects/568873527e8734099420a1353eb29938.png",
+  "envUrl": "https://3d.varco.ai/api/objects/bf471b308a38f0d8d6f48f244c53e650.png",
+  "cleanImg": "4ba85175-91e9-47c8-beda-fd5ba8c6974c"
+ },
+ "F003": {
+  "pmText": "d8bc8f68-be43-4b28-a0fe-a1621285920e",
+  "envText": "62a26072-515f-40e9-b395-a0286e5c544c",
+  "pmImg": "bce1235a-3512-4000-bf3a-a87dc5a939b0",
+  "envImg": "0211a341-64a7-46c1-820c-d46e3eb29a2b",
+  "pmUrl": "https://3d.varco.ai/api/objects/2c720929a7300f7d1e03621c82f7c44a.png",
+  "envUrl": "https://3d.varco.ai/api/objects/e49fd77c93c1fec924a216d4fd67762e.png",
+  "cleanImg": "d0343d45-3f92-4766-acbe-b027274fc535"
+ },
+ "F004": {
+  "pmText": "7f9ea81b-e931-48c5-abd1-94eb5feb30bb",
+  "envText": "6bb35322-c499-4a37-ad35-7df9d3eed2d8",
+  "pmImg": "e24dae7d-5bc1-43c4-853a-b97a049aeb8e",
+  "envImg": "84e6758c-7858-4760-97c8-7396151b40dc",
+  "pmUrl": "https://3d.varco.ai/api/objects/f6153b7ce4b4f0b25827f658a5cb684f.png",
+  "envUrl": "https://3d.varco.ai/api/objects/24f782141e8d1705d9f113f1d75126e0.png",
+  "cleanImg": "c5e9d557-89e3-4a84-977f-0c404756e959"
+ },
+ "F005": {
+  "pmText": "aad47d57-1250-46dd-ba69-88bf0c45cc43",
+  "envText": "f0607e70-76a5-446a-b70d-cdebc2a49e7b",
+  "pmImg": "393f854a-3bb7-4de1-8372-ae35f7f6593d",
+  "envImg": "a7383cfe-d1d4-4cd7-a9f6-7eb4a94bad0a",
+  "pmUrl": "https://3d.varco.ai/api/objects/555b54f4eae78512b5ac9465f9c91bf1.png",
+  "envUrl": "https://3d.varco.ai/api/objects/5ca70d66b626faa216f2524315167703.png",
+  "cleanImg": "1d7bc120-96fd-4922-9985-2f58791d5d54"
+ },
+ "F006": {
+  "pmText": "fd7ae982-188d-4da5-9e28-80b905ee3381",
+  "envText": "96dc287e-9027-4044-ab14-08a3591f4dd3",
+  "pmImg": "ef8d8a79-e4af-4b34-9590-9b88f800089e",
+  "envImg": "73c4a4da-1b68-4457-9569-61304d57c178",
+  "pmUrl": "https://3d.varco.ai/api/objects/19c7c4bc23e02f12f35763e8d8756119.png",
+  "envUrl": "https://3d.varco.ai/api/objects/b6b7d50832ef0d1d03465c8d90781ca0.png",
+  "cleanImg": "51cebb55-3eab-41f5-9f08-7b2e9d327160"
+ },
+ "F007": {
+  "pmText": "e5a36572-71ce-469a-bbe7-56255d8b64e2",
+  "envText": "55375f1a-adc6-49c9-8dd0-28d05875d731",
+  "pmImg": "6a1795c2-1dca-4c17-ac80-4440da7fc395",
+  "envImg": "1ae79db4-03b2-44ef-9e9e-387adb30e38f",
+  "pmUrl": "https://3d.varco.ai/api/objects/dca9680b38ac4ccab0dc5b5a55af21e9.png",
+  "envUrl": "https://3d.varco.ai/api/objects/f8c9b5a17313e915f9e06185e354828f.png",
+  "cleanImg": "28527114-3813-43a7-9a02-26cf3a238407"
+ },
+ "F008": {
+  "pmText": "efaa974d-03ef-40d8-bab1-0aa48a05d288",
+  "envText": "37e7a8b7-d2d7-4c19-b544-23d5b2c79be2",
+  "pmImg": "7dce1693-f173-4fc7-bf3b-b883069caa28",
+  "envImg": "64224f5c-400f-475f-a6da-93ecec0739d2",
+  "pmUrl": "https://3d.varco.ai/api/objects/c0176538d0a96858026e409bf55f7a8d.png",
+  "envUrl": "https://3d.varco.ai/api/objects/33b6d4c5c1aff222be80b3cc6cc2f704.png",
+  "cleanImg": "8dc60d9f-5a73-44d8-a52e-b43e8107bb5a"
+ },
+ "F009": {
+  "pmText": "9d5ac436-7856-4f47-a6b0-a48b3399a1a7",
+  "envText": "be447456-9cea-42f8-b100-444d4afb463f",
+  "pmImg": "886975fc-4b85-4961-a9cd-abab67817bc7",
+  "envImg": "20f2e450-2db0-4d4a-a0a2-ed4343869b85",
+  "pmUrl": "https://3d.varco.ai/api/objects/7ffdbe0d184abcfe2e5dba8698367d39.png",
+  "envUrl": "https://3d.varco.ai/api/objects/b088bf2e4959e6ec687fccec1a67e73e.png",
+  "cleanImg": "822f4226-fc4d-4457-b619-6c8469f7ed50"
+ },
+ "F010": {
+  "pmText": "f0978c27-b84d-4248-af85-39195b705e49",
+  "envText": "cd14de8e-2774-4d82-a935-050e58bba947",
+  "pmImg": "c5e9992d-196d-47a3-b02a-8e7ea1cf4a70",
+  "envImg": "1fe79de4-658f-4b0e-a015-37756a3eebe4",
+  "pmUrl": "https://3d.varco.ai/api/objects/bcaaa1186517f4e4e84541cfde656cc0.png",
+  "envUrl": "https://3d.varco.ai/api/objects/aae43266fe7a06be57864da9bdf168e0.png",
+  "cleanImg": "f6b87f2a-f7fa-44d2-ae2d-0e8b90f64633"
+ },
+ "F011": {
+  "pmText": "3e836e58-f460-4161-afe6-e4550586fe84",
+  "envText": "3985cea8-6949-43ff-b7b0-d6e99e53b0bb",
+  "pmImg": "801add8c-9f57-4911-bdb1-d3d788dee75a",
+  "envImg": "6fb5bf53-eb8b-4a17-9af0-d8ff55477887",
+  "pmUrl": "https://3d.varco.ai/api/objects/659a8587735bbdd8ddd220e96801a438.png",
+  "envUrl": "https://3d.varco.ai/api/objects/490ed20c3a326c459701a662957dc65d.png",
+  "cleanImg": "98d16744-54a1-49eb-9a2c-45149bad1787"
+ },
+ "F012": {
+  "pmText": "fff91e0a-29d0-4779-9e9f-6672d2b144d3",
+  "envText": "c4cff7cc-e6f1-41f7-8357-991608157888",
+  "pmImg": "c3fc04c2-81cf-4d13-a159-5872327dd83b",
+  "envImg": "d0e5f322-b366-4e76-80ab-644da3c7358b",
+  "pmUrl": "https://3d.varco.ai/api/objects/cddf6ad3a40bee8d287ed03581909f0e.png",
+  "envUrl": "https://3d.varco.ai/api/objects/d91c23bd489f87d755795574f2a87384.png",
+  "cleanImg": "24ec20ed-ce31-43fd-98a6-f39e785fc4f5"
+ },
+ "F013": {
+  "pmText": "0439f185-2618-40b1-b4bc-9a0581c8aab1",
+  "envText": "e03c94ed-e8aa-4b90-9b92-607da0f0e55d",
+  "pmImg": "1c332b9b-7e3b-4ae4-aa7b-105e669280c8",
+  "envImg": "478e63bd-aefa-449b-b3d7-d29e9c40ab07",
+  "pmUrl": "https://3d.varco.ai/api/objects/90ab0c1326cb57a2a038a396ea6a91ee.png",
+  "envUrl": "https://3d.varco.ai/api/objects/60073cee895745e76993ec77180d1485.png",
+  "cleanImg": "c7107099-fd57-45e7-8b58-39f9732bb4cc"
+ },
+ "F014": {
+  "pmText": "8dde7a5c-8b45-4ce6-9201-b06cb79fafea",
+  "envText": "28e7c379-0654-4fb4-a843-b5c06f4c93c4",
+  "pmImg": "3e37787a-bf69-47de-ab5f-5b07e1988bd2",
+  "envImg": "d32665aa-d9a6-4628-a620-80ad8cf31814",
+  "pmUrl": "https://3d.varco.ai/api/objects/d18acd33255737ee0dfccd019c208afa.png",
+  "envUrl": "https://3d.varco.ai/api/objects/5ce9886c7e4eb5e4fe06d472f0e31ffc.png",
+  "cleanImg": "d8894a19-6267-4064-aab2-e18c42e0c236"
+ },
+ "F015": {
+  "pmText": "2a1ef767-eb6a-43cd-b022-906a33a7a1c6",
+  "envText": "273c1629-2c8d-4625-89c5-7be80e8d6077",
+  "pmImg": "fba346d6-65a2-4e93-83cf-fef37387f24b",
+  "envImg": "5952424b-fc8f-4ffc-8b4c-729f20152191",
+  "pmUrl": "https://3d.varco.ai/api/objects/fca70046a195ee757a4e6c972f272b7b.png",
+  "envUrl": "https://3d.varco.ai/api/objects/b21784f2d7a040f93d7966bff9ec0149.png",
+  "cleanImg": "2f1205b0-2086-47b2-8ad3-90d20b7a5ee3"
+ },
+ "F016": {
+  "pmText": "02ef08bb-49b6-4084-a5f5-92f3ef2685e9",
+  "envText": "3bdcebe8-f1ed-4c89-8de4-96ceefe83ec7",
+  "pmImg": "a7a66032-d2f2-4914-8998-87e2ed6d0b64",
+  "envImg": "1f696c73-7c65-4a89-ab7d-20157b220f59",
+  "pmUrl": "https://3d.varco.ai/api/objects/336ef67407f2c6df04a62f620f170c9c.png",
+  "envUrl": "https://3d.varco.ai/api/objects/0b523e82fd30d8d05596d1df313e6995.png",
+  "cleanImg": "ea8f5a04-6063-46f1-b5a3-c59362ccf6aa"
+ },
+ "F017": {
+  "pmText": "393d47ce-fcd9-4c87-850d-ca5b382a5146",
+  "envText": "8e012170-8ecf-45f9-a3a3-d2f50654e12a",
+  "pmImg": "2e8f3fc3-574c-41e2-8563-62542c730ae8",
+  "envImg": "47773a94-ac71-44cc-87d9-e6a1c659a615",
+  "pmUrl": "https://3d.varco.ai/api/objects/dbd30456816a92971ccfee2f878b1c4d.png",
+  "envUrl": "https://3d.varco.ai/api/objects/0616baca67e5c1e916648fc69df23464.png",
+  "cleanImg": "c02fb3b1-6395-401e-aa30-73114116a4f4"
+ },
+ "F018": {
+  "pmText": "ffc2ae1e-b391-492e-babc-779528fc7a4d",
+  "envText": "b724a354-1851-4e48-8a5d-287731f98a66",
+  "pmImg": "34af4548-5a69-419e-b3dc-74b1c663177c",
+  "envImg": "1398063e-57d8-4aea-95c7-6b021074fa14",
+  "pmUrl": "https://3d.varco.ai/api/objects/9209fdd634e8c3dc35d16171370798cc.png",
+  "envUrl": "https://3d.varco.ai/api/objects/21440950def188d0b83bd88cbcf1759e.png",
+  "cleanImg": "cb326948-2476-46ed-88c6-4ca89f32172f"
+ },
+ "F019": {
+  "pmText": "a9e12c7e-e55a-41f9-adc4-f3cdfb44d900",
+  "envText": "2cf252b4-3262-45f9-9a28-13686460be8a",
+  "pmImg": "ee5b1962-1367-4aba-98cc-61d4b02225fc",
+  "envImg": "3ee09caf-1d77-4a8e-9ee2-a927eec6557e",
+  "pmUrl": "https://3d.varco.ai/api/objects/9010cfdf22686591011d797a874416b3.png",
+  "envUrl": "https://3d.varco.ai/api/objects/dd91f4dd49fc6a6c548d41330bc4d831.png",
+  "cleanImg": "16e146d9-b5ae-4b0a-9c93-a273a2402154"
+ },
+ "F020": {
+  "pmText": "b8cfb9d8-4ef0-4e02-9ff6-94295404aaa7",
+  "envText": "f8c7adc3-2a8d-4b53-8f57-253f410d49e5",
+  "pmImg": "906898a9-9728-4f66-a673-d0ab267d930b",
+  "envImg": "63d96b4a-10d6-4e05-8ba4-c737835ed64e",
+  "pmUrl": "https://3d.varco.ai/api/objects/9a021a2878a04b0d37dc19c27b287a78.png",
+  "envUrl": "https://3d.varco.ai/api/objects/351c401ac7f1d24cc3b79dadc4a7e32e.png",
+  "cleanImg": "7560db3c-2567-4536-861d-c0c83f464e5c"
+ },
+ "F021": {
+  "pmText": "7924bfc4-6f00-44b4-96da-26a54ba35783",
+  "envText": "105df473-cc7a-423d-abb5-5660eb7e2a80",
+  "pmImg": "cb3ddf27-5681-4a17-a689-9c9d0bca36a3",
+  "envImg": "1c677d62-c28c-4b15-97f8-77aa666f98df",
+  "pmUrl": "https://3d.varco.ai/api/objects/fe4f6acec99fea192b1aefa56412209e.png",
+  "envUrl": "https://3d.varco.ai/api/objects/c287a5a7044b1dffcf896b648649051f.png",
+  "cleanImg": "41ea6614-9b01-4bde-92c4-76c3f862eaad"
+ },
+ "F023": {
+  "pmText": "d93800c7-967c-4009-beb3-d921eeed1563",
+  "envText": "30aca2e7-12d4-40b6-be0b-2f0640f279a8",
+  "pmImg": "43e0d6a2-b689-4176-bbad-ad5f1cf29c07",
+  "envImg": "ca4f9099-79e4-442b-80f9-30eb681db864",
+  "pmUrl": "https://3d.varco.ai/api/objects/f0dd65720a266abb3eb093570121b838.png",
+  "envUrl": "https://3d.varco.ai/api/objects/ec4f5459440d4edc2c799831a55e4a69.png",
+  "cleanImg": "80afb9be-b985-46f0-a61f-1808cfdb21a2"
+ },
+ "F024": {
+  "pmText": "805246e6-fb59-4b06-bffd-80edde7dabff",
+  "envText": "4c618770-e8c2-45f7-af93-2dab74e958e9",
+  "pmImg": "7aaaa59a-2d60-43db-9c2a-57f2359e7730",
+  "envImg": "a31126cb-ef04-49a2-a194-44280245ffda",
+  "pmUrl": "https://3d.varco.ai/api/objects/90892d13490b3da1aff69dcbc6afeb5f.png",
+  "envUrl": "https://3d.varco.ai/api/objects/059ffcd40e6a68a0dccddbba52e3cc42.png",
+  "cleanImg": "9da97c25-ff68-497b-a1a1-440d4269bc90"
+ },
+ "F025": {
+  "pmText": "e5e9df41-1004-4f38-82d2-9dcc986162a4",
+  "envText": "78b0b2a5-bc36-4e6d-b172-a6ac67edf337",
+  "pmImg": "bbfa3689-44fa-4051-974e-dd9d7748a77e",
+  "envImg": "6edea706-872a-4a99-b1af-6058ae37baeb",
+  "pmUrl": "https://3d.varco.ai/api/objects/6518af02d4703655f7165dd8015271c0.png",
+  "envUrl": "https://3d.varco.ai/api/objects/8a6ebccc9880a8707a2b86702e973750.png",
+  "cleanImg": "8e1bfee0-100d-4bec-9168-b16ea98cc460"
+ },
+ "cleanText": "5f097ba8-f4a8-4603-8b10-29d93948b968"
+}

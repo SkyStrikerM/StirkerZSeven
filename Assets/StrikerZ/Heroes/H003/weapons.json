@@ -1,0 +1,22 @@
+{
+ "weapons": [
+  {
+   "slot": "R",
+   "src": "R",
+   "hand": "R",
+   "kind": "blade",
+   "length": 0.55,
+   "grip": 0.15,
+   "flip": false
+  },
+  {
+   "slot": "L",
+   "src": "L",
+   "hand": "L",
+   "kind": "shield",
+   "length": 0.5,
+   "grip": 0.5,
+   "flip": false
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "weapons": [
+  {
+   "slot": "L",
+   "src": "L",
+   "hand": "L",
+   "kind": "bow",
+   "length": 0.75,
+   "grip": 0.5,
+   "flip": false
+  }
+ ]
+}

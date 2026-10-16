@@ -1,0 +1,13 @@
+{
+ "weapons": [
+  {
+   "slot": "R",
+   "src": "R",
+   "hand": "R",
+   "kind": "blade",
+   "length": 0.64,
+   "grip": 0.12,
+   "flip": false
+  }
+ ]
+}

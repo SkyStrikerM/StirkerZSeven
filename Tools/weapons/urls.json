@@ -1,0 +1,81 @@
+{
+ "H001R": {
+  "fbx": "https://3d.varco.ai/api/objects/84e9ca7c22b6ebf675d2b4c5f325c6b6.fbx",
+  "glb": "https://3d.varco.ai/api/objects/e18228c86671e596229747c456bd7e0e.glb"
+ },
+ "H002R": {
+  "fbx": "https://3d.varco.ai/api/objects/b50419f5c0e3f38986c0c6a9b044a6d2.fbx",
+  "glb": "https://3d.varco.ai/api/objects/8b0a2ccbcc5810917b61187b1dc5daff.glb"
+ },
+ "H003R": {
+  "fbx": "https://3d.varco.ai/api/objects/32e3862fbebd7dd2ae192300bd144b36.fbx",
+  "glb": "https://3d.varco.ai/api/objects/56808a00b0a2c189a83b9fa4c1589701.glb"
+ },
+ "H003L": {
+  "fbx": "https://3d.varco.ai/api/objects/e486fbb4ce170caacb72f8b2b18e4bf0.fbx",
+  "glb": "https://3d.varco.ai/api/objects/12d686d73847eb2a812778d828b0ae45.glb"
+ },
+ "H004R": {
+  "fbx": "https://3d.varco.ai/api/objects/0f8d87dc6f5a1def7178c3c955d91c5e.fbx",
+  "glb": "https://3d.varco.ai/api/objects/dcc2656056ff14864a072fa043c598af.glb"
+ },
+ "H005R": {
+  "fbx": "https://3d.varco.ai/api/objects/364e1a9197e5bb352a100bbb630f8732.fbx",
+  "glb": "https://3d.varco.ai/api/objects/9751a8f7fb1a06a818b7854e750ad7d4.glb"
+ },
+ "H006R": {
+  "fbx": "https://3d.varco.ai/api/objects/df39793584efb09805029bc25e46d672.fbx",
+  "glb": "https://3d.varco.ai/api/objects/90865e2e1884d777c11a973ae1544d4f.glb"
+ },
+ "H007R": {
+  "fbx": "https://3d.varco.ai/api/objects/31d85187778c396cb276184a022027e8.fbx",
+  "glb": "https://3d.varco.ai/api/objects/302346205f7ae71a49c3fe3ce9199024.glb"
+ },
+ "H008R": {
+  "fbx": "https://3d.varco.ai/api/objects/19d56bc05e588ab6c6aad32ce9fa7de7.fbx",
+  "glb": "https://3d.varco.ai/api/objects/a94f7d422757546142ff36485a58daa3.glb"
+ },
+ "H009L": {
+  "fbx": "https://3d.varco.ai/api/objects/407e2f853c3d224395d9dcce2659127c.fbx",
+  "glb": "https://3d.varco.ai/api/objects/7058388bd24ae5c9c073ec6a6c55b472.glb"
+ },
+ "H010R": {
+  "fbx": "https://3d.varco.ai/api/objects/066154356e1a19eaf2879cbcaf969893.fbx",
+  "glb": "https://3d.varco.ai/api/objects/a30034a9f387fefdc823ab019a851a32.glb"
+ },
+ "H012R": {
+  "fbx": "https://3d.varco.ai/api/objects/255c70158a4ed297ff8d70c681e8436d.fbx",
+  "glb": "https://3d.varco.ai/api/objects/43b687fc307aa69d38fd2d295107979b.glb"
+ },
+ "H013R": {
+  "fbx": "https://3d.varco.ai/api/objects/2e2aef8173e885ce564acb315ae6f125.fbx",
+  "glb": "https://3d.varco.ai/api/objects/4c8159f09fb5886e82cd69d8f4e46605.glb"
+ },
+ "H014R": {
+  "fbx": "https://3d.varco.ai/api/objects/4aacfba75e7bef962632d8ec1a72cb56.fbx",
+  "glb": "https://3d.varco.ai/api/objects/b3dcd1c2fb0facb69e76923ba6494183.glb"
+ },
+ "H015R": {
+  "fbx": "https://3d.varco.ai/api/objects/9abc113565409ba5522d4bf034772553.fbx",
+  "glb": "https://3d.varco.ai/api/objects/197214dca03b1e985f6aa3f89401e3f8.glb"
+ },
+ "H016R": {
+  "fbx": "https://3d.varco.ai/api/objects/c8f9285fa0ea5b1825c36cd8b7037cea.fbx",
+  "glb": "https://3d.varco.ai/api/objects/46d1857fece9b5e958c0088ec8ac7e79.glb"
+ },
+ "H001_attack": "https://3d.varco.ai/api/objects/03fc6338540e040be68ea167110ae564.glb",
+ "H002_attack": "https://3d.varco.ai/api/objects/18c8a41c27d0346793a3f9111b3f4d7b.glb",
+ "H003_attack": "https://3d.varco.ai/api/objects/7b73d0c51087b589dbfc9a3df743b3c4.glb",
+ "H004_attack": "https://3d.varco.ai/api/objects/938d21468c8f01f8771f3c4692b69ad9.glb",
+ "H005_attack": "https://3d.varco.ai/api/objects/84c182ea8e29fb1711b0a004a6d3b5fa.glb",
+ "H006_attack": "https://3d.varco.ai/api/objects/b3510cf3c220c17f4b5e412c079b44e5.glb",
+ "H007_attack": "https://3d.varco.ai/api/objects/376470948dc19978beb3cf132410d2a5.glb",
+ "H008_attack": "https://3d.varco.ai/api/objects/7def6b05548459e8a12994e609610f7f.glb",
+ "H009_attack": "https://3d.varco.ai/api/objects/6d768f71e89b0db8e1c057ce09c987d3.glb",
+ "H010_attack": "https://3d.varco.ai/api/objects/e54daf0a27bc95e679ce44a2f166611b.glb",
+ "H012_attack": "https://3d.varco.ai/api/objects/52267e935ee8c2e4140aecde0fc2617f.glb",
+ "H013_attack": "https://3d.varco.ai/api/objects/ab1390f5987737ccdeb92a7ef4a31ced.glb",
+ "H014_attack": "https://3d.varco.ai/api/objects/0586c0e1ba99f5323654cf0523115c65.glb",
+ "H015_attack": "https://3d.varco.ai/api/objects/883ba9578c0e159e986c674883042026.glb",
+ "H016_attack": "https://3d.varco.ai/api/objects/ec84b65486e6cb2921437173a1f453df.glb"
+}

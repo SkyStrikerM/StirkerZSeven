@@ -1,0 +1,77 @@
+{
+ "H001": {
+  "rigNode": "09e9ccbb-9901-4c2d-b34b-b370a7a8df50",
+  "genNode": "e0f6ba0d-d5af-417c-96d1-3258ad8f508d",
+  "genTask": "c333ba97-699f-4143-a370-7eb366bf7fdc"
+ },
+ "H002": {
+  "rigNode": "4010a519-73d7-4ab8-a6a9-e79e00e4e793",
+  "genNode": "55649716-fe8c-41bb-88f6-080e071f257c",
+  "genTask": "6ffd05f8-3f53-469f-98d8-c786c2a9378c"
+ },
+ "H003": {
+  "rigNode": "ae1591f9-9df2-4da9-b621-cf6bd5d6dea8",
+  "genNode": "cd473060-8d58-4306-9246-0d08417934a7",
+  "genTask": "695735c1-a904-4ad0-a3f0-42f0c2bd8d02"
+ },
+ "H004": {
+  "rigNode": "8dac78c6-c0d8-4f35-b69a-53dc296f7e5a",
+  "genNode": "8bffb7a5-8e41-42f4-be27-a242eee37802",
+  "genTask": "96d1c0cb-5c36-47b4-b572-f18664918a40"
+ },
+ "H005": {
+  "rigNode": "78a1c1ac-da74-4d3b-a6f4-bfb245db85e8",
+  "genNode": "a857a994-78f5-49ae-a18e-aa4dcdc6f40f",
+  "genTask": "2a896c4e-5b17-4aef-8421-b83d8b253ccc"
+ },
+ "H006": {
+  "rigNode": "53159576-0211-4e7f-bf40-3caa9f951709",
+  "genNode": "f391f2ed-9d1a-4e29-ace8-903933654cfe",
+  "genTask": "6aac020d-c669-46fe-a60b-3d380728fad1"
+ },
+ "H007": {
+  "rigNode": "aba12c4e-7626-4da9-8723-fc5166080f71",
+  "genNode": "f86a12e9-e98b-4cd6-ba65-bae4f4ab1647",
+  "genTask": "569710b1-5b8d-4bb4-b467-0ed4505d615c"
+ },
+ "H008": {
+  "rigNode": "ee8b5106-ce17-41ad-8b19-7f876ebad72b",
+  "genNode": "ff65f578-ac0e-4de2-849a-36135907611a",
+  "genTask": "06862f38-0da0-476e-b6e3-694f10a8e0ce"
+ },
+ "H009": {
+  "rigNode": "e116ce09-cd13-4032-b70b-d075a7492188",
+  "genNode": "0ee0893a-e549-4811-b203-3370fc398d78",
+  "genTask": "ad40f69f-9168-46f6-a198-b95d291da95f"
+ },
+ "H010": {
+  "rigNode": "a385cb64-db2d-4617-8e7c-0ba18284114f",
+  "genNode": "d51b204f-7cd2-4b6b-b770-77b8e32c0809",
+  "genTask": "024c354a-89d8-40dd-be8c-e6d62ae73239"
+ },
+ "H012": {
+  "rigNode": "8ff79c62-448c-43c6-9249-f44bcaca5c37",
+  "genNode": "cc376e89-aea9-4579-866d-c77063fafa50",
+  "genTask": "73967659-0693-48b1-892b-691af4f07930"
+ },
+ "H013": {
+  "rigNode": "8944a21f-81f5-4a20-9a8a-a11d285f6f2c",
+  "genNode": "37ac2adf-682c-4f0e-8234-aa9827fdc406",
+  "genTask": "74880836-5832-41dd-b8c8-54aefe8a8922"
+ },
+ "H014": {
+  "rigNode": "1bcc20c1-fb44-4e7f-9bcc-a6210b342f46",
+  "genNode": "cbc6d4d9-f69a-48d9-9121-54ce84eaf523",
+  "genTask": "5cad1c68-1dc7-4273-b86a-16345c72a70c"
+ },
+ "H015": {
+  "rigNode": "9a3f5888-e011-408a-b04b-73edad666c88",
+  "genNode": "f90dd6f3-926e-4f5a-b7fa-9b36281cabe8",
+  "genTask": "51cbff6d-83e8-44d3-bf07-94eec7737dbc"
+ },
+ "H016": {
+  "rigNode": "8d8252bb-2d0b-4e46-88bb-ab85a5a8251f",
+  "genNode": "4edc09db-3a51-4472-af5a-414db6461f36",
+  "genTask": "53ce8aeb-48e7-41b5-8c44-2d161dd54310"
+ }
+}

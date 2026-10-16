@@ -1,0 +1,52 @@
+{
+  "_note": "VARCO workflow fb0ce105 (y>=140000). nano-banana-pro, 20 credits each. Sources: card_back_xxs 417f6408..., coin_heads 371aaae9..., coin_tails 85f3fafa...",
+  "sleeve": {
+    "SLV_VOID": "09a44757-997f-4b5f-a50c-fc301f79c380",
+    "SLV_LAVA": "f0fd8129-4621-49ed-9858-82336027a5a2",
+    "SLV_SEA": "1a92bc9d-8f48-4a41-b4be-d9af63ada457",
+    "SLV_SKY": "ba5e7405-be59-4a0b-ac78-ebacdf5961f9",
+    "SLV_RAINBOW": "aaa72458-43fc-4c6f-9453-54edcf7deee7",
+    "SLV_EARTH": "9ba25a4e-73b3-46ce-b5d3-a4d7bec71130",
+    "SLV_THUNDER": "5139a2b6-0165-4629-aec1-cc32839326a6",
+    "SLV_LIGHT": "5a679f91-414f-4be8-b892-f567d014bf13"
+  },
+  "case": {
+    "CASE_IGNIR": "a000e449-2c1e-460c-84a0-d2b9889d99a2",
+    "CASE_LEVIAS": "0c6aa999-0f24-4ed2-a1df-13f04d106bf0",
+    "CASE_VOLTEON": "75c55e87-a46c-4a1a-b575-cbc0144b7256",
+    "CASE_SERAPHIEL": "0c3befe2-2bec-4fe7-9da5-e173fd25d2f0",
+    "CASE_NOCTERA": "ba7a181f-a046-4de1-90b3-cd83428febf8",
+    "CASE_DEFAULT": "189db453-cc5b-4edc-ae11-dd563031e9e2",
+    "CASE_SILVERN": "a8233ff6-cb1d-4927-b2a5-0de9ce67ba20",
+    "CASE_GORDUN": "d8d34615-06ac-4986-ac5e-12537a08faeb"
+  },
+  "coin_heads": {
+    "COIN_MOON": "83ec627d-551c-47a4-a93e-6db659c1ccec",
+    "COIN_OBSIDIAN": "27cdad8b-bc0d-4d47-ab2a-c026a3d2cee7",
+    "COIN_SAPPHIRE": "bb988190-96e4-46b0-ab59-4892bc721f07",
+    "COIN_PHOENIX": "883f6495-0107-4aa8-be43-b9362a3974d9",
+    "COIN_OPAL": "d9067238-abba-42eb-bd88-29e22085b23b",
+    "COIN_GALE": "4c07dadc-4999-4fa9-82a8-6cd23bc39efd",
+    "COIN_BRONZE": "aa974e43-5e9a-4fd1-9213-f42230f78839",
+    "COIN_TOPAZ": "b98f0bf5-959f-4bea-874a-2b83491116ed"
+  },
+  "coin_tails": {
+    "COIN_MOON": "12479ca1-deaf-49be-9257-128e1fd0da52",
+    "COIN_OBSIDIAN": "8084ecfa-67c3-42b2-8232-d81a75ebd52c",
+    "COIN_SAPPHIRE": "31666196-e19e-4195-8eb4-30d5042994e8",
+    "COIN_PHOENIX": "0fdffc5b-db20-4a29-bad9-67286abb055e",
+    "COIN_OPAL": "3328b122-17ea-4eca-b804-0bbb122e3ebe",
+    "COIN_GALE": "79d23943-2aed-4d81-b32b-f103d1926494",
+    "COIN_BRONZE": "47111ae6-8720-4a48-9564-ee4bac9e1932",
+    "COIN_TOPAZ": "bd71bf27-fa12-41d1-90ae-6eb99ff81850"
+  },
+  "dice_material": {
+    "DICE_MARBLE": "713f957e-c006-4436-87f7-b0969e84bd52",
+    "DICE_LAVA": "31bdc574-b022-4f76-bd5d-d69f31cfbe24",
+    "DICE_ICE": "318225cc-ccc6-4489-be90-abf026d6ce6e",
+    "DICE_JADE": "37b23a2a-3aec-49a1-b5f6-6c2b3e2f8147",
+    "DICE_NEBULA": "31bfe2d8-b37e-4d16-80d3-5838ed009003",
+    "DICE_AMBER": "b9be71e8-f161-4daf-a28d-92733cd95356",
+    "DICE_STORM": "a50a401a-da1f-444f-8af0-ea9e8dde2098"
+  }
+}

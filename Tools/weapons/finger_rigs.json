@@ -1,0 +1,72 @@
+{
+ "H002": {
+  "rigNode": "a6fb3cbf-04c0-4368-ba96-9ee5e04f31f4",
+  "fbxUrl": "https://3d.varco.ai/api/objects/f9b890c486b450b1e376cf5bf66bf22f.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H002_fingers.fbx"
+ },
+ "H003": {
+  "rigNode": "c466b2da-3529-4a6e-9486-a23145fe7e35",
+  "fbxUrl": "https://3d.varco.ai/api/objects/2858518eeae21a95bb793324a1b81184.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H003_fingers.fbx"
+ },
+ "H004": {
+  "rigNode": "c961011c-7030-4f1b-be4b-d943e89a4b47",
+  "fbxUrl": "https://3d.varco.ai/api/objects/2d200defc37474e9b3ee255f2c91371c.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H004_fingers.fbx"
+ },
+ "H005": {
+  "rigNode": "b6ab18ea-a889-40f6-b8da-1683b127a33b",
+  "fbxUrl": "https://3d.varco.ai/api/objects/a85e32d3d0cdfb51be85ac7006809853.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H005_fingers.fbx"
+ },
+ "H006": {
+  "rigNode": "41fc8fb9-c329-423a-9f86-5bf4eb591037",
+  "fbxUrl": "https://3d.varco.ai/api/objects/bad3079ad1188148baaffa3afbe057bc.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H006_fingers.fbx"
+ },
+ "H007": {
+  "rigNode": "5a1c448d-bd84-403e-a34e-9013f0644d1e",
+  "fbxUrl": "https://3d.varco.ai/api/objects/b721b25f0927c4768c3f651775bebff3.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H007_fingers.fbx"
+ },
+ "H008": {
+  "rigNode": "6ec6f268-d76c-45d1-8336-2437c18cc52e",
+  "fbxUrl": "https://3d.varco.ai/api/objects/2b60d49d9ae71de7f104d5d95fc27541.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H008_fingers.fbx"
+ },
+ "H009": {
+  "rigNode": "4abe4f51-18cb-4f4a-93dd-8eaa733ec2e5",
+  "fbxUrl": "https://3d.varco.ai/api/objects/e07887864682c288ea064694fae8555a.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H009_fingers.fbx"
+ },
+ "H010": {
+  "rigNode": "b0b2a679-ab15-4863-a6fd-f88728e54c9e",
+  "fbxUrl": "https://3d.varco.ai/api/objects/3a93b99295f391bc77a7c1e60eaf466d.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H010_fingers.fbx"
+ },
+ "H012": {
+  "rigNode": "305d5671-63f8-4309-9431-eca66ced51e9",
+  "fbxUrl": "https://3d.varco.ai/api/objects/aac85ec359d397b5d1fc4dab6f14d7f2.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H012_fingers.fbx"
+ },
+ "H013": {
+  "rigNode": "95f00419-61ad-468d-8e94-1ae126017b66",
+  "fbxUrl": "https://3d.varco.ai/api/objects/666790f7c24c74f7344bceb5bbb2d23a.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H013_fingers.fbx"
+ },
+ "H014": {
+  "rigNode": "40be6395-258a-445e-b858-b7ea13524d90",
+  "fbxUrl": "https://3d.varco.ai/api/objects/89f4b2f9751876ca7aca8a99d87a1ff8.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H014_fingers.fbx"
+ },
+ "H015": {
+  "rigNode": "dcf24572-4af5-4ad2-8b20-c733f4b7241d",
+  "fbxUrl": "https://3d.varco.ai/api/objects/1ab5437536ba3d69bb19401ec9d1fb85.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H015_fingers.fbx"
+ },
+ "H016": {
+  "rigNode": "77597eac-f660-4ab9-95c1-4a797e5ea8f2",
+  "fbxUrl": "https://3d.varco.ai/api/objects/672812d2a07cf80a9cbece07f4867517.fbx",
+  "file": "C:\\Users\\MBC-501-22\\Desktop\\Card\\Tools\\heroes\\raw\\H016_fingers.fbx"
+ }
+}

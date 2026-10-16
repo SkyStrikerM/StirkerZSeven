@@ -1,0 +1,62 @@
+{
+ "H001": {
+  "rigTask": "df8bfec6-9672-4b18-9801-e11ce51cb34a",
+  "attackAnim": "sword_slash"
+ },
+ "H002": {
+  "rigTask": "5add4870-edd1-4b3a-b414-90d0b4831614",
+  "attackAnim": "staff_spin_attack"
+ },
+ "H003": {
+  "rigTask": "975a28d0-8989-4dd3-8050-e240de21524e",
+  "attackAnim": "landing_smash"
+ },
+ "H004": {
+  "rigTask": "9aa2ff6c-ceb2-40c5-b869-5edbb1d6ca7b",
+  "attackAnim": "spinning_slash"
+ },
+ "H005": {
+  "rigTask": "238e77dd-72c6-4216-b14c-480333016eab",
+  "attackAnim": "gather_hands_magic"
+ },
+ "H006": {
+  "rigTask": "bee6325e-146e-4872-a72a-40918c297362",
+  "attackAnim": "combo_slash"
+ },
+ "H007": {
+  "rigTask": "7e6005ff-f3fc-40d7-9808-c2fdfa8239e0",
+  "attackAnim": "magic_ground_attack_1"
+ },
+ "H008": {
+  "rigTask": "26522b4b-0f04-4169-b8d3-321e15928e5c",
+  "attackAnim": "jump_stab_land"
+ },
+ "H009": {
+  "rigTask": "a4e64941-b2ad-44d2-a6dc-e69ee87b3868",
+  "attackAnim": "shoot_bow"
+ },
+ "H010": {
+  "rigTask": "b330d965-50b5-454d-b636-c82147eb1465",
+  "attackAnim": "double_slash"
+ },
+ "H012": {
+  "rigTask": "d23309e5-b733-4a29-be20-3d883bdb97ee",
+  "attackAnim": "magic_left_hand_attack"
+ },
+ "H013": {
+  "rigTask": "8f1fce01-71ac-4cd1-b462-484df493155c",
+  "attackAnim": "magic_ground_slam"
+ },
+ "H014": {
+  "rigTask": "f8150e41-463f-4352-a80c-a81c20d157be",
+  "attackAnim": "spinning_slash"
+ },
+ "H015": {
+  "rigTask": "a5c12a43-e8e9-46da-83b4-c161bc102d87",
+  "attackAnim": "magic_pull"
+ },
+ "H016": {
+  "rigTask": "4fa4c8a0-8968-4390-a739-1b07e0c98d07",
+  "attackAnim": "sword_slash"
+ }
+}

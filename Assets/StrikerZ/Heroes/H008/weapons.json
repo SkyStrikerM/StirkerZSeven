@@ -1,0 +1,13 @@
+{
+ "weapons": [
+  {
+   "slot": "R",
+   "src": "R",
+   "hand": "R",
+   "kind": "pole",
+   "length": 1.05,
+   "grip": 0.4,
+   "flip": false
+  }
+ ]
+}

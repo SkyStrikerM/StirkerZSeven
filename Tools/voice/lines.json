@@ -1,0 +1,1145 @@
+[
+ {
+  "file": "hero_H001_atk",
+  "speaker": "H001",
+  "name": "레온",
+  "tone": "M 열혈 소년 주인공",
+  "kind": "atk",
+  "text": "불꽃처럼 타올라라!",
+  "say": "불꽃처럼 타올라라!"
+ },
+ {
+  "file": "hero_H001_hit",
+  "speaker": "H001",
+  "name": "레온",
+  "tone": "M 열혈 소년 주인공",
+  "kind": "hit",
+  "text": "크윽… 아직이야!",
+  "say": "크윽... 아직이야!"
+ },
+ {
+  "file": "hero_H001_skill",
+  "speaker": "H001",
+  "name": "레온",
+  "tone": "M 열혈 소년 주인공",
+  "kind": "skill",
+  "text": "홍염의 스트라이커, 간다!",
+  "say": "홍염의 스트라이커, 간다!"
+ },
+ {
+  "file": "hero_H002_atk",
+  "speaker": "H002",
+  "name": "마리나",
+  "tone": "F 차분한 무녀",
+  "kind": "atk",
+  "text": "파도여, 휩쓸어라.",
+  "say": "파도여, 휩쓸어라."
+ },
+ {
+  "file": "hero_H002_hit",
+  "speaker": "H002",
+  "name": "마리나",
+  "tone": "F 차분한 무녀",
+  "kind": "hit",
+  "text": "아앗… 괜찮아요.",
+  "say": "아앗... 괜찮아요."
+ },
+ {
+  "file": "hero_H002_skill",
+  "speaker": "H002",
+  "name": "마리나",
+  "tone": "F 차분한 무녀",
+  "kind": "skill",
+  "text": "심해의 무녀여, 치유의 물결을!",
+  "say": "심해의 무녀여, 치유의 물결을!"
+ },
+ {
+  "file": "hero_H003_atk",
+  "speaker": "H003",
+  "name": "가론",
+  "tone": "M 굵은 수호자",
+  "kind": "atk",
+  "text": "흐읍! 받아라!",
+  "say": "흐읍! 받아라!"
+ },
+ {
+  "file": "hero_H003_hit",
+  "speaker": "H003",
+  "name": "가론",
+  "tone": "M 굵은 수호자",
+  "kind": "hit",
+  "text": "끄떡없다!",
+  "say": "끄떡없다!"
+ },
+ {
+  "file": "hero_H003_skill",
+  "speaker": "H003",
+  "name": "가론",
+  "tone": "M 굵은 수호자",
+  "kind": "skill",
+  "text": "대지의 방패, 모두를 지켜라!",
+  "say": "대지의 방패, 모두를 지켜라!"
+ },
+ {
+  "file": "hero_H004_atk",
+  "speaker": "H004",
+  "name": "녹스",
+  "tone": "M 냉소적인 그림자 군주",
+  "kind": "atk",
+  "text": "그림자에 삼켜져라.",
+  "say": "그림자에 삼켜져라."
+ },
+ {
+  "file": "hero_H004_hit",
+  "speaker": "H004",
+  "name": "녹스",
+  "tone": "M 냉소적인 그림자 군주",
+  "kind": "hit",
+  "text": "…제법이군.",
+  "say": "...제법이군."
+ },
+ {
+  "file": "hero_H004_skill",
+  "speaker": "H004",
+  "name": "녹스",
+  "tone": "M 냉소적인 그림자 군주",
+  "kind": "skill",
+  "text": "그림자 군주의 이름으로.",
+  "say": "그림자 군주의 이름으로."
+ },
+ {
+  "file": "hero_H005_atk",
+  "speaker": "H005",
+  "name": "루미나",
+  "tone": "F 상냥한 성녀",
+  "kind": "atk",
+  "text": "빛이여, 길을 밝혀 주세요!",
+  "say": "빛이여, 길을 밝혀 주세요!"
+ },
+ {
+  "file": "hero_H005_hit",
+  "speaker": "H005",
+  "name": "루미나",
+  "tone": "F 상냥한 성녀",
+  "kind": "hit",
+  "text": "꺄앗…!",
+  "say": "꺄앗...!"
+ },
+ {
+  "file": "hero_H005_skill",
+  "speaker": "H005",
+  "name": "루미나",
+  "tone": "F 상냥한 성녀",
+  "kind": "skill",
+  "text": "빛의 성녀여, 잠든 이들을 깨워라.",
+  "say": "빛의 성녀여, 잠든 이들을 깨워라."
+ },
+ {
+  "file": "hero_H006_atk",
+  "speaker": "H006",
+  "name": "제로",
+  "tone": "M 자신만만한 청년",
+  "kind": "atk",
+  "text": "일곱 빛으로, 끝낸다!",
+  "say": "일곱 빛으로, 끝낸다!"
+ },
+ {
+  "file": "hero_H006_hit",
+  "speaker": "H006",
+  "name": "제로",
+  "tone": "M 자신만만한 청년",
+  "kind": "hit",
+  "text": "윽… 이 정도로는!",
+  "say": "윽... 이 정도로는!"
+ },
+ {
+  "file": "hero_H006_skill",
+  "speaker": "H006",
+  "name": "제로",
+  "tone": "M 자신만만한 청년",
+  "kind": "skill",
+  "text": "세븐 스트라이커, 해방!",
+  "say": "세븐 스트라이커, 해방!"
+ },
+ {
+  "file": "hero_H007_atk",
+  "speaker": "H007",
+  "name": "이그니스",
+  "tone": "F 거침없는 불의 마녀",
+  "kind": "atk",
+  "text": "재가 되어라!",
+  "say": "재가 되어라!"
+ },
+ {
+  "file": "hero_H007_hit",
+  "speaker": "H007",
+  "name": "이그니스",
+  "tone": "F 거침없는 불의 마녀",
+  "kind": "hit",
+  "text": "흥, 뜨겁지도 않아.",
+  "say": "흥, 뜨겁지도 않아."
+ },
+ {
+  "file": "hero_H007_skill",
+  "speaker": "H007",
+  "name": "이그니스",
+  "tone": "F 거침없는 불의 마녀",
+  "kind": "skill",
+  "text": "업화여, 모든 걸 불살라라!",
+  "say": "업화여, 모든 걸 불살라라!"
+ },
+ {
+  "file": "hero_H008_atk",
+  "speaker": "H008",
+  "name": "카이",
+  "tone": "M 차분한 청년 기사",
+  "kind": "atk",
+  "text": "물살을 가른다!",
+  "say": "물살을 가른다!"
+ },
+ {
+  "file": "hero_H008_hit",
+  "speaker": "H008",
+  "name": "카이",
+  "tone": "M 차분한 청년 기사",
+  "kind": "hit",
+  "text": "흐읏… 막아냈어.",
+  "say": "흐읏... 막아냈어."
+ },
+ {
+  "file": "hero_H008_skill",
+  "speaker": "H008",
+  "name": "카이",
+  "tone": "M 차분한 청년 기사",
+  "kind": "skill",
+  "text": "해류 방벽, 전개!",
+  "say": "해류 방벽, 전개!"
+ },
+ {
+  "file": "hero_H009_atk",
+  "speaker": "H009",
+  "name": "실피아",
+  "tone": "F 발랄한 엘프 궁수",
+  "kind": "atk",
+  "text": "바람을 타고, 명중!",
+  "say": "바람을 타고, 명중!"
+ },
+ {
+  "file": "hero_H009_hit",
+  "speaker": "H009",
+  "name": "실피아",
+  "tone": "F 발랄한 엘프 궁수",
+  "kind": "hit",
+  "text": "아얏! 빗나가라니까!",
+  "say": "아얏! 빗나가라니까!"
+ },
+ {
+  "file": "hero_H009_skill",
+  "speaker": "H009",
+  "name": "실피아",
+  "tone": "F 발랄한 엘프 궁수",
+  "kind": "skill",
+  "text": "질풍의 화살, 한 발 더!",
+  "say": "질풍의 화살, 한 발 더!"
+ },
+ {
+  "file": "hero_H010_atk",
+  "speaker": "H010",
+  "name": "가일",
+  "tone": "M 날카로운 검객",
+  "kind": "atk",
+  "text": "폭풍처럼 베어 주마!",
+  "say": "폭풍처럼 베어 주마!"
+ },
+ {
+  "file": "hero_H010_hit",
+  "speaker": "H010",
+  "name": "가일",
+  "tone": "M 날카로운 검객",
+  "kind": "hit",
+  "text": "칫… 얕았어.",
+  "say": "칫... 얕았어."
+ },
+ {
+  "file": "hero_H010_skill",
+  "speaker": "H010",
+  "name": "가일",
+  "tone": "M 날카로운 검객",
+  "kind": "skill",
+  "text": "폭풍의 검, 길을 열어라!",
+  "say": "폭풍의 검, 길을 열어라!"
+ },
+ {
+  "file": "hero_H011_atk",
+  "speaker": "H011",
+  "name": "볼트",
+  "tone": "M 호쾌한 격투가",
+  "kind": "atk",
+  "text": "뇌신의 주먹이다!",
+  "say": "뇌신의 주먹이다!"
+ },
+ {
+  "file": "hero_H011_hit",
+  "speaker": "H011",
+  "name": "볼트",
+  "tone": "M 호쾌한 격투가",
+  "kind": "hit",
+  "text": "크억! 짜릿한데!",
+  "say": "크억! 짜릿한데!"
+ },
+ {
+  "file": "hero_H011_skill",
+  "speaker": "H011",
+  "name": "볼트",
+  "tone": "M 호쾌한 격투가",
+  "kind": "skill",
+  "text": "번개야, 부숴 버려라!",
+  "say": "번개야, 부숴 버려라!"
+ },
+ {
+  "file": "hero_H012_atk",
+  "speaker": "H012",
+  "name": "라이카",
+  "tone": "F 재빠른 번개 소녀",
+  "kind": "atk",
+  "text": "번쩍! 맞았지?",
+  "say": "번쩍! 맞았지?"
+ },
+ {
+  "file": "hero_H012_hit",
+  "speaker": "H012",
+  "name": "라이카",
+  "tone": "F 재빠른 번개 소녀",
+  "kind": "hit",
+  "text": "꺅! 따끔하잖아!",
+  "say": "꺅! 따끔하잖아!"
+ },
+ {
+  "file": "hero_H012_skill",
+  "speaker": "H012",
+  "name": "라이카",
+  "tone": "F 재빠른 번개 소녀",
+  "kind": "skill",
+  "text": "연쇄 전격, 이어진다!",
+  "say": "연쇄 전격, 이어진다!"
+ },
+ {
+  "file": "hero_H013_atk",
+  "speaker": "H013",
+  "name": "브론",
+  "tone": "M 느릿한 거인",
+  "kind": "atk",
+  "text": "으랴아!",
+  "say": "으랴아!"
+ },
+ {
+  "file": "hero_H013_hit",
+  "speaker": "H013",
+  "name": "브론",
+  "tone": "M 느릿한 거인",
+  "kind": "hit",
+  "text": "…간지럽군.",
+  "say": "...간지럽군."
+ },
+ {
+  "file": "hero_H013_skill",
+  "speaker": "H013",
+  "name": "브론",
+  "tone": "M 느릿한 거인",
+  "kind": "skill",
+  "text": "암반이여, 나를 따르라.",
+  "say": "암반이여, 나를 따르라."
+ },
+ {
+  "file": "hero_H014_atk",
+  "speaker": "H014",
+  "name": "세라핀",
+  "tone": "F 고결한 여기사",
+  "kind": "atk",
+  "text": "성광의 검을 받아라!",
+  "say": "성광의 검을 받아라!"
+ },
+ {
+  "file": "hero_H014_hit",
+  "speaker": "H014",
+  "name": "세라핀",
+  "tone": "F 고결한 여기사",
+  "kind": "hit",
+  "text": "흐읏… 무릎 꿇지 않아!",
+  "say": "흐읏... 무릎 꿇지 않아!"
+ },
+ {
+  "file": "hero_H014_skill",
+  "speaker": "H014",
+  "name": "세라핀",
+  "tone": "F 고결한 여기사",
+  "kind": "skill",
+  "text": "성광의 기사여, 모두에게 축복을!",
+  "say": "성광의 기사여, 모두에게 축복을!"
+ },
+ {
+  "file": "hero_H015_atk",
+  "speaker": "H015",
+  "name": "모르가나",
+  "tone": "F 요염한 저주 마녀",
+  "kind": "atk",
+  "text": "후후, 고통을 맛봐.",
+  "say": "후후, 고통을 맛봐."
+ },
+ {
+  "file": "hero_H015_hit",
+  "speaker": "H015",
+  "name": "모르가나",
+  "tone": "F 요염한 저주 마녀",
+  "kind": "hit",
+  "text": "감히… 나를?",
+  "say": "감히... 나를?"
+ },
+ {
+  "file": "hero_H015_skill",
+  "speaker": "H015",
+  "name": "모르가나",
+  "tone": "F 요염한 저주 마녀",
+  "kind": "skill",
+  "text": "저주여, 영원히 스며들어라.",
+  "say": "저주여, 영원히 스며들어라."
+ },
+ {
+  "file": "hero_H016_atk",
+  "speaker": "H016",
+  "name": "오메가",
+  "tone": "M 냉혹한 종언자",
+  "kind": "atk",
+  "text": "종언이다.",
+  "say": "종언이다."
+ },
+ {
+  "file": "hero_H016_hit",
+  "speaker": "H016",
+  "name": "오메가",
+  "tone": "M 냉혹한 종언자",
+  "kind": "hit",
+  "text": "…무의미한 발버둥.",
+  "say": "...무의미한 발버둥."
+ },
+ {
+  "file": "hero_H016_skill",
+  "speaker": "H016",
+  "name": "오메가",
+  "tone": "M 냉혹한 종언자",
+  "kind": "skill",
+  "text": "칠색의 종언, 사라져라.",
+  "say": "칠색의 종언, 사라져라."
+ },
+ {
+  "file": "hero_H017_atk",
+  "speaker": "H017",
+  "name": "카일",
+  "tone": "M 소년 주인공",
+  "kind": "atk",
+  "text": "간다, 스트라이커즈!",
+  "say": "간다, 스트라이커즈!"
+ },
+ {
+  "file": "hero_H017_hit",
+  "speaker": "H017",
+  "name": "카일",
+  "tone": "M 소년 주인공",
+  "kind": "hit",
+  "text": "크윽… 아직 안 끝났어!",
+  "say": "크윽... 아직 안 끝났어!"
+ },
+ {
+  "file": "hero_H017_skill",
+  "speaker": "H017",
+  "name": "카일",
+  "tone": "M 소년 주인공",
+  "kind": "skill",
+  "text": "척력 반사! 튕겨 내라!",
+  "say": "척력 반사! 튕겨 내라!"
+ },
+ {
+  "file": "hero_H018_atk",
+  "speaker": "H018",
+  "name": "아리아",
+  "tone": "F 다정한 치유사",
+  "kind": "atk",
+  "text": "물방울아, 힘을 빌려 줘!",
+  "say": "물방울아, 힘을 빌려 줘!"
+ },
+ {
+  "file": "hero_H018_hit",
+  "speaker": "H018",
+  "name": "아리아",
+  "tone": "F 다정한 치유사",
+  "kind": "hit",
+  "text": "아… 아파라.",
+  "say": "아... 아파라."
+ },
+ {
+  "file": "hero_H018_skill",
+  "speaker": "H018",
+  "name": "아리아",
+  "tone": "F 다정한 치유사",
+  "kind": "skill",
+  "text": "치유의 물방울, 모두에게!",
+  "say": "치유의 물방울, 모두에게!"
+ },
+ {
+  "file": "hero_H019_atk",
+  "speaker": "H019",
+  "name": "베인",
+  "tone": "M 노련한 중년 전사",
+  "kind": "atk",
+  "text": "폭풍의 눈을 보아라!",
+  "say": "폭풍의 눈을 보아라!"
+ },
+ {
+  "file": "hero_H019_hit",
+  "speaker": "H019",
+  "name": "베인",
+  "tone": "M 노련한 중년 전사",
+  "kind": "hit",
+  "text": "흐음… 아직 멀었다.",
+  "say": "흐음... 아직 멀었다."
+ },
+ {
+  "file": "hero_H019_skill",
+  "speaker": "H019",
+  "name": "베인",
+  "tone": "M 노련한 중년 전사",
+  "kind": "skill",
+  "text": "폭풍의 눈, 휘몰아쳐라!",
+  "say": "폭풍의 눈, 휘몰아쳐라!"
+ },
+ {
+  "file": "hero_H020_atk",
+  "speaker": "H020",
+  "name": "메릴",
+  "tone": "F 기품 있는 호수의 여왕",
+  "kind": "atk",
+  "text": "얼어붙어라.",
+  "say": "얼어붙어라."
+ },
+ {
+  "file": "hero_H020_hit",
+  "speaker": "H020",
+  "name": "메릴",
+  "tone": "F 기품 있는 호수의 여왕",
+  "kind": "hit",
+  "text": "…무례하군요.",
+  "say": "...무례하군요."
+ },
+ {
+  "file": "hero_H020_skill",
+  "speaker": "H020",
+  "name": "메릴",
+  "tone": "F 기품 있는 호수의 여왕",
+  "kind": "skill",
+  "text": "호수의 여왕이 명한다.",
+  "say": "호수의 여왕이 명한다."
+ },
+ {
+  "file": "hero_H021_atk",
+  "speaker": "H021",
+  "name": "테라",
+  "tone": "M 우직한 드워프",
+  "kind": "atk",
+  "text": "도끼맛 좀 봐라!",
+  "say": "도끼맛 좀 봐라!"
+ },
+ {
+  "file": "hero_H021_hit",
+  "speaker": "H021",
+  "name": "테라",
+  "tone": "M 우직한 드워프",
+  "kind": "hit",
+  "text": "하! 그게 다냐?",
+  "say": "하! 그게 다냐?"
+ },
+ {
+  "file": "hero_H021_skill",
+  "speaker": "H021",
+  "name": "테라",
+  "tone": "M 우직한 드워프",
+  "kind": "skill",
+  "text": "대지의 맹세, 꺾이지 않는다!",
+  "say": "대지의 맹세, 꺾이지 않는다!"
+ },
+ {
+  "file": "hero_H022_atk",
+  "speaker": "H022",
+  "name": "제퍼",
+  "tone": "M 경쾌한 음유시인",
+  "kind": "atk",
+  "text": "이 노래를 받아라!",
+  "say": "이 노래를 받아라!"
+ },
+ {
+  "file": "hero_H022_hit",
+  "speaker": "H022",
+  "name": "제퍼",
+  "tone": "M 경쾌한 음유시인",
+  "kind": "hit",
+  "text": "아이쿠, 음정이 나갔네.",
+  "say": "아이쿠, 음정이 나갔네."
+ },
+ {
+  "file": "hero_H022_skill",
+  "speaker": "H022",
+  "name": "제퍼",
+  "tone": "M 경쾌한 음유시인",
+  "kind": "skill",
+  "text": "자유의 노래, 울려 퍼져라!",
+  "say": "자유의 노래, 울려 퍼져라!"
+ },
+ {
+  "file": "hero_H023_atk",
+  "speaker": "H023",
+  "name": "루미엔",
+  "tone": "F 성스러운 사제",
+  "kind": "atk",
+  "text": "성광이여, 내려라!",
+  "say": "성광이여, 내려라!"
+ },
+ {
+  "file": "hero_H023_hit",
+  "speaker": "H023",
+  "name": "루미엔",
+  "tone": "F 성스러운 사제",
+  "kind": "hit",
+  "text": "흐윽… 빛은 꺼지지 않아요.",
+  "say": "흐윽... 빛은 꺼지지 않아요."
+ },
+ {
+  "file": "hero_H023_skill",
+  "speaker": "H023",
+  "name": "루미엔",
+  "tone": "F 성스러운 사제",
+  "kind": "skill",
+  "text": "성광의 축복을 그대들에게.",
+  "say": "성광의 축복을 그대들에게."
+ },
+ {
+  "file": "hero_H024_atk",
+  "speaker": "H024",
+  "name": "에레보스",
+  "tone": "M 위압적인 마왕",
+  "kind": "atk",
+  "text": "심연으로 떨어져라.",
+  "say": "심연으로 떨어져라."
+ },
+ {
+  "file": "hero_H024_hit",
+  "speaker": "H024",
+  "name": "에레보스",
+  "tone": "M 위압적인 마왕",
+  "kind": "hit",
+  "text": "크크… 그 정도인가.",
+  "say": "크크... 그 정도인가."
+ },
+ {
+  "file": "hero_H024_skill",
+  "speaker": "H024",
+  "name": "에레보스",
+  "tone": "M 위압적인 마왕",
+  "kind": "skill",
+  "text": "심연의 손아귀, 붙잡아라!",
+  "say": "심연의 손아귀, 붙잡아라!"
+ },
+ {
+  "file": "hero_H025_atk",
+  "speaker": "H025",
+  "name": "바루스",
+  "tone": "M 음산한 회색 망령",
+  "kind": "atk",
+  "text": "잿빛으로 물들어라…",
+  "say": "잿빛으로 물들어라..."
+ },
+ {
+  "file": "hero_H025_hit",
+  "speaker": "H025",
+  "name": "바루스",
+  "tone": "M 음산한 회색 망령",
+  "kind": "hit",
+  "text": "…아프지 않다.",
+  "say": "...아프지 않다."
+ },
+ {
+  "file": "hero_H025_skill",
+  "speaker": "H025",
+  "name": "바루스",
+  "tone": "M 음산한 회색 망령",
+  "kind": "skill",
+  "text": "회색 잠식, 퍼져라.",
+  "say": "회색 잠식, 퍼져라."
+ },
+ {
+  "file": "hero_H026_atk",
+  "speaker": "H026",
+  "name": "프리스마",
+  "tone": "F 신비로운 빛의 여신",
+  "kind": "atk",
+  "text": "빛이 너를 가르리라.",
+  "say": "빛이 너를 가르리라."
+ },
+ {
+  "file": "hero_H026_hit",
+  "speaker": "H026",
+  "name": "프리스마",
+  "tone": "F 신비로운 빛의 여신",
+  "kind": "hit",
+  "text": "아… 별이 흔들려.",
+  "say": "아... 별이 흔들려."
+ },
+ {
+  "file": "hero_H026_skill",
+  "speaker": "H026",
+  "name": "프리스마",
+  "tone": "F 신비로운 빛의 여신",
+  "kind": "skill",
+  "text": "창세의 빛이여, 피어나라!",
+  "say": "창세의 빛이여, 피어나라!"
+ },
+ {
+  "file": "hero_H027_atk",
+  "speaker": "H027",
+  "name": "프리즘 카일",
+  "tone": "M 각성한 소년 주인공",
+  "kind": "atk",
+  "text": "일곱 빛깔로 간다!",
+  "say": "일곱 빛깔로 간다!"
+ },
+ {
+  "file": "hero_H027_hit",
+  "speaker": "H027",
+  "name": "프리즘 카일",
+  "tone": "M 각성한 소년 주인공",
+  "kind": "hit",
+  "text": "크윽… 이 빛은 꺼지지 않아!",
+  "say": "크윽... 이 빛은 꺼지지 않아!"
+ },
+ {
+  "file": "hero_H027_skill",
+  "speaker": "H027",
+  "name": "프리즘 카일",
+  "tone": "M 각성한 소년 주인공",
+  "kind": "skill",
+  "text": "일곱 빛깔의 검, 해방!",
+  "say": "일곱 빛깔의 검, 해방!"
+ },
+ {
+  "file": "npc_rosie_628f0d18",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "어서 와! 로지의 카드 상점에 온 걸 환영해~",
+  "say": "어서 와! 로지의 카드 상점에 온 걸 환영해~"
+ },
+ {
+  "file": "npc_rosie_d3823985",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "오늘의 특가 카드 봤어? 하루에 한 번씩 바뀌니까 놓치지 마!",
+  "say": "오늘의 특가 카드 봤어? 하루에 한 번씩 바뀌니까 놓치지 마!"
+ },
+ {
+  "file": "npc_rosie_461cb62e",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "새 부스터팩이 들어왔어! 좋은 카드가 나오길 같이 빌어 줄게~",
+  "say": "새 부스터팩이 들어왔어! 좋은 카드가 나오길 같이 빌어 줄게~"
+ },
+ {
+  "file": "npc_rosie_0a07469c",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "가공 카드를 원하면 가운데 방 엄마 아빠한테 가 봐! 마력부여사거든~",
+  "say": "가공 카드를 원하면 가운데 방 엄마 아빠한테 가 봐! 마력부여사거든~"
+ },
+ {
+  "file": "npc_rosie_2288d39f",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "슬리브랑 주사위는 뒤편 할아버지 공방에서 팔아. 루콘 할아버지 안경은… 놀라지 마!",
+  "say": "슬리브랑 주사위는 뒤편 할아버지 공방에서 팔아. 루콘 할아버지 안경은... 놀라지 마!"
+ },
+ {
+  "file": "npc_rosie_bd7e387f",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "왔구나! 오늘은 어떤 카드를 찾고 있어?",
+  "say": "왔구나! 오늘은 어떤 카드를 찾고 있어?"
+ },
+ {
+  "file": "npc_rosie_318dc053",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "간지러~",
+  "say": "간지러~"
+ },
+ {
+  "file": "npc_rosie_94630512",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "이 마법사 모자 어때?",
+  "say": "이 마법사 모자 어때?"
+ },
+ {
+  "file": "npc_rosie_8dcbf6ff",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "카드는 언제나 정성껏 관리하고 있어. 걱정 마!",
+  "say": "카드는 언제나 정성껏 관리하고 있어. 걱정 마!"
+ },
+ {
+  "file": "npc_rosie_084b3619",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "특가 카드는 CP 로 살 수 있어. 생성 비용의 딱 절반이야!",
+  "say": "특가 카드는 씨피 로 살 수 있어. 생성 비용의 딱 절반이야!"
+ },
+ {
+  "file": "npc_rosie_55a6c677",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "남는 카드 77장을 모아 가면 아빠가 더 좋은 카드로 바꿔 줘!",
+  "say": "남는 카드 칠십칠 장을 모아 가면 아빠가 더 좋은 카드로 바꿔 줘!"
+ },
+ {
+  "file": "npc_rosie_001c3c51",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "할아버지 눈? 나도 딱 한 번 봤어. 그건 비밀이야~",
+  "say": "할아버지 눈? 나도 딱 한 번 봤어. 그건 비밀이야~"
+ },
+ {
+  "file": "npc_lukon_05d63f2a",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "어서 오게! 오늘은 무얼 꾸며 볼 텐가?",
+  "say": "어서 오게! 오늘은 무얼 꾸며 볼 텐가?"
+ },
+ {
+  "file": "npc_lukon_efa5170f",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "또 왔구먼. 새로 깎은 주사위 좀 보고 가게나.",
+  "say": "또 왔구먼. 새로 깎은 주사위 좀 보고 가게나."
+ },
+ {
+  "file": "npc_lukon_2f194aa9",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "속성마다 하나씩, 이 늙은이가 정성껏 만들었다네.",
+  "say": "속성마다 하나씩, 이 늙은이가 정성껏 만들었다네."
+ },
+ {
+  "file": "npc_lukon_bc6c9957",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "로지 녀석은 장사 잘 하고 있던가?",
+  "say": "로지 녀석은 장사 잘 하고 있던가?"
+ },
+ {
+  "file": "npc_lukon_09e975f6",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "카드에도 옷이 필요하지. 슬리브 구경하고 가게!",
+  "say": "카드에도 옷이 필요하지. 슬리브 구경하고 가게!"
+ },
+ {
+  "file": "npc_lukon_7c85f8d7",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "어이쿠, 안경 건드리지 말게! 이게 없으면 아무것도 안 보여!",
+  "say": "어이쿠, 안경 건드리지 말게! 이게 없으면 아무것도 안 보여!"
+ },
+ {
+  "file": "npc_lukon_b50bfe4b",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "늙은이 수염은 왜 당기누.",
+  "say": "늙은이 수염은 왜 당기누."
+ },
+ {
+  "file": "npc_lukon_8f6a28e9",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "이 주사위는 한 면 한 면 손으로 다듬었다네.",
+  "say": "이 주사위는 한 면 한 면 손으로 다듬었다네."
+ },
+ {
+  "file": "npc_lukon_96c3207d",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "슬리브를 바꾸면 카드가 기분이 좋아진다네. 진짜야.",
+  "say": "슬리브를 바꾸면 카드가 기분이 좋아진다네. 진짜야."
+ },
+ {
+  "file": "npc_lukon_632b178b",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "눈? 이 안경 뒤에 있지. 본 사람은… 로지뿐일세.",
+  "say": "눈? 이 안경 뒤에 있지. 본 사람은... 로지뿐일세."
+ },
+ {
+  "file": "npc_lukon_3a88d307",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "덱케이스엔 레이드 보스들 문양을 새겼지. 진짜 보스는 못 봤지만!",
+  "say": "덱케이스엔 레이드 보스들 문양을 새겼지. 진짜 보스는 못 봤지만!"
+ },
+ {
+  "file": "npc_rohan_32653d31",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "이 팔뚝 보이지? 마력부여도 힘이 필요하다고!",
+  "say": "이 팔뚝 보이지? 마력부여도 힘이 필요하다고!"
+ },
+ {
+  "file": "npc_rohan_008c7d7b",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "아버지는 아직도 그 골뱅이 안경을 안 바꾸셨나?",
+  "say": "아버지는 아직도 그 골뱅이 안경을 안 바꾸셨나?"
+ },
+ {
+  "file": "npc_rohan_d9ece7cd",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "77장! 행운의 숫자지. 7이 두 개니까!",
+  "say": "칠십칠 장! 행운의 숫자지. 칠이 두 개니까!"
+ },
+ {
+  "file": "npc_rohan_bb394bf5",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "로지 녀석, 손님한테 친절하게 굴고 있겠지?",
+  "say": "로지 녀석, 손님한테 친절하게 굴고 있겠지?"
+ },
+ {
+  "file": "npc_bella_cae1d498",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "간지러워.",
+  "say": "간지러워."
+ },
+ {
+  "file": "npc_bella_19ee8b4a",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "로지가 장사 잘 하고 있니? 가끔 걱정이 돼서.",
+  "say": "로지가 장사 잘 하고 있니? 가끔 걱정이 돼서."
+ },
+ {
+  "file": "npc_bella_c41985e8",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "Unique 카드는 Rare 카드를 77장 모아도 1장밖에 안 나올 만큼 강력한 카드란다.",
+  "say": "유니크 카드는 레어 카드를 칠십칠 장 모아도 한 장밖에 안 나올 만큼 강력한 카드란다."
+ },
+ {
+  "file": "npc_bella_703caa21",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "StrikerZ 가공은 마력이 아주 많이 들어. 그래도 그만큼 반짝이지!",
+  "say": "스트라이커즈 가공은 마력이 아주 많이 들어. 그래도 그만큼 반짝이지!"
+ },
+ {
+  "file": "npc_rohan_4042745d",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "마음에 드는 가공이 됐길 바란다!",
+  "say": "마음에 드는 가공이 됐길 바란다!"
+ },
+ {
+  "file": "npc_rohan_c2eed399",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "어서 와라! 오늘은 어떤 카드에 마력을 불어넣어 볼까?",
+  "say": "어서 와라! 오늘은 어떤 카드에 마력을 불어넣어 볼까?"
+ },
+ {
+  "file": "npc_bella_8eff2184",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "어서 오렴. 차 한잔하고 가도 좋단다.",
+  "say": "어서 오렴. 차 한잔하고 가도 좋단다."
+ },
+ {
+  "file": "npc_rohan_0d9c577e",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "남는 카드가 77장 모이면 가져와! 더 좋은 카드로 바꿔 주마.",
+  "say": "남는 카드가 칠십칠 장 모이면 가져와! 더 좋은 카드로 바꿔 주마."
+ },
+ {
+  "file": "npc_bella_8703558f",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "가공은 섬세한 작업이라 CP 가 꽤 들어. 신중하게 고르렴.",
+  "say": "가공은 섬세한 작업이라 씨피 가 꽤 들어. 신중하게 고르렴."
+ },
+ {
+  "file": "npc_bella_9278aa0e",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "업그레이드로 나온 카드는 가공 없는 일반 카드란다. 잊지 마~",
+  "say": "업그레이드로 나온 카드는 가공 없는 일반 카드란다. 잊지 마~"
+ },
+ {
+  "file": "npc_rohan_1c14e9e8",
+  "speaker": "rohan",
+  "name": "로한",
+  "tone": "M 호탕한 40대 아빠 마력부여사",
+  "kind": "npc",
+  "text": "오, 처음 보는 얼굴이구나! 나는 로한, 이쪽은 내 아내 벨라. 둘 다 마력부여사지!",
+  "say": "오, 처음 보는 얼굴이구나! 나는 로한, 이쪽은 내 아내 벨라. 둘 다 마력부여사지!"
+ },
+ {
+  "file": "npc_bella_fe481374",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "로지의 엄마 아빠란다. 카드 가공이랑 업그레이드는 우리한테 맡기렴.",
+  "say": "로지의 엄마 아빠란다. 카드 가공이랑 업그레이드는 우리한테 맡기렴."
+ },
+ {
+  "file": "npc_bella_d28e9cb3",
+  "speaker": "bella",
+  "name": "벨라",
+  "tone": "F 다정한 30대 엄마 마력부여사 (후후)",
+  "kind": "npc",
+  "text": "다 골랐니? 언제든 다시 오렴!",
+  "say": "다 골랐니? 언제든 다시 오렴!"
+ },
+ {
+  "file": "npc_rosie_ff5c8ebb",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "앗… 오팔이 조금 모자란 것 같아. 퀘스트를 깨고 다시 와 줘!",
+  "say": "앗... 오팔이 조금 모자란 것 같아. 퀘스트를 깨고 다시 와 줘!"
+ },
+ {
+  "file": "npc_rosie_74083dcc",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "10팩이나?! 좋아, 레어 카드가 쏟아지길 기도할게!",
+  "say": "열 팩이나?! 좋아, 레어 카드가 쏟아지길 기도할게!"
+ },
+ {
+  "file": "npc_rosie_2945a337",
+  "speaker": "rosie",
+  "name": "로지",
+  "tone": "F 밝고 귀여운 소녀 상점 마스코트",
+  "kind": "npc",
+  "text": "두근두근… 좋은 카드가 나오길!",
+  "say": "두근두근... 좋은 카드가 나오길!"
+ },
+ {
+  "file": "npc_lukon_2ded1c22",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "처음 보는 얼굴이로군! 나는 로지 할애비 루콘일세. 이 공방에선 슬리브·덱케이스·코인·주사위를 직접 만든다네.",
+  "say": "처음 보는 얼굴이로군! 나는 로지 할애비 루콘일세. 이 공방에선 슬리브, 덱케이스, 코인, 주사위를 직접 만든다네."
+ },
+ {
+  "file": "npc_lukon_edb61164",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "눈이 안 보인다고? 걱정 말게, 이 안경 너머로 다 보인다네. …아마도.",
+  "say": "눈이 안 보인다고? 걱정 말게, 이 안경 너머로 다 보인다네. ...아마도."
+ },
+ {
+  "file": "npc_lukon_a7fbc19e",
+  "speaker": "lukon",
+  "name": "루콘",
+  "tone": "M 장난스러운 할아버지 장인",
+  "kind": "npc",
+  "text": "오팔이 조금 모자라구먼. 퀘스트를 깨고 다시 오게나.",
+  "say": "오팔이 조금 모자라구먼. 퀘스트를 깨고 다시 오게나."
+ }
+]

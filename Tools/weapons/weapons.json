@@ -1,0 +1,266 @@
+{
+ "H001": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "blade",
+    "length": 0.62,
+    "grip": 0.12,
+    "anim": "sword_slash",
+    "desc": "crimson-and-gold flame longsword with a glowing red blade edged with stylized flame engravings and a gold crossguard",
+    "prompt": "3D game asset concept of a single crimson-and-gold flame longsword with a glowing red blade edged with stylized flame engravings and a gold crossguard, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "e043fe17-60ad-4cc1-9bf2-ee53e579c1e5"
+   }
+  ],
+  "attackNode": "69339c1f-91da-485c-b7d5-4f20762ab837"
+ },
+ "H002": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "pole",
+    "length": 0.95,
+    "grip": 0.42,
+    "anim": "staff_spin_attack",
+    "desc": "elegant coral-and-silver priestess staff topped with a glowing sea-blue pearl orb held inside curling coral branches",
+    "prompt": "3D game asset concept of a single elegant coral-and-silver priestess staff topped with a glowing sea-blue pearl orb held inside curling coral branches, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "b5e851f5-72fb-4f03-816f-d540f9eb26df"
+   }
+  ],
+  "attackNode": "6ad65ce3-bc90-4254-995e-579a65c16180"
+ },
+ "H003": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "blade",
+    "length": 0.55,
+    "grip": 0.15,
+    "anim": "landing_smash",
+    "desc": "heavy bronze dwarven battle axe with one wide crescent blade, runic engravings and a leather-wrapped wooden handle",
+    "prompt": "3D game asset concept of a single heavy bronze dwarven battle axe with one wide crescent blade, runic engravings and a leather-wrapped wooden handle, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "bfcce9a5-903c-4ca6-a353-7fe1d1d1439f"
+   },
+   {
+    "slot": "L",
+    "hand": "L",
+    "kind": "shield",
+    "length": 0.5,
+    "grip": 0.5,
+    "anim": null,
+    "desc": "large rectangular carved stone tower shield with a thick bronze rim and a glowing amber rune in the center",
+    "prompt": "3D game asset concept of a single large rectangular carved stone tower shield with a thick bronze rim and a glowing amber rune in the center, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing upright with its front face toward the camera, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "976b3fc1-3b80-4f63-aae6-73de414419a4"
+   }
+  ],
+  "attackNode": "c8df8eb4-8f70-469e-b44d-c052d0e0be56"
+ },
+ "H004": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "pole",
+    "length": 1.0,
+    "grip": 0.45,
+    "anim": "spinning_slash",
+    "desc": "dark shadow reaper scythe with a long black curved blade glowing purple along the edge and a twisted black shaft",
+    "prompt": "3D game asset concept of a single dark shadow reaper scythe with a long black curved blade glowing purple along the edge and a twisted black shaft, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "b0d3ea28-404e-4455-b5da-1b4066b27514"
+   }
+  ],
+  "attackNode": "07237c12-f635-4db4-ab4c-5ca4d957a8a9"
+ },
+ "H005": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "pole",
+    "length": 0.95,
+    "grip": 0.42,
+    "anim": "gather_hands_magic",
+    "desc": "holy white-and-gold saint staff topped with a radiant clear crystal framed by small golden angel wings",
+    "prompt": "3D game asset concept of a single holy white-and-gold saint staff topped with a radiant clear crystal framed by small golden angel wings, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "59c14db5-5b4c-4c13-85f8-d2d241038168"
+   }
+  ],
+  "attackNode": "b7593c71-76c3-4948-8553-6523b945102b"
+ },
+ "H006": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "blade",
+    "length": 0.68,
+    "grip": 0.12,
+    "anim": "combo_slash",
+    "desc": "heroic rainbow longsword with a prismatic crystal blade shifting through rainbow colors and a white-gold hilt",
+    "prompt": "3D game asset concept of a single heroic rainbow longsword with a prismatic crystal blade shifting through rainbow colors and a white-gold hilt, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "3d6dc925-4c9e-4658-9305-b73fdf404700"
+   }
+  ],
+  "attackNode": "22b30790-6d1b-4b4a-b110-ba77b81bf535"
+ },
+ "H007": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "pole",
+    "length": 0.9,
+    "grip": 0.42,
+    "anim": "magic_ground_attack_1",
+    "desc": "fire witch staff of twisted dark wood ending in a burning ember crystal surrounded by curling flame shapes",
+    "prompt": "3D game asset concept of a single fire witch staff of twisted dark wood ending in a burning ember crystal surrounded by curling flame shapes, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "a0289aba-f3a3-4811-8be6-68f335f758ba"
+   }
+  ],
+  "attackNode": "f7847c9a-412c-46d7-b474-5fce43ba5ee1"
+ },
+ "H008": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "pole",
+    "length": 1.05,
+    "grip": 0.4,
+    "anim": "jump_stab_land",
+    "desc": "silver-blue sea knight trident with three sharp prongs and an aquamarine gem at the base of the prongs",
+    "prompt": "3D game asset concept of a single silver-blue sea knight trident with three sharp prongs and an aquamarine gem at the base of the prongs, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "4b95b4b8-9aab-41e3-9edf-f06072fc87da"
+   }
+  ],
+  "attackNode": "4f7fee29-359d-4f39-a474-1170e1b24f2a"
+ },
+ "H009": {
+  "weapons": [
+   {
+    "slot": "L",
+    "hand": "L",
+    "kind": "bow",
+    "length": 0.75,
+    "grip": 0.5,
+    "anim": "arm_stretch_magic",
+    "desc": "elegant emerald elven longbow with leaf-shaped carved limbs and a glowing green bowstring",
+    "prompt": "3D game asset concept of a single elegant emerald elven longbow with leaf-shaped carved limbs and a glowing green bowstring, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical, the bow limbs pointing up and down, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "65ad47d6-bf8d-4387-82b0-b4b4e4afee41"
+   }
+  ],
+  "attackNode": "5ba377bc-8522-41fe-aecf-da3f4cf8643e"
+ },
+ "H010": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "blade",
+    "length": 0.55,
+    "grip": 0.14,
+    "anim": "double_slash",
+    "desc": "curved jade-green wind saber with a thin single-edged blade and a teal wrapped hilt",
+    "prompt": "3D game asset concept of a single curved jade-green wind saber with a thin single-edged blade and a teal wrapped hilt, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "ee335170-c363-4df4-92dd-d4a510237710"
+   },
+   {
+    "slot": "L",
+    "hand": "L",
+    "kind": "blade",
+    "length": 0.55,
+    "grip": 0.14,
+    "anim": null,
+    "desc": null,
+    "same": "R"
+   }
+  ],
+  "attackNode": "7e6bb337-0833-4579-9e94-e4f4fb5c016f"
+ },
+ "H012": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "pole",
+    "length": 0.9,
+    "grip": 0.42,
+    "anim": "magic_left_hand_attack",
+    "desc": "lightning mage staff of purple and gold metal topped with a crackling yellow lightning orb inside a golden ring",
+    "prompt": "3D game asset concept of a single lightning mage staff of purple and gold metal topped with a crackling yellow lightning orb inside a golden ring, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "09786b0a-9b0e-440d-8b66-94b9552e8e52"
+   }
+  ],
+  "attackNode": "82ed6f12-97cc-4ecc-b8b1-bed813909977"
+ },
+ "H013": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "blade",
+    "length": 0.62,
+    "grip": 0.12,
+    "anim": "magic_ground_slam",
+    "desc": "massive stone war hammer with a rough boulder head embedded with glowing amber crystals and a thick stone handle",
+    "prompt": "3D game asset concept of a single massive stone war hammer with a rough boulder head embedded with glowing amber crystals and a thick stone handle, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "a95630d7-fec7-4485-8974-2652e28ca8ad"
+   }
+  ],
+  "attackNode": "3786d4ad-9601-4f9a-bd02-6730052df79d"
+ },
+ "H014": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "blade",
+    "length": 0.64,
+    "grip": 0.12,
+    "anim": "spinning_slash",
+    "desc": "radiant holy knight longsword with a white-gold blade, a winged golden crossguard and a glowing sun gem in the hilt",
+    "prompt": "3D game asset concept of a single radiant holy knight longsword with a white-gold blade, a winged golden crossguard and a glowing sun gem in the hilt, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "43c2e90c-1920-49f2-84ca-b22331a57368"
+   }
+  ],
+  "attackNode": "467edcf6-2f0e-4ff6-afbf-8d810b8852da"
+ },
+ "H015": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "pole",
+    "length": 0.92,
+    "grip": 0.42,
+    "anim": "magic_pull",
+    "desc": "cursed witch staff of black twisted metal topped with a glowing violet amethyst crystal wrapped in thin dark chains",
+    "prompt": "3D game asset concept of a single cursed witch staff of black twisted metal topped with a glowing violet amethyst crystal wrapped in thin dark chains, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "1c8a5204-ff8a-4f12-be78-1970c02c227c"
+   }
+  ],
+  "attackNode": "e6c01c55-6cce-41b3-b86e-8f66b91018f7"
+ },
+ "H016": {
+  "weapons": [
+   {
+    "slot": "R",
+    "hand": "R",
+    "kind": "blade",
+    "length": 0.75,
+    "grip": 0.1,
+    "anim": "sword_slash",
+    "desc": "prismatic crystal greatsword with a long translucent blade refracting rainbow light and a dark silver hilt",
+    "prompt": "3D game asset concept of a single prismatic crystal greatsword with a long translucent blade refracting rainbow light and a dark silver hilt, stylized anime fantasy game style matching high-quality hand-painted RPG weapons, isolated object standing perfectly upright and vertical with the tip or head pointing up and the handle at the bottom, centered, the whole object fully visible with margin, front view, clean even studio lighting, plain light gray background, no hands, no character, no text, no shadow, no extra objects.",
+    "meshNode": "926e4329-5e65-4be8-a032-f229164da1f2"
+   }
+  ],
+  "attackNode": "f911278e-7eb7-49bf-8c52-39daa2397f83"
+ },
+ "_flip": {
+  "H010R": true
+ }
+}

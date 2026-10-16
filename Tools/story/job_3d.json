@@ -1,0 +1,82 @@
+[
+ {
+  "hero": "H018",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "753ee766-dc3d-46ce-b879-c4f74904acf0"
+  ],
+  "attackAnim": "gather_hands_magic"
+ },
+ {
+  "hero": "H019",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "e71df536-544d-4036-b38d-57d4465bc5d7"
+  ],
+  "attackAnim": "palm_magic"
+ },
+ {
+  "hero": "H020",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "10678f9b-d6f3-41b6-a5de-871452252943"
+  ],
+  "attackAnim": "arm_stretch_magic"
+ },
+ {
+  "hero": "H021",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Keep the stone armor but no shield. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "51618fd6-dfe2-44ad-8cca-f24a430a8d38"
+  ],
+  "attackAnim": "magic_ground_slam"
+ },
+ {
+  "hero": "H022",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Goggles on head, scarf. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "9c627dff-9685-409b-8f81-0e60e5a8fb9c"
+  ],
+  "attackAnim": "roundhouse_kick"
+ },
+ {
+  "hero": "H023",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "d7069e6b-ab51-4d2e-90d3-6289de339c38"
+  ],
+  "attackAnim": "magic_left_hand_attack"
+ },
+ {
+  "hero": "H024",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Cape hanging straight down. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "9ed72f04-29ae-4bce-87d3-1672d343f39e"
+  ],
+  "attackAnim": "magic_pull"
+ },
+ {
+  "hero": "H025",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Hood down revealing his face. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "cccb2d3a-be3e-4982-b410-0278ed466306"
+  ],
+  "attackAnim": "magic_ground_attack_1"
+ },
+ {
+  "hero": "H026",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Feet wearing simple sandals. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "b6740d8b-268e-4520-ad64-a01882516356"
+  ],
+  "attackAnim": "magic_wing_attack"
+ },
+ {
+  "hero": "H027",
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. No sword. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text.",
+  "refNodeIds": [
+   "29960020-847a-42b2-9995-8aef4a3d1061"
+  ],
+  "attackAnim": "punch_and_kick"
+ }
+]

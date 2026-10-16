@@ -1,0 +1,122 @@
+{
+ "M001": {
+  "dice": "Dice.Of(Dice.Atk(2), Dice.Weaken(2), Dice.Burn(3))",
+  "name": "불꽃 꼬마용",
+  "text": "작지만 뜨거운 숨결을 가진 새끼 용.",
+  "rest": ""
+ },
+ "M002": {
+  "dice": "Dice.Of(Dice.Atk(2).Pierce(1), Dice.Weaken(1).Burn(2), Dice.Guard().Heal(1))",
+  "name": "화염 창술사",
+  "text": "소환 시 상대에게 2 데미지.",
+  "rest": ", effect = Effects.Burn(2)"
+ },
+ "M003": {
+  "dice": "Dice.Of(Dice.Atk(2).Burn(2), Dice.Weaken(2).Pierce(2), Dice.Guard().Burn(2))",
+  "name": "인페르노 드래곤",
+  "text": "배틀페이즈에 2회 공격한다.",
+  "rest": ""
+ },
+ "M004": {
+  "dice": "Dice.Of(Dice.Heal(3), Dice.Guard(), Dice.Draw(1).Heal(1))",
+  "name": "물방울 정령",
+  "text": "소환 시 자신의 HP 2 회복.",
+  "rest": ", effect = Effects.Heal(2)"
+ },
+ "M005": {
+  "dice": "Dice.Of(Dice.Guard().Heal(1), Dice.Weaken(2).Heal(1), Dice.Atk(2).Pierce(1))",
+  "name": "심해의 기사",
+  "text": "깊은 바다의 수압을 견디는 기사.",
+  "rest": ""
+ },
+ "M006": {
+  "dice": "Dice.Of(Dice.Weaken(4), Dice.Guard().Weaken(2), Dice.Draw(1).Atk(2).Heal(1))",
+  "name": "레비아탄",
+  "text": "소환 시 상대 몬스터 1장을 파괴한다.",
+  "rest": ", effect = Effects.DestroyEnemyMonster(1)"
+ },
+ "M007": {
+  "dice": "Dice.Of(Dice.Atk(2), Dice.Pierce(3), Dice.Draw(1).Heal(1))",
+  "name": "질풍 매",
+  "text": "[연속 공격] 한 타임에 2회 공격할 수 있다.",
+  "rest": ""
+ },
+ "M008": {
+  "dice": "Dice.Of(Dice.Atk(3), Dice.Atk(1).Pierce(3), Dice.Draw(2))",
+  "name": "폭풍 검사",
+  "text": "배틀페이즈에 2회 공격한다.",
+  "rest": ""
+ },
+ "M009": {
+  "dice": "Dice.Of(Dice.Guard(), Dice.Atk(2), Dice.Weaken(1).Heal(2))",
+  "name": "바위 골렘",
+  "text": "[도발] 단단한 몸으로 전선을 지킨다.",
+  "rest": ""
+ },
+ "M010": {
+  "dice": "Dice.Of(Dice.Guard().Atk(1), Dice.Heal(5), Dice.Weaken(3))",
+  "name": "대지의 수호자",
+  "text": "[도발] 소환 시 이번 타임 아군 ATK +1.",
+  "rest": ", effect = Effects.BuffAllies(1)"
+ },
+ "M011": {
+  "dice": "Dice.Of(Dice.Weaken(2), Dice.Pierce(3), Dice.Burn(3))",
+  "name": "스파크 여우",
+  "text": "이 카드는 뒷면 세로 표시로 소환할 수 있다.",
+  "rest": ""
+ },
+ "M012": {
+  "dice": "Dice.Of(Dice.Atk(3).Pierce(1), Dice.Weaken(2).Burn(2), Dice.Draw(1).Atk(2))",
+  "name": "뇌신 라이자",
+  "text": "[연쇄 낙뢰] 전투로 상대 몬스터를 파괴하면 다음 몬스터(왼쪽부터·도발 우선)를 이어서 공격할 수 있다.",
+  "rest": ""
+ },
+ "M013": {
+  "dice": "Dice.Of(Dice.Heal(3), Dice.Draw(1).Heal(1), Dice.Guard())",
+  "name": "빛의 견습사제",
+  "text": "소환 시 카드 1장 드로우.",
+  "rest": ", effect = Effects.Draw(1)"
+ },
+ "M014": {
+  "dice": "Dice.Of(Dice.Guard().Atk(1), Dice.Heal(3).Draw(1), Dice.Atk(2).Pierce(1))",
+  "name": "성기사 아르테",
+  "text": "[도발] 소환 시 HP 3 회복.",
+  "rest": ", effect = Effects.Heal(3)"
+ },
+ "M015": {
+  "dice": "Dice.Of(Dice.Atk(1).Pierce(2), Dice.Weaken(2).Pierce(1), Dice.Draw(1).Burn(1))",
+  "name": "그림자 암살자",
+  "text": "뒷면 세로 표시로 소환 가능. [암살] 직접 공격할 때 영웅의 반격을 받지 않는다.",
+  "rest": ""
+ },
+ "M016": {
+  "dice": "Dice.Of(Dice.Weaken(3).Burn(1), Dice.Atk(2).Pierce(3), Dice.Guard().Weaken(2))",
+  "name": "공허의 군주",
+  "text": "소환 시 상대 몬스터 1장을 파괴한다.",
+  "rest": ", effect = Effects.DestroyEnemyMonster(1)"
+ },
+ "M017": {
+  "dice": "Dice.Of(Dice.Draw(2), Dice.Heal(2).Draw(1), Dice.Atk(2).Burn(1))",
+  "name": "무지개 요정",
+  "text": "소환 시 카드 1장 드로우.",
+  "rest": ", effect = Effects.Draw(1)"
+ },
+ "M018": {
+  "dice": "Dice.Of(Dice.Atk(4), Dice.Atk(2).Pierce(3), Dice.Draw(1).Atk(2).Burn(1))",
+  "name": "세븐 스트라이커",
+  "text": "일곱 빛의 검. 2회 공격한다.",
+  "rest": ""
+ },
+ "M019": {
+  "dice": "Dice.Of(Dice.Atk(2), Dice.Guard(), Dice.Weaken(2))",
+  "name": "떠돌이 기사",
+  "text": "T4까지만 소환할 수 있다.",
+  "rest": ""
+ },
+ "M020": {
+  "dice": "Dice.Of(Dice.Guard().Atk(1).Heal(1), Dice.Atk(3).Heal(1), Dice.Weaken(3).Pierce(1))",
+  "name": "고대의 거신",
+  "text": "잠에서 깨어난 고대의 병기.",
+  "rest": ""
+ }
+}

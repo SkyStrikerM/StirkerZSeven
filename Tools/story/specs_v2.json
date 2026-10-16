@@ -1,0 +1,781 @@
+{
+ "v2_1": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon",
+   "bane"
+  ],
+  "prompt": "Inside a magic academy map room at dusk, Professor Bane (old wind mage with a gray beard) points at a huge continent map stained with spreading gray blotches while Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) look on with determination. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v2_2": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "Night forest road campfire, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) leap to their feet as gray mist rolls in and gray ash-colored wolves with empty eyes emerge from the dark trees. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v2_3": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "A small medieval village where everything has turned colorless gray (roofs, flowers, laundry), hollow-eyed gray villagers holding spears surround Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) in the village square, gray mist curling around their feet. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v2_4": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "A deep cavern under a village well, a gigantic golem made of solidified gray mist rises, trapped streaks of red yellow and green color swirling inside its body, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) ready to fight. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v2_5": {
+  "ar": "16:9",
+  "refs": [
+   "varus",
+   "kai"
+  ],
+  "prompt": "A village festival bonfire frozen into gray stone at night, Varus (tall hooded gray-robed man with long gray hair and empty gray eyes) stands calmly in the mist facing Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) who raises his fist defiantly. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v2_6": {
+  "ar": "16:9",
+  "refs": [
+   "bane",
+   "kai",
+   "aria"
+  ],
+  "prompt": "Mountain path, a swarm of gray ash crows dives at fleeing villagers, Professor Bane (old wind mage with a gray beard) slices through the flock with a huge green wind gust while Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) and Aria (blue-haired water healer girl) protect children. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v2_7": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon",
+   "bane"
+  ],
+  "prompt": "A mountain peak with a colossal gray stone gate open to the sky pouring waterfalls of gray mist, a stone gatekeeper giant clad in mist armor stands before it, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Leon (red-haired fire mage boy), Aria (blue-haired water healer girl) and Professor Bane (old wind mage with a gray beard) face it. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v3_1": {
+  "ar": "16:9",
+  "refs": [
+   "leon",
+   "aria",
+   "kai"
+  ],
+  "prompt": "A fire kingdom border fortress of red rock above rivers of lava, fire-armored guards with flaming spears point at Aria (blue-haired water healer girl), Leon (red-haired fire mage boy) steps forward to argue, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) beside them. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v3_2": {
+  "ar": "16:9",
+  "refs": [
+   "ignis",
+   "leon",
+   "kai"
+  ],
+  "prompt": "A burning throne hall of a volcano palace, Ignis (fire grand mage woman with blazing orange hair and red dress) rises from her flaming throne with fire swirling around her, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) and Leon (red-haired fire mage boy) before her. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v3_3": {
+  "ar": "16:9",
+  "refs": [
+   "leon",
+   "aria",
+   "kai"
+  ],
+  "prompt": "A mirror-like lake with a white crystal castle, water-armored guards with tridents surround Leon (red-haired fire mage boy), Aria (blue-haired water healer girl) pleads with them, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) stands ready. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v3_4": {
+  "ar": "16:9",
+  "refs": [
+   "meril",
+   "kai"
+  ],
+  "prompt": "An elegant water palace hall over the lake, Meril (water grand mage queen with long silver-blue hair, crown and flowing teal robes) raises a towering wave behind her, facing Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists). Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v3_5": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "A battlefield at a border river, fire soldiers and water soldiers clashing amid steam, gray mist creeping around their feet, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) rush in between. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v3_6": {
+  "ar": "16:9",
+  "refs": [
+   "ignis",
+   "meril",
+   "kai"
+  ],
+  "prompt": "The sky split in half, one side blazing hellfire from Ignis, the other a giant tidal wave from Meril, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) stands in the exact middle with both palms outstretched pushing both apart with an invisible force. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v3_7": {
+  "ar": "16:9",
+  "refs": [
+   "ignis",
+   "meril",
+   "kai"
+  ],
+  "prompt": "A gray legion army advancing along a river, Ignis and Meril fight side by side for the first time, fire and water spiraling together, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) leading the charge. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v4_1": {
+  "ar": "16:9",
+  "refs": [
+   "zephyr",
+   "kai",
+   "leon"
+  ],
+  "prompt": "A cozy highland tavern, Zephyr (playful green-haired bard with goggles, scarf and lute) grins and strums his lute on a table, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) and Leon (red-haired fire mage boy) watch skeptically. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v4_2": {
+  "ar": "16:9",
+  "refs": [
+   "zephyr",
+   "kai",
+   "aria"
+  ],
+  "prompt": "A wind path climbing to floating sky islands, a huge swirling storm of gray clouds raining ash, Zephyr summons a green tailwind, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) and Aria (blue-haired water healer girl) brace against the gale. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v4_3": {
+  "ar": "16:9",
+  "refs": [
+   "volt",
+   "kai"
+  ],
+  "prompt": "Top of a thunder tower among dark storm clouds, Volt (black-haired armored martial artist with a glowing electric gauntlet) throws a lightning punch, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) meets it with his wrapped fist. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v4_4": {
+  "ar": "16:9",
+  "refs": [
+   "zephyr",
+   "volt",
+   "kai"
+  ],
+  "prompt": "A beautiful valley with flute-like rock pillars, now gray and silent, gray soldiers marching through, Zephyr looks heartbroken, Volt and Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) step forward. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v4_5": {
+  "ar": "16:9",
+  "refs": [
+   "terra",
+   "kai"
+  ],
+  "prompt": "An ancient canyon of layered amber rock, Terra (huge bearded earth grand mage in mossy stone armor with crystals and a rune shield) stands immovable like a mountain, facing Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists). Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v4_6": {
+  "ar": "16:9",
+  "refs": [
+   "terra",
+   "volt",
+   "kai"
+  ],
+  "prompt": "A giant made of hardened gray mist bursts out of the canyon floor, as tall as a mountain, Terra braces the ground, Volt charges with lightning, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) in front. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v4_7": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "terra",
+   "zephyr",
+   "volt"
+  ],
+  "prompt": "On the canyon rim a gray-cloaked expressionless woman lieutenant with faint sea-blue hair under the hood leads a gray army, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) with Terra, Zephyr and Volt confront her. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v5_1": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "leon"
+  ],
+  "prompt": "A dazzling holy city of white marble and golden spires, armored paladins in gold-white armor raise glowing swords at Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Leon (red-haired fire mage boy) beside him. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v5_2": {
+  "ar": "16:9",
+  "refs": [
+   "lumien",
+   "kai"
+  ],
+  "prompt": "Inside a grand cathedral flooded with golden light through stained glass, Lumien (serene blonde light grand mage saint in white veil and gold-trimmed dress holding a sun staff) faces Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists). Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v5_3": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "A border where black shadow army soldiers surge like a tide toward the holy city, the ground stained black, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) stand on a ridge watching. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v5_4": {
+  "ar": "16:9",
+  "refs": [
+   "erebos",
+   "kai"
+  ],
+  "prompt": "A pitch-black abyss throne room lit by violet flames, Erebos (tall pale dark grand mage with black horned crown, violet eyes and dark purple armor) leans from his throne, facing Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists). Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v5_5": {
+  "ar": "16:9",
+  "refs": [
+   "lumien",
+   "erebos",
+   "kai"
+  ],
+  "prompt": "A vast plain where a gray legion stretches to the horizon, a golden light barrier and a black shadow spear strike side by side, Lumien and Erebos fight back to back, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) at the center. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v5_6": {
+  "ar": "16:9",
+  "refs": [
+   "varus",
+   "bane",
+   "kai"
+  ],
+  "prompt": "Twilight plain parted by the gray legion, Varus walks forward alone with faint silver light leaking from his gray robe, Professor Bane (old wind mage with a gray beard) and Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) face him tensely. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v5_7": {
+  "ar": "16:9",
+  "refs": [
+   "ignis",
+   "meril",
+   "zephyr",
+   "terra"
+  ],
+  "prompt": "Seven grand mages standing in a great circle on a twilight plain, seven pillars of colored light (red, blue, green, amber, yellow lightning, gold, violet) rising into the sky, Ignis, Meril, Zephyr and Terra visible in front, and above them the sky starting to crack like glass. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v6_1": {
+  "ar": "16:9",
+  "refs": [
+   "erebos",
+   "kai",
+   "aria"
+  ],
+  "prompt": "The sky shattered like broken glass revealing white nothingness, jagged gray void shards raining down on the land, Erebos raises shadow spears beside Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) and Aria (blue-haired water healer girl). Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v6_2": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "volt",
+   "terra"
+  ],
+  "prompt": "A snowy northern plain, a colossal gray arm with mountain-sized fingers reaches out of a sky rift and grips the earth, Volt, Terra and Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) tiny in comparison. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v6_3": {
+  "ar": "16:9",
+  "refs": [
+   "lord",
+   "kai",
+   "ignis",
+   "meril"
+  ],
+  "prompt": "The Lord of Oblivion (formless gray giant with a single huge white eye in its chest and thousands of tentacles) descends onto a snowfield, Ignis's flames vanish into nothing before reaching it, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) watches in horror. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v6_4": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "An allied army of fire, water, light and dark banners lined up together on a twilight plain, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) at the front line, a gray army and a giant shadow on the horizon. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v6_5": {
+  "ar": "16:9",
+  "refs": [
+   "leon",
+   "ignis"
+  ],
+  "prompt": "Leon (red-haired fire mage boy) awakening, his red flames turning into brilliant WHITE fire, standing protectively in front of fallen soldiers, a gray-cloaked woman with a gray blade recoils, Ignis watching proudly behind. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v6_6": {
+  "ar": "16:9",
+  "refs": [
+   "aria",
+   "kai"
+  ],
+  "prompt": "Aria (blue-haired water healer girl) awakening in a field hospital camp, a giant spiraling tide of glowing blue water rising from her feet and healing fallen soldiers, gray tentacles retreating, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) looking at her in awe. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v6_7": {
+  "ar": "16:9",
+  "refs": [
+   "varus",
+   "kai",
+   "lord"
+  ],
+  "prompt": "Varus kneeling with silver light breaking through his gray robe, reaching out to throw a silver shard to Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), while a giant gray tentacle from the sky pierces down toward him. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v7_1": {
+  "ar": "16:9",
+  "refs": [
+   "lord",
+   "ignis",
+   "meril",
+   "volt"
+  ],
+  "prompt": "The Lord of Oblivion grown twice as large blotting out the sky, seven colors of grand mage magic hitting it and dissolving into nothing, grand mages blown back and falling, despair. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v7_2": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "A forest made entirely of gray tentacles growing like trees, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) escaping exhausted and wounded, everything gray. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v7_3": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "A ruined village at night, a huge void devourer creature with a gaping maw made of gray shards rises, exhausted Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) lean on each other while Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) stands in front. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v7_4": {
+  "ar": "16:9",
+  "refs": [
+   "kai"
+  ],
+  "prompt": "Dawn at a crumbling temple, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) alone on the steps facing a line of expressionless gray soldiers, his friends asleep inside behind him, determined but tired. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v7_5": {
+  "ar": "16:9",
+  "refs": [
+   "leon",
+   "kai"
+  ],
+  "prompt": "On a hill a phantom copy of Leon (red-haired fire mage boy) with gray hollow eyes and ash-gray flames, the real Leon (red-haired fire mage boy) and Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) stand below facing it. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v7_6": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "Gray-robed apostle mages descending in a line from a sky rift, each imitating a grand mage's magic in dull gray, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) with renewed hope in their eyes. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v7_7": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "leon",
+   "aria"
+  ],
+  "prompt": "A giant gray hand lifting a chunk of earth into the sky toward a white rift, Leon (red-haired fire mage boy) and Aria (blue-haired water healer girl) leaping off to safety, a gray finger wrapped around Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists)'s ankle dragging him into the rift, Leon (red-haired fire mage boy) screaming his name. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v8_1": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "ignis"
+  ],
+  "prompt": "An infinite pure white void like a blank canvas, a spirit of Ignis made of flames hands a small flame to Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), the flame resting peacefully on his palm without burning him. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v8_2": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "meril"
+  ],
+  "prompt": "The white void with glowing blue water ribbons flowing around Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), a translucent spirit of Meril smiling gently, fire and water swirling together calmly around him. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v8_3": {
+  "ar": "16:9",
+  "refs": [
+   "kai"
+  ],
+  "prompt": "The white void stained by spreading gray ink blots that form gray wolves and crows, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) standing alone looking pained, whispering shadows around him. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v8_4": {
+  "ar": "16:9",
+  "refs": [
+   "kai"
+  ],
+  "prompt": "Mirror duel in a white void: Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) faces a gray shadow version of himself with hollow gray eyes and gray bandages, both in the same fighting stance, symmetrical composition. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v8_5": {
+  "ar": "16:9",
+  "refs": [
+   "prisma",
+   "kai"
+  ],
+  "prompt": "The white void blooming with rainbow light, the goddess Prisma (ethereal woman with long iridescent rainbow hair, translucent prismatic gown and a halo) floats before Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) smiling warmly. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v8_6": {
+  "ar": "16:9",
+  "refs": [
+   "volt",
+   "zephyr",
+   "lumien",
+   "kai"
+  ],
+  "prompt": "In the white void, spirits of the grand mages appear as colored lights, Volt's spirit throws a lightning punch which Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) meets with a fist glowing in seven colors, Zephyr and Lumien watching. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v8_7": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "A ruined battlefield before a sky rift, white light pours out of the rift as Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) steps out, Aria (blue-haired water healer girl) in tears of joy, Leon (red-haired fire mage boy) grinning, gray tentacles recoiling. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v9_1": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "ignis",
+   "leon"
+  ],
+  "prompt": "A gray petrified volcano summit, Ignis trapped inside a gray crystal, Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) touches it with red light spreading from his hand, Leon (red-haired fire mage boy) beside him, gray apostles turning toward them. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v9_2": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "meril",
+   "ignis"
+  ],
+  "prompt": "A frozen gray lake with a void devourer crouching on it, Meril trapped in crystal, Ignis and Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) charging across the ice. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v9_3": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "zephyr",
+   "volt"
+  ],
+  "prompt": "Inside a gray storm above sky islands, Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) punches through the storm with a rainbow fist, freed Zephyr playing his lute and Volt surging with lightning. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v9_4": {
+  "ar": "16:9",
+  "refs": [
+   "terra",
+   "erebos",
+   "prismkai"
+  ],
+  "prompt": "Terra slams the ground raising enormous stone walls in a canyon, Erebos with shadow spears, Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) standing on the wall facing gray giants. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v9_5": {
+  "ar": "16:9",
+  "refs": [
+   "lumien",
+   "erebos",
+   "prismkai"
+  ],
+  "prompt": "The holy city wrapped in gray tentacles, Erebos reaching toward Lumien inside a crystal, light and shadow joining hands, Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) between them glowing. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v9_6": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "Seven beams of colored light converging into Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) in a holy city plaza, his hair turning rainbow, Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) amazed, a gray avatar of the Lord looming. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v9_7": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "lord"
+  ],
+  "prompt": "Epic climax: Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) wielding a radiant crystal sword of seven rainbow colors leaps and pierces the giant white eye of the Lord of Oblivion in the sky above the holy city, colors bursting outward. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_1": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "Inside the rift: an endless white nothingness, a path of colored light trailing behind Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy) walking forward, thousands of gray tentacles rising ahead. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_2": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "aria",
+   "leon"
+  ],
+  "prompt": "In the white void a vast gray army fills the horizon, beams of colored light from the grand mages pour through the rift from outside to support Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes), Aria (blue-haired water healer girl) and Leon (red-haired fire mage boy). Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_3": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai"
+  ],
+  "prompt": "A pulsing white core like a giant heart floating in the void, gray tendrils rebuilding a body around it, Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) raising his rainbow sword. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_4": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "lord"
+  ],
+  "prompt": "The Lord of Oblivion shrinking and cracking, its single white eye weeping, attacking desperately, Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) standing firm with sad compassion. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_5": {
+  "ar": "16:9",
+  "refs": [
+   "prismkai",
+   "lord"
+  ],
+  "prompt": "Kai in his awakened prism form (silver hair with rainbow highlights, prismatic glowing eyes) and the Lord of Oblivion face off in the void, a silver shard glowing beside Kai with the faint ghost of Varus, the Lord gathering all remaining nothingness into a final storm. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_e": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "prisma"
+  ],
+  "prompt": "Emotional climax: Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) has dropped his rainbow sword and hugs a small child-sized gray shadow figure, the shadow turning into soft white light, the goddess Prisma's translucent figure smiling behind them, rainbows filling the sky beyond the rift. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_6": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "leon",
+   "aria"
+  ],
+  "prompt": "The magic academy circular arena packed with cheering students, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists) and Leon (red-haired fire mage boy) lying side by side exhausted on the arena floor laughing after a duel, Aria (blue-haired water healer girl) waving from the stands. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "v10_7": {
+  "ar": "16:9",
+  "refs": [
+   "kai",
+   "aria",
+   "leon",
+   "bane"
+  ],
+  "prompt": "The whispering forest in bright morning sunlight full of vivid green leaves, red berries and blue sky, Kai (silver-haired academy boy in a navy blazer with cloth-wrapped fists), Aria (blue-haired water healer girl), Leon (red-haired fire mage boy) and Professor Bane (old wind mage with a gray beard) walking together on a forest path, a faint golden spirit stag watching from the trees. Anime fantasy comic illustration, cinematic wide shot, dramatic lighting, rich saturated colors, detailed painted background, clean line art, cel-shaded with soft painterly lighting. Characters must match the reference character sheets exactly (same faces, hair, outfits, colors). No text, no speech bubbles, no letters, no panel borders, no watermark."
+ },
+ "face_ignis": {
+  "ar": "1:1",
+  "refs": [
+   "ignis"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_meril": {
+  "ar": "1:1",
+  "refs": [
+   "meril"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_terra": {
+  "ar": "1:1",
+  "refs": [
+   "terra"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_zephyr": {
+  "ar": "1:1",
+  "refs": [
+   "zephyr"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_volt": {
+  "ar": "1:1",
+  "refs": [
+   "volt"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_lumien": {
+  "ar": "1:1",
+  "refs": [
+   "lumien"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_erebos": {
+  "ar": "1:1",
+  "refs": [
+   "erebos"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_varus": {
+  "ar": "1:1",
+  "refs": [
+   "varus"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "face_prisma": {
+  "ar": "1:1",
+  "refs": [
+   "prisma"
+  ],
+  "prompt": "Anime visual-novel dialogue portrait of the exact character in the reference image: head and shoulders bust, facing three-quarters toward the viewer, natural expressive face, same hair, eyes, outfit and colors as the reference. Plain soft dark-blue gradient background, centered, clean line art, cel-shaded with soft painterly lighting, high detail, absolutely no text, no labels, no letters, no frame."
+ },
+ "H018_full": {
+  "ar": "3:4",
+  "refs": [
+   "aria"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, gracefully casting healing magic, glowing blue water droplets and ribbons of water swirling around her raised hands. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a shimmering blue lake temple. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H019_full": {
+  "ar": "3:4",
+  "refs": [
+   "bane"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, an old wind master in a calm fighting stance, his robe and beard whipped by a spiraling green tornado around him. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a stormy sky over a magic academy. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H020_full": {
+  "ar": "3:4",
+  "refs": [
+   "meril"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the water queen raising one hand as a towering tidal wave curls behind her. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a crystal palace over a moonlit lake. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H021_full": {
+  "ar": "3:4",
+  "refs": [
+   "terra"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the mighty earth guardian planting his rune shield, the ground cracking with glowing amber crystals. Dynamic heroic composition, full body or three-quarter body filling the frame, background of an ancient canyon. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H022_full": {
+  "ar": "3:4",
+  "refs": [
+   "zephyr"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the playful bard leaping through the air with his lute, green wind currents and feathers around him. Dynamic heroic composition, full body or three-quarter body filling the frame, background of floating sky islands. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H023_full": {
+  "ar": "3:4",
+  "refs": [
+   "lumien"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the light saint holding her sun staff high, radiant golden light and feathers raining down. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a cathedral with stained glass. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H024_full": {
+  "ar": "3:4",
+  "refs": [
+   "erebos"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the dark king spreading his shadow cape like wings, violet flames and shadow spears around him. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a black abyss with violet light. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H025_full": {
+  "ar": "3:4",
+  "refs": [
+   "varus"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the gray apostle standing in swirling gray mist, faint silver light leaking from under his hood, melancholic. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a colorless wasteland under a pale sky. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H026_full": {
+  "ar": "3:4",
+  "refs": [
+   "prisma"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the goddess floating with arms open, rainbow light refracting all around her like a prism. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a pure white void blooming with rainbows. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H027_full": {
+  "ar": "3:4",
+  "refs": [
+   "prismkai"
+  ],
+  "prompt": "Trading card game hero full-art illustration of the exact character in the reference sheet, the awakened hero holding a radiant crystal sword of seven rainbow colors, prismatic light bursting from his eyes. Dynamic heroic composition, full body or three-quarter body filling the frame, background of a shattered gray sky with rainbow light breaking through. Same face, hair, outfit and colors as the reference. Anime fantasy style, cel-shaded with rich painterly lighting, high detail, no text, no letters, no card frame, no border."
+ },
+ "H018_apose": {
+  "ar": "1:1",
+  "refs": [
+   "aria"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H019_apose": {
+  "ar": "1:1",
+  "refs": [
+   "bane"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H020_apose": {
+  "ar": "1:1",
+  "refs": [
+   "meril"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H021_apose": {
+  "ar": "1:1",
+  "refs": [
+   "terra"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Keep the stone armor but no shield. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H022_apose": {
+  "ar": "1:1",
+  "refs": [
+   "zephyr"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Goggles on head, scarf. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H023_apose": {
+  "ar": "1:1",
+  "refs": [
+   "lumien"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H024_apose": {
+  "ar": "1:1",
+  "refs": [
+   "erebos"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Cape hanging straight down. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H025_apose": {
+  "ar": "1:1",
+  "refs": [
+   "varus"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Hood down revealing his face. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H026_apose": {
+  "ar": "1:1",
+  "refs": [
+   "prisma"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. Feet wearing simple sandals. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "H027_apose": {
+  "ar": "1:1",
+  "refs": [
+   "prismkai"
+  ],
+  "prompt": "Full body 3D game character model reference of the exact same character as the reference sheet: single character only, standing in a relaxed A-pose with arms slightly away from the body, legs slightly apart, exactly two arms and two legs, front view, entire body visible from the top of the head to the feet. Same design, hair, outfit and colors as the reference. Hands empty, no weapon, no staff, no shield, no lute, no props, no effects, no particles. No sword. Plain light-gray studio background, even soft lighting, clean stylized anime game-asset render, no text."
+ },
+ "SM04": {
+  "ar": "4:3",
+  "refs": [],
+  "prompt": "Trading card monster illustration, a colorless gray soldier in gray plate armor with a tower shield and spear, hollow empty gray eyes, gray mist curling around him, on a desaturated battlefield, dark fantasy anime style, dramatic lighting, detailed, centered creature filling the frame, no text, no letters, no border."
+ },
+ "SM05": {
+  "ar": "4:3",
+  "refs": [
+   "lord"
+  ],
+  "prompt": "Trading card monster illustration, a huge gray tentacle bursting out of a white cracked rift in the ground, its surface absorbing colors from flowers around it which turn gray, dark fantasy anime style, dramatic lighting, detailed, centered creature filling the frame, no text, no letters, no border."
+ },
+ "SM06": {
+  "ar": "4:3",
+  "refs": [],
+  "prompt": "Trading card monster illustration, a jagged floating shard of white-gray void crystal with a small glowing white eye, splitting into smaller shards as it charges forward, in a shattered sky, dark fantasy anime style, dramatic lighting, detailed, centered creature filling the frame, no text, no letters, no border."
+ }
+}
