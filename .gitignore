@@ -40,3 +40,5 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+/Assets/VARCO_URP/
+/Assets/VARCO_URP.meta
