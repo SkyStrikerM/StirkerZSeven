@@ -183,10 +183,11 @@ namespace StrikerZ
                 var nm = UIKit.Txt(slot, "Name", $"{p.code}  <size=16>{p.name}</size>", 26, UIKit.Gold, TextAnchor.MiddleCenter, FontStyle.Bold);
                 nm.rectTransform.Anchor(0, 0.19f, 1, 0.3f);
             }
-            var b1 = UIKit.Button(slot, $"1팩\n{p.price} 오팔", () => BuyPack(p, 1), Red, 22, Color.white);
-            var b10 = UIKit.Button(slot, $"10팩\n{p.price * 10:N0} 오팔", () => BuyPack(p, 10), UIKit.Accent, 22, Color.white);
-            if (wide) { b1.rt.Anchor(0.46f, 0.04f, 0.72f, 0.3f); b10.rt.Anchor(0.73f, 0.04f, 0.985f, 0.3f); }
-            else { b1.rt.Anchor(0.05f, 0.03f, 0.49f, 0.18f); b10.rt.Anchor(0.51f, 0.03f, 0.95f, 0.18f); }
+            // 구매 버튼: 한 줄 · 같은 너비 · 둥근 패널 모서리에 걸리지 않게 안쪽으로 (2026-10-28 크기 축소)
+            var b1 = UIKit.Button(slot, $"1팩  <size=17>{p.price} 오팔</size>", () => BuyPack(p, 1), Red, 20, Color.white);
+            var b10 = UIKit.Button(slot, $"10팩  <size=17>{p.price * 10:N0} 오팔</size>", () => BuyPack(p, 10), UIKit.Accent, 20, Color.white);
+            if (wide) { b1.rt.Anchor(0.47f, 0.07f, 0.70f, 0.23f); b10.rt.Anchor(0.735f, 0.07f, 0.965f, 0.23f); }
+            else { b1.rt.Anchor(0.05f, 0.03f, 0.49f, 0.15f); b10.rt.Anchor(0.51f, 0.03f, 0.95f, 0.15f); }
             packSlots.Add((p, b1, b10, box));
         }
 

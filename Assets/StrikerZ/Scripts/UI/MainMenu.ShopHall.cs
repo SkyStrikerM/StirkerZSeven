@@ -375,7 +375,7 @@ namespace StrikerZ
         {
             var bg = UIKit.Img(page, left ? "NavL" : "NavR", new Color(0.05f, 0.03f, 0.08f, 0.82f), GameAssets.Rounded, true);
             var r = bg.rectTransform;
-            r.Place(new Vector2(left ? 0 : 1, 0.5f), new Vector2(left ? 4 : -4, 0), new Vector2(46, 196), new Vector2(left ? 0 : 1, 0.5f));
+            r.Place(new Vector2(left ? 0 : 1, 0.5f), new Vector2(left ? 4 : -4, 0), new Vector2(46, 216), new Vector2(left ? 0 : 1, 0.5f));   // 세로 글자 6자 + 화살표
             bg.raycastTarget = true;
             var btn = bg.gameObject.AddComponent<Button>();
             btn.transition = Selectable.Transition.None;
@@ -392,7 +392,7 @@ namespace StrikerZ
 
         void RefreshNav()
         {
-            string[] names = { "카드상점", "부모님", "악세서리상점" };
+            string[] names = { "카드상점", "마법부여상점", "악세서리상점" };
             bool l = shopSection > SecRosie, r = shopSection < SecLukon;
             navL.gameObject.SetActive(l);
             navR.gameObject.SetActive(r);
