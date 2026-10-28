@@ -281,10 +281,10 @@ namespace StrikerZ
             return true;
         }
 
-        /// <summary>개기일식: 필드의 앞면 소환수를 모두 뒷면으로 ([불변] 제외). 반환 = 뒷면이 된 수</summary>
+        /// <summary>개기일식: 필드의 앞면 소환수를 모두 뒷면으로 ([불변] 제외). 반환 = 뒷면이 된 수. 이번 T 배틀이 개기일식 상태가 된다 (일반 마법이라 배치 중 발동해도)</summary>
         public int FlipAllFaceDown()
         {
-            if (phase == Phase.Battle) eclipseTime = time;
+            if (phase == Phase.Main || phase == Phase.Battle) eclipseTime = time;
             int n = 0;
             foreach (var p in players)
                 foreach (var c in p.slots)

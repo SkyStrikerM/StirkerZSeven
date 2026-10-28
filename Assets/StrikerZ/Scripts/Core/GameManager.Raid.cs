@@ -381,8 +381,8 @@ namespace StrikerZ
                 foreach (var x in a.lane) x.hp = x.maxHp;   // 타임 시작: 몬스터 HP 회복 (본 게임 규칙과 같음)
                 AllyDraw(a, HandMax - a.hand.Count);
                 int t = Mathf.Max(1, time);
-                // 소환: 타임당 최대 2장, 전장 5칸
-                var picks = a.hand.Where(d => d.minTime <= t && (d.maxTime == 0 || d.maxTime >= t))
+                // 소환: 타임당 최대 2장, 전장 5칸. 팀원은 원소 풀을 따로 두지 않고 "라운드 수 = 쌓인 원소 수"로 본다 (약점 속성 단색 덱이라 비용 ≤ 라운드면 낼 수 있음)
+                var picks = a.hand.Where(d => d.Cost <= t && (d.maxTime == 0 || d.maxTime >= t))
                     .OrderByDescending(d => IsKeyCard(d) ? 1 : 0).ThenByDescending(d => d.atk + d.hp).Take(2).ToList();
                 int keyDmg = 0;
                 foreach (var d in picks)

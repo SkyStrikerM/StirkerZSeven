@@ -283,12 +283,21 @@ namespace StrikerZ
             // 드로우: 패가 HandMax(7) 장이 될 때까지
             if (active.hand.Count < HandMax && !(raid != null && active == Cpu)) yield return Draw(active, HandMax - active.hand.Count);   // 레이드 보스는 덱 없이 스킬로
             if (gameOver) yield break;
-            // 엑스트라 덱: 원소 1장 (교대 룰은 자기 T 시작에, 비용 없는 보스는 건너뜀)
+            // 엑스트라 덱: 원소 (교대 룰 = 레이드는 자기 T 시작에, 비용 없는 보스는 건너뜀).
+            // 교대 룰은 T 번호가 양쪽 턴을 합쳐 세므로, 예전 "비용 ≤ T" 속도를 맞추려면 첫 T 1장 · 그 뒤 자기 T마다 2장 (풀 = T 번호).
+            // 두 번째 장은 같은 속성을 더 고를 수 있으면 그대로, 아니면 다시 고른다
             if (!active.freeCost)
             {
+                int n = time <= 1 ? 1 : 2;
                 Element pick = Element.None;
-                yield return ChooseElement(active, e => pick = e);
-                if (pick != Element.None) { TakeElement(active, pick); RefreshAll(); Sfx.Play("draw", 0.5f); yield return Wait(0.3f); }
+                for (int i = 0; i < n; i++)
+                {
+                    if (i == 0 || pick == Element.None || !ElementOptions(active).Contains(pick))
+                        yield return ChooseElement(active, e => pick = e);
+                    if (pick == Element.None) break;
+                    TakeElement(active, pick);
+                }
+                if (pick != Element.None) { RefreshAll(); Sfx.Play("draw", 0.5f); yield return Wait(0.3f); }
             }
 
             // 메인
