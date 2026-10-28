@@ -126,7 +126,13 @@ namespace StrikerZ
             if (mine != Element.None || cpuPick != Element.None) { Sfx.Play("draw", 0.5f); yield return Wait(0.35f); }
         }
 
-        /// <summary>한 쪽이 원소를 고른다 (교대 룰 = 자기 T 시작에). 고를 게 하나면 바로, 사람이 아니면 AI</summary>
+        /// <summary>사람이 원소를 고르는 제한 시간 — 지나면 AI 추천 원소</summary>
+        public const float ElementSeconds = 15f;
+
+        /// <summary>
+        /// 한 쪽이 원소를 고른다 (교대 룰 = 자기 T 시작에). 고를 게 하나면 바로, 사람이 아니면 AI.
+        /// 사람은 화면 가운데 속성 순서대로 나열된 원소 카드를 누른다 (HUD.ShowElementPick)
+        /// </summary>
         public IEnumerator ChooseElement(PlayerState p, Action<Element> result)
         {
             var opts = ElementOptions(p);
@@ -134,18 +140,14 @@ namespace StrikerZ
             if (!HumanDecides(p)) { result(ai.ChooseElement(p)); yield break; }
             if (opts.Count == 1) { result(opts[0]); yield break; }
             var aiPick = ai.ChooseElement(p);
-            var map = new Dictionary<CardInstance, Element>();
-            var cis = new List<CardInstance>();
-            foreach (var e in opts)
-            {
-                var d = ElementCardData(e).Clone();
-                d.name = $"{CardData.ElementName(e)} 원소  (덱 {p.elemSupply[(int)e]} · 보유 {p.elemPool[(int)e]})";
-                var ci = new CardInstance(d, p) { zone = Zone.Extra };
-                map[ci] = e; cis.Add(ci);
-            }
-            CardInstance chosen = null;
-            yield return ChooseFromList(p, cis, $"T{time} 엑스트라 덱 — 영웅 아래에 놓을 원소를 고르세요", c => map[c] == aiPick ? 1f : 0f, c => chosen = c);
-            result(chosen != null ? map[chosen] : aiPick);
+            var cis = opts.Select(e => new CardInstance(ElementCardData(e), p) { zone = Zone.Extra }).ToList();
+            CardInstance chosen = null; bool done = false;
+            hud.ShowElementPick($"T{time} 엑스트라 덱 — 원소 고르기", cis,
+                c => $"덱 {p.elemSupply[(int)c.data.element]} · 보유 {p.elemPool[(int)c.data.element]}" + (c.data.element == aiPick ? "  <color=#ffd45a>추천</color>" : ""),
+                ElementSeconds, c => { chosen = c; done = true; });
+            while (!done && !gameOver) yield return null;
+            if (chosen == null && !gameOver) Log("원소 선택 시간 초과 — 추천 원소로");
+            result(chosen != null ? chosen.data.element : aiPick);
         }
 
         // ── 비용 ──
