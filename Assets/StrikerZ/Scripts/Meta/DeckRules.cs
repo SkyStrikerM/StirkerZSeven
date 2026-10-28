@@ -155,28 +155,110 @@ namespace StrikerZ
         /// <summary>메인 덱 40장 기본 구성: 소환수 28 (T1~2 13 · T3~4 10 · T5~7 5) · 마법 12. 필드는 엑스트라 덱 (최대 10)</summary>
         public const int Monsters = 28, Magics = 12;
 
-        /// <summary>보유 카드로 자동 구성: 메인 소환수 28 · 마법 12 + 엑스트라 덱 필드 10, 강한 카드 우선</summary>
+        /// <summary>보유 카드로 자동 구성: 메인 소환수 28 · 마법 12 + 엑스트라 덱 필드 10, 영웅 원소 상한에 맞춰 강한 카드 우선</summary>
         public static DeckData AutoBuild(string name, string heroId)
         {
             var deck = new DeckData { name = name, heroId = heroId };
             TopUp(deck);
-            FillExtra(deck, CardDB.All.Where(c => c.type == CardType.Field && Profile.Owned(c.id) > 0).OrderByDescending(c => (int)c.rarity), MaxExtra);
+            var hero = CardDB.Get(heroId);
+            FillExtra(deck, CardDB.All.Where(c => c.type == CardType.Field && Profile.Owned(c.id) > 0)
+                .OrderByDescending(c => FieldAffinity(hero, c)).ThenByDescending(c => (int)c.rarity), MaxExtra);
             return deck;
         }
 
+        // ══════════════════════════ 원소 상한에 맞춘 구성 (2026-10-28) ══════════════════════════
+        // 영웅 아래에 놓을 수 있는 원소 수가 속성마다 다르므로(자기 10 · 이기는 5 · 상관없는 3 · 약점 1 — GameManager.ElementCap),
+        // 소환수는 그 비중대로 나누고(비중 = 상한², 무속성 소환수는 아무 원소나 쓰니 5 취급 · 무지개 3), 비용이 상한을 넘는 카드는 넣지 않는다.
+        // 예) 화염 영웅 28장: 화염 ≈ 17 · 바람 ≈ 4 · 무속성 ≈ 4 · 나머지 1~2 · 물(약점) 0
+
+        /// <summary>영웅 한 명의 속성별 소환수 계획 (상한 · 장수 할당)</summary>
+        public class ElementPlan
+        {
+            public Element hero, imprint;
+            public readonly Dictionary<Element, int> quota = new Dictionary<Element, int>();
+
+            /// <summary>그 속성 소환수에 쓸 수 있는 원소 수 (= 낼 수 있는 최대 비용)</summary>
+            public int Cap(Element e) => e == Element.None ? 5 : e == Element.Rainbow ? 3 : GameManager.ElementCap(hero, e, imprint);
+            /// <summary>비용이 상한 안이라 실제로 낼 수 있는 소환수인가 (소환수가 아니면 항상 참)</summary>
+            public bool Allowed(CardData c) => c.type != CardType.Monster || c.Cost <= Cap(c.element);
+            public int Quota(Element e) => quota.TryGetValue(e, out int n) ? n : 0;
+        }
+
+        static readonly Element[] PlanElements = { Element.Fire, Element.Water, Element.Wind, Element.Earth, Element.Thunder, Element.Light, Element.Dark, Element.None, Element.Rainbow };
+
+        /// <summary>hero 로 total 장의 소환수를 속성별로 나눈다 (후보 pool 에 있는 속성만). 무속성 영웅은 pool 에 가장 많은 속성을 각인으로</summary>
+        public static ElementPlan MakePlan(CardData hero, IEnumerable<CardData> pool, int total)
+        {
+            var mons = pool.Where(c => c.type == CardType.Monster).ToList();
+            var heroEl = hero != null ? hero.element : Element.None;
+            bool basic = heroEl >= Element.Fire && heroEl <= Element.Dark;
+            var plan = new ElementPlan { hero = heroEl };
+            if (!basic && heroEl != Element.Rainbow)
+            {
+                var g = mons.Where(c => c.element >= Element.Fire && c.element <= Element.Dark).GroupBy(c => c.element)
+                    .OrderByDescending(x => x.Count()).ThenByDescending(x => x.Sum(c => c.atk + c.hp)).FirstOrDefault();
+                plan.imprint = g != null ? g.Key : Element.None;
+            }
+            var weight = new Dictionary<Element, float>();
+            foreach (var e in PlanElements)
+            {
+                int cap = plan.Cap(e);
+                if (!mons.Any(c => c.element == e && c.Cost <= cap)) continue;
+                weight[e] = cap * cap;
+            }
+            float sum = weight.Values.Sum();
+            if (sum <= 0) return plan;
+            int given = 0;
+            var frac = new Dictionary<Element, float>();
+            foreach (var kv in weight)
+            {
+                float exact = total * kv.Value / sum;
+                int n = (int)Math.Floor(exact);
+                plan.quota[kv.Key] = n; frac[kv.Key] = exact - n; given += n;
+            }
+            foreach (var e in frac.OrderByDescending(x => x.Value).Select(x => x.Key))   // 나머지는 소수점이 큰 속성부터
+            {
+                if (given >= total) break;
+                plan.quota[e]++; given++;
+            }
+            return plan;
+        }
+
+        /// <summary>필드가 영웅 속성에 얼마나 맞는가 (자기 속성 3 · 무속성 2 · 이기는 속성 1 · 그 외 0 · 약점 -1)</summary>
+        public static int FieldAffinity(CardData hero, CardData field)
+        {
+            if (hero == null || field == null) return 0;
+            var h = hero.element;
+            if (field.element == Element.None) return 2;
+            if (h == Element.Rainbow) return field.element == Element.Rainbow ? 3 : 1;
+            if (h < Element.Fire || h > Element.Dark) return 0;
+            if (field.element == h) return 3;
+            if (field.element == GameManager.StrongPartner(h)) return 1;
+            if (CardData.Beats(field.element) == h) return -1;
+            return 0;
+        }
+
         /// <summary>
-        /// 덱을 보유 카드로 40장까지 채운다 (이미 든 카드는 그대로). 소환수는 타임 곡선대로, 강한 카드 우선.
+        /// 덱을 보유 카드로 40장까지 채운다 (이미 든 카드는 그대로). 소환수는 영웅 원소 상한 비중 · 타임 곡선대로, 강한 카드 우선.
         /// 덱 40장 개편 때 기존 30장대 덱을 채우는 데도 쓴다.
         /// </summary>
         public static void TopUp(DeckData deck)
         {
             var owned = CardDB.All.Where(c => Profile.Owned(c.id) > 0).ToList();
-            var mons = owned.Where(c => c.type == CardType.Monster).OrderByDescending(c => (int)c.rarity).ThenByDescending(c => c.atk + c.hp).ToList();
+            var hero = CardDB.Get(deck.heroId);
+            var plan = MakePlan(hero, owned, Monsters);
+            // 자기 속성 → 이기는 속성·무속성 → 상관없는 속성 → 약점 순, 그 안에서 등급·스탯
+            var mons = owned.Where(c => c.type == CardType.Monster)
+                .OrderByDescending(c => plan.Cap(c.element)).ThenByDescending(c => (int)c.rarity).ThenByDescending(c => c.atk + c.hp).ToList();
             int Have(Func<CardData, bool> f) => deck.cards.Select(CardDB.Get).Count(c => c != null && f(c));
-            Fill(deck, mons.Where(c => c.minTime <= 2), 13 - Have(c => c.type == CardType.Monster && c.minTime <= 2));
-            Fill(deck, mons.Where(c => c.minTime >= 3 && c.minTime <= 4), 10 - Have(c => c.type == CardType.Monster && c.minTime >= 3 && c.minTime <= 4));
-            Fill(deck, mons.Where(c => c.minTime >= 5), 5 - Have(c => c.type == CardType.Monster && c.minTime >= 5));
-            Fill(deck, mons, Monsters - Have(c => c.type == CardType.Monster));
+            // 속성별 할당 안에서만 (지연 평가라 덱에 넣을 때마다 다시 센다)
+            bool Ok(CardData c) => plan.Allowed(c) && Have(x => x.type == CardType.Monster && x.element == c.element) < plan.Quota(c.element);
+            Fill(deck, mons.Where(c => c.minTime <= 2 && Ok(c)), 13 - Have(c => c.type == CardType.Monster && c.minTime <= 2));
+            Fill(deck, mons.Where(c => c.minTime >= 3 && c.minTime <= 4 && Ok(c)), 10 - Have(c => c.type == CardType.Monster && c.minTime >= 3 && c.minTime <= 4));
+            Fill(deck, mons.Where(c => c.minTime >= 5 && Ok(c)), 5 - Have(c => c.type == CardType.Monster && c.minTime >= 5));
+            Fill(deck, mons.Where(Ok), Monsters - Have(c => c.type == CardType.Monster));
+            Fill(deck, mons.Where(plan.Allowed), Monsters - Have(c => c.type == CardType.Monster));   // 할당이 모자라면 낼 수 있는 카드로
+            Fill(deck, mons, Monsters - Have(c => c.type == CardType.Monster));                       // 그래도 모자라면 아무 소환수
             Fill(deck, owned.Where(c => c.type == CardType.Magic).OrderByDescending(c => (int)c.rarity), Magics - Have(c => c.type == CardType.Magic));
             Fill(deck, owned.Where(c => c.type != CardType.Field).OrderByDescending(c => (int)c.rarity), MinSize - deck.cards.Count);
             SortCards(deck);

@@ -292,46 +292,57 @@ namespace StrikerZ
             }
         }
 
-        /// <summary>몬스터 20 + 마법 7 + 필드 3 장의 랜덤 덱</summary>
-        public static List<CardData> BuildRandomDeck(System.Random rng)
+        /// <summary>
+        /// 몬스터 28 + 마법 12 + 필드 10 장의 랜덤 덱. hero 를 주면 영웅 원소 상한에 맞춘다 (2026-10-28):
+        /// 자기 속성 위주 · 이기는 속성·무속성 보조 · 약점 속성은 거의 없음, 비용이 상한을 넘는 소환수 제외, 필드도 자기 속성 우선
+        /// </summary>
+        public static List<CardData> BuildRandomDeck(System.Random rng, CardData hero = null)
         {
+            var plan = hero != null ? DeckRules.MakePlan(hero, Monsters, DeckRules.Monsters) : null;
             var deck = new List<CardData>();
-            // 몬스터는 타임 곡선대로: T1~2 9장 · T3~4 7장 · T5~7 4장 (신화는 중반 구간에서 최대 1장)
-            if (TestAllMythics) deck.AddRange(Pick(Monsters.Where(m => m.minTime <= 3).ToList(), 14, rng).Concat(MythicMonsters));
+            // 몬스터는 타임 곡선대로: T1~2 13장 · T3~4 10장 · T5~7 5장 (신화는 중반 구간에서 최대 1장)
+            if (TestAllMythics) deck.AddRange(Pick(Monsters.Where(m => m.minTime <= 3).ToList(), 14, rng, plan).Concat(MythicMonsters));
             else
             {
-                deck.AddRange(Pick(Monsters.Where(m => m.minTime <= 2).ToList(), 13, rng));
-                deck.AddRange(Pick(Monsters.Where(m => m.minTime >= 3 && m.minTime <= 4).Concat(MythicMonsters).ToList(), 10, rng));
-                deck.AddRange(Pick(Monsters.Where(m => m.minTime >= 5).ToList(), 5, rng));
+                deck.AddRange(Pick(Monsters.Where(m => m.minTime <= 2).ToList(), 13, rng, plan));
+                deck.AddRange(Pick(Monsters.Where(m => m.minTime >= 3 && m.minTime <= 4).Concat(MythicMonsters).ToList(), 10, rng, plan));
+                deck.AddRange(Pick(Monsters.Where(m => m.minTime >= 5).ToList(), 5, rng, plan));
             }
             if (TestAllMythics) deck.AddRange(Mythics);   // 자동 테스트용: 신화 전부 투입
             else deck.AddRange(Pick(Magics.Concat(Mythics).ToList(), 12, rng));
-            deck.AddRange(Fields.OrderBy(_ => rng.Next()).Take(DeckRules.MaxExtra));   // 엑스트라 덱 (SetupPlayer 가 나눈다)
+            deck.AddRange(PickFields(rng, hero));   // 엑스트라 덱 (SetupPlayer 가 나눈다)
             return deck.OrderBy(_ => rng.Next()).ToList();
         }
 
         /// <summary>
-        /// 전설 난이도 CPU 덱: 타임 구간마다 (등급 → ATK+HP) 상위 카드만 후보로 두고 뽑는다.
-        /// 곡선은 무작위 덱과 같다 (T1~2 9 · T3~4 7 · T5~7 4, 마법 7, 필드 3)
+        /// 전설 난이도 CPU 덱: 타임 구간마다 (등급 → ATK+HP) 상위 카드만 후보로 두고 뽑는다. 곡선은 무작위 덱과 같다.
+        /// hero 를 주면 영웅 원소 상한에 맞춘다
         /// </summary>
-        public static List<CardData> BuildStrongDeck(System.Random rng)
+        public static List<CardData> BuildStrongDeck(System.Random rng, CardData hero = null)
         {
+            var plan = hero != null ? DeckRules.MakePlan(hero, Monsters, DeckRules.Monsters) : null;
             List<CardData> Top(IEnumerable<CardData> src, float share)
             {
-                var l = src.OrderByDescending(c => (int)c.rarity * 4 + c.atk + c.hp).ToList();
+                // 상한 안의 카드만 후보로 (상위 N 장이 전부 약점 속성이면 덱에 못 내는 카드만 남으므로)
+                var l = (plan != null ? src.Where(plan.Allowed) : src).OrderByDescending(c => (int)c.rarity * 4 + c.atk + c.hp).ToList();
                 return l.Take(Mathf.Max(4, Mathf.CeilToInt(l.Count * share))).ToList();
             }
             var deck = new List<CardData>();
-            deck.AddRange(Pick(Top(Monsters.Where(m => m.minTime <= 2), 0.35f), 13, rng));
-            deck.AddRange(Pick(Top(Monsters.Where(m => m.minTime >= 3 && m.minTime <= 4).Concat(MythicMonsters), 0.35f), 10, rng));
-            deck.AddRange(Pick(Top(Monsters.Where(m => m.minTime >= 5), 0.4f), 5, rng));
-            deck.AddRange(Pick(Magics.Concat(Mythics).OrderByDescending(c => (int)c.rarity).Take(Mathf.Max(16, (Magics.Count + Mythics.Count) / 2)).ToList(), 12, rng));
+            deck.AddRange(Pick(Top(Monsters.Where(m => m.minTime <= 2), 0.35f), 13, rng, plan));
+            deck.AddRange(Pick(Top(Monsters.Where(m => m.minTime >= 3 && m.minTime <= 4).Concat(MythicMonsters), 0.35f), 10, rng, plan));
+            deck.AddRange(Pick(Top(Monsters.Where(m => m.minTime >= 5), 0.4f), 5, rng, plan));
+            // 마법: 유니크는 덱에 1장뿐이라 등급 상위만 추리면 후보가 전부 유니크가 되어 1장만 뽑히던 문제 → 전체에서 뽑는다 (유니크 1장은 Pick 이 보장)
+            deck.AddRange(Pick(Magics.Concat(Mythics).ToList(), 12, rng));
             // 상위 후보가 적어 메인 40장이 안 차면 같은 곡선의 일반 후보로 채운다
             if (deck.Count < DeckRules.MinSize)
-                deck.AddRange(Pick(Monsters.Where(m => m.minTime <= 4).ToList(), DeckRules.MinSize - deck.Count, rng));
-            deck.AddRange(Fields.OrderBy(_ => rng.Next()).Take(DeckRules.MaxExtra));
+                deck.AddRange(Pick(Monsters.Where(m => m.minTime <= 4).ToList(), DeckRules.MinSize - deck.Count, rng, plan));
+            deck.AddRange(PickFields(rng, hero));
             return deck.OrderBy(_ => rng.Next()).ToList();
         }
+
+        /// <summary>엑스트라 덱 필드 10장: 영웅이 있으면 자기 속성 → 무속성 → 이기는 속성 순, 약점 속성 필드는 맨 뒤 (DeckRules.FieldAffinity)</summary>
+        static IEnumerable<CardData> PickFields(System.Random rng, CardData hero)
+            => (hero != null ? Fields.OrderByDescending(f => DeckRules.FieldAffinity(hero, f)).ThenBy(_ => rng.Next()) : Fields.OrderBy(_ => rng.Next())).Take(DeckRules.MaxExtra);
 
         /// <summary>자동 테스트 전용: 모든 신화 카드를 덱에 넣는다</summary>
         public static bool TestAllMythics;
@@ -339,17 +350,39 @@ namespace StrikerZ
         /// <summary>덱 한 벌에 들어갈 수 있는 신화 카드 최대 수 — 몬스터·마법 각각 (Pick 호출마다 적용)</summary>
         public const int MaxMythicPerDeck = 1;
 
-        static IEnumerable<CardData> Pick(List<CardData> source, int count, System.Random rng)
+        /// <summary>
+        /// source 에서 count 장 무작위 (같은 카드는 등급별 장수까지, 신화는 1장). plan 이 있으면 영웅 원소 상한에 맞춘다:
+        /// 비용이 상한을 넘는 소환수는 제외, 뽑힐 확률은 속성 상한² (자기 10 → 100 · 이기는 5 → 25 · 상관없는 3 → 9 · 약점 1 → 1)
+        /// </summary>
+        static IEnumerable<CardData> Pick(List<CardData> source, int count, System.Random rng, DeckRules.ElementPlan plan = null)
         {
-            var pool = new List<CardData>();
-            foreach (var c in source) for (int i = 0; i < CopiesFor(c.rarity); i++) pool.Add(c);
             var picked = new List<CardData>();
             int mythic = 0;
-            foreach (var c in pool.OrderBy(_ => rng.Next()))
+            if (plan == null)
             {
-                if (picked.Count >= count) break;
-                if (c.rarity == Rarity.Unique) { if (mythic >= MaxMythicPerDeck) continue; mythic++; }
-                picked.Add(c);
+                var pool = new List<CardData>();
+                foreach (var c in source) for (int i = 0; i < CopiesFor(c.rarity); i++) pool.Add(c);
+                foreach (var c in pool.OrderBy(_ => rng.Next()))
+                {
+                    if (picked.Count >= count) break;
+                    if (c.rarity == Rarity.Unique) { if (mythic >= MaxMythicPerDeck) continue; mythic++; }
+                    picked.Add(c);
+                }
+                return picked;
+            }
+            var left = source.Where(plan.Allowed).Distinct().ToDictionary(c => c, c => CopiesFor(c.rarity));
+            float Weight(CardData c) { int cap = plan.Cap(c.element); return cap * cap; }
+            while (picked.Count < count)
+            {
+                var cands = left.Where(kv => kv.Value > 0 && !(kv.Key.rarity == Rarity.Unique && mythic >= MaxMythicPerDeck)).Select(kv => kv.Key).ToList();
+                if (cands.Count == 0) break;
+                double total = cands.Sum(c => (double)Weight(c));
+                double r = rng.NextDouble() * total;
+                CardData pick = cands[cands.Count - 1];
+                foreach (var c in cands) { r -= Weight(c); if (r <= 0) { pick = c; break; } }
+                if (pick.rarity == Rarity.Unique) mythic++;
+                left[pick]--;
+                picked.Add(pick);
             }
             return picked;
         }

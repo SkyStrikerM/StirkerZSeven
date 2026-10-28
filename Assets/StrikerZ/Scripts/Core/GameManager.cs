@@ -129,7 +129,8 @@ namespace StrikerZ
             else if (mode == MatchMode.Practice) { cpuLevel = CpuLevel.Trainee; SetupPracticeGolem(players[1]); }
             else
             {
-                SetupPlayer(players[1], cpuHeroes[rng.Next(cpuHeroes.Count)], CpuDeck());
+                var cpuHero = cpuHeroes[rng.Next(cpuHeroes.Count)];
+                SetupPlayer(players[1], cpuHero, CpuDeck(cpuHero));
                 ApplyCpuLevel(players[1]);
             }
             ApplyEventSetup();
@@ -232,7 +233,7 @@ namespace StrikerZ
             p.maxHp = p.hp = Simul ? Mathf.RoundToInt(heroData.heroHp * HeroHpRate) : heroData.heroHp;   // 동시 룰: 영웅 HP ×0.75 (2026-10-16 밸런스: 소환수 전투만으로도 끝나는 판)
             board.CreateView(p.hero, board.HeroPos(p) + Vector3.up * 2f);
             HeroModel.Attach(p.hero.view, heroData.id, p.index == 0);
-            var cards = deckList != null && deckList.Count > 0 ? deckList.OrderBy(_ => rng.Next()).ToList() : CardList.BuildRandomDeck(rng);
+            var cards = deckList != null && deckList.Count > 0 ? deckList.OrderBy(_ => rng.Next()).ToList() : CardList.BuildRandomDeck(rng, heroData);   // 영웅 원소 상한에 맞춘 무작위 덱
             p.extra.Clear();
             SplitExtra(p, cards);     // 필드 → 엑스트라 덱 (GameManager.Field.cs)
             SetupElementDeck(p, cards);   // 원소 덱 (GameManager.Element.cs)

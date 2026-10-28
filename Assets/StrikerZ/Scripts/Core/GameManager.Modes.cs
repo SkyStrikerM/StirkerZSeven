@@ -37,8 +37,8 @@ namespace StrikerZ
 
         float CpuHpRate => cpuLevel == CpuLevel.Trainee ? 0.85f : cpuLevel == CpuLevel.Legend ? 1.15f : 1f;
 
-        /// <summary>CPU 덱: 전설은 강한 카드 위주, 나머지는 무작위 (null = SetupPlayer 가 무작위 덱)</summary>
-        List<CardData> CpuDeck() => cpuLevel == CpuLevel.Legend ? CardList.BuildStrongDeck(rng) : null;
+        /// <summary>CPU 덱: 전설은 강한 카드 위주, 나머지는 무작위 (null = SetupPlayer 가 영웅에 맞춘 무작위 덱). 영웅 원소 상한에 맞춘다</summary>
+        List<CardData> CpuDeck(CardData hero) => cpuLevel == CpuLevel.Legend ? CardList.BuildStrongDeck(rng, hero) : null;
 
         void ApplyCpuLevel(PlayerState p)
         {
