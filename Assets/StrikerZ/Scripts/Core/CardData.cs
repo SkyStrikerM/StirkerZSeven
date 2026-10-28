@@ -80,8 +80,8 @@ namespace StrikerZ
         /// <summary>주사위 효과 [0]=1·2, [1]=3·4, [2]=5·6 (null 이면 Dice.Default)</summary>
         public DiceEffect[] dice;
 
-        /// <summary>전투 판정 횟수: 바람 속성은 4회, 그 외 3회</summary>
-        public int DiceRolls => element == Element.Wind ? 4 : 3;
+        /// <summary>전투 판정 횟수: 주사위 1개 (바람 속성은 2개 중 선택) — 2026-10-28 3개(바람 4개)에서 변경</summary>
+        public int DiceRolls => element == Element.Wind ? 2 : 1;
 
         /// <summary>빛 = 코인 앞면이면 이번 전투 ATK·HP +값, 어둠 = 코인 뒷면이면 ATK·HP -값 (타임 4까지 2, 8까지 3, 이후 4)</summary>
         public int CoinPower => type == CardType.Monster && (element == Element.Light || element == Element.Dark) ? (minTime <= 4 ? 2 : minTime <= 8 ? 3 : 4) : 0;
@@ -92,7 +92,7 @@ namespace StrikerZ
             if (type != CardType.Monster) return null;
             switch (element)
             {
-                case Element.Wind: return "<color=#9fe8b0>[질풍] 판정 4회 중 선택</color>";
+                case Element.Wind: return "<color=#9fe8b0>[질풍] 주사위 2개 중 선택</color>";
                 case Element.Light: return $"<color=#fff2b0>[빛의 가호] 전투 시 코인 앞면: ATK·HP +{CoinPower}</color>";
                 case Element.Dark: return $"<color=#d0a8ff>[어둠의 대가] 전투 시 코인 뒷면: ATK·HP -{CoinPower}</color>";
                 default: return null;

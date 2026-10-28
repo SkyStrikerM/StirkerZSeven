@@ -4,8 +4,8 @@ using UnityEngine;
 namespace StrikerZ
 {
     /// <summary>
-    /// 몬스터의 주사위 효과 (한 구간 분량). 전투 시 3번(바람 4번) 굴려 1개를 고르면,
-    /// 고른 눈의 구간(1·2 / 3·4 / 5·6)에 해당하는 효과가 그 전투에만 적용된다. 눈의 숫자 자체는 더해지지 않는다.
+    /// 몬스터의 주사위 효과 (한 구간 분량). 전투 시 주사위 1개(바람은 2개 중 선택)를 굴려,
+    /// 나온 눈의 구간(1·2 / 3·4 / 5·6)에 해당하는 효과가 그 전투에만 적용된다. 눈의 숫자 자체는 더해지지 않는다.
     /// CardList 에서 dice = Dice.Of(Dice.Atk(1), Dice.Guard(), Dice.Atk(2).Pierce(2)) 처럼 지정.
     /// </summary>
     public class DiceEffect
@@ -85,8 +85,12 @@ namespace StrikerZ
         public static DiceEffect Draw(int n) => new DiceEffect().Draw(n);
         public static DiceEffect Burn(int n) => new DiceEffect().Burn(n);
 
-        /// <summary>주사위 수치 너프: 1→1 · 2→2 · 3→2 · 4→3 · 5→3 · 6→4 · 7→5 · 8→5 (×0.6 올림)</summary>
-        public static int N(int n) => n <= 0 ? n : Mathf.CeilToInt(n * 0.6f);
+        /// <summary>
+        /// 주사위 수치 배율. 2026-10-16 ×0.6 (3개 중 고르던 때) → 2026-10-28 주사위 1개가 되어 고를 수 없으니 ×0.75 로 일부 복구:
+        /// 1→1 · 2→2 · 3→3 · 4→3 · 5→4 · 6→5 · 7→6 · 8→6 (올림)
+        /// </summary>
+        public const float Rate = 0.75f;
+        public static int N(int n) => n <= 0 ? n : Mathf.CeilToInt(n * Rate);
         /// <summary>드로우 너프: 1→1 · 2→1 · 3→2</summary>
         public static int D(int n) => n <= 1 ? n : n - 1;
         public static DiceEffect Wound() => new DiceEffect { wound = true };

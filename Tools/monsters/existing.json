@@ -18,7 +18,7 @@
   "rest": ""
  },
  "M004": {
-  "dice": "Dice.Of(Dice.Heal(3), Dice.Guard(), Dice.Draw(1).Heal(1))",
+  "dice": "Dice.Of(Dice.Shield(1).Heal(2), Dice.Guard(), Dice.Draw(1).Heal(1))",
   "name": "물방울 정령",
   "text": "소환 시 자신의 HP 2 회복.",
   "rest": ", effect = Effects.Heal(2)"
@@ -54,7 +54,7 @@
   "rest": ""
  },
  "M010": {
-  "dice": "Dice.Of(Dice.Guard().Atk(1), Dice.Heal(5), Dice.Weaken(3))",
+  "dice": "Dice.Of(Dice.Guard().Atk(1), Dice.Shield(2).Heal(2), Dice.Weaken(3))",
   "name": "대지의 수호자",
   "text": "[도발] 소환 시 이번 타임 아군 ATK +1.",
   "rest": ", effect = Effects.BuffAllies(1)"
@@ -72,7 +72,7 @@
   "rest": ""
  },
  "M013": {
-  "dice": "Dice.Of(Dice.Heal(3), Dice.Draw(1).Heal(1), Dice.Guard())",
+  "dice": "Dice.Of(Dice.Shield(1).Heal(2), Dice.Draw(1).Heal(1), Dice.Guard())",
   "name": "빛의 견습사제",
   "text": "소환 시 카드 1장 드로우.",
   "rest": ", effect = Effects.Draw(1)"

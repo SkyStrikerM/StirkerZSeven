@@ -53,11 +53,11 @@ namespace StrikerZ
             labelCanvas.sortingOrder = 50;
         }
 
-        /// <summary>공격측(0)과 방어측(1)이 각각 3번 던진다. withDefender=false 면 공격측만 (직접 공격)</summary>
+        /// <summary>공격측(0)과 방어측(1)이 각각 1개 던진다. withDefender=false 면 공격측만 (직접 공격)</summary>
         public IEnumerator RollBattle(bool coinA, bool coinD, bool withDefender, Action<int[], int[]> result)
-            => RollBattle(3, 3, coinA, coinD, withDefender, result);
+            => RollBattle(1, 1, coinA, coinD, withDefender, result);
 
-        /// <summary>countA / countD = 던지는 횟수 (바람 속성 4, 그 외 3)</summary>
+        /// <summary>countA / countD = 던지는 횟수 (바람 속성 2, 그 외 1 · 필드 보정)</summary>
         public IEnumerator RollBattle(int countA, int countD, bool coinA, bool coinD, bool withDefender, Action<int[], int[]> result)
         {
             Clear();

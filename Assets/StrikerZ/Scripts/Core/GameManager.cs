@@ -691,12 +691,16 @@ namespace StrikerZ
         /// <summary>테스트용: 내 영웅이 상대 영웅을 향해 공격 연출만</summary>
         public void TestHeroStrike() => StartCoroutine(HeroStrike(Human.hero, board.HeroPos(Cpu)));
 
-        /// <summary>직접 공격을 받은 영웅의 반격: 공격 몬스터에게 영웅 ATK 만큼 피해 (HP 0 이면 파괴). battleHp = 이번 전투 HP 증감</summary>
-        IEnumerator HeroCounter(CardInstance a, PlayerState op, int battleHp = 0)
+        /// <summary>
+        /// 직접 공격을 받은 영웅의 반격: 공격 몬스터에게 영웅 ATK 만큼 피해 (HP 0 이면 파괴). battleHp = 이번 전투 HP 증감,
+        /// weaken = 주사위 [약화] — 주사위가 1개가 되어 고를 수 없으니 직접 공격에서도 허탕이 아니게 영웅 반격 ATK 를 그만큼 줄인다
+        /// </summary>
+        IEnumerator HeroCounter(CardInstance a, PlayerState op, int battleHp = 0, int weaken = 0)
         {
             if (gameOver || op.hero == null || a.zone != Zone.Slot) yield break;
             if (a.data.noCounter) { Log($"{a.Name}: [암살] 영웅의 반격을 받지 않는다"); yield break; }
-            int dmg = HeroAtk(op);
+            int dmg = Mathf.Max(0, HeroAtk(op) - weaken);
+            if (weaken > 0) Log($"{a.Name}: [약화 {weaken}] 영웅 반격 ATK {HeroAtk(op)} → {dmg}");
             if (dmg <= 0) yield break;
             Voice.Hero(op.hero.data, "atk");
             if (a.view != null) yield return HeroStrike(op.hero, a.view.transform.position);
@@ -743,7 +747,7 @@ namespace StrikerZ
             {
                 dice.humanSide = a.owner.isHuman ? 0 : 1;
                 yield return dice.RollBattle(Rolls(a), 0, coin, false, false, (x, y) => ra = x);
-                yield return ChooseDie(a, ra, coin, e => e.atk + e.pierce * 0.75f + e.burn * 0.8f + e.draw * 1.5f + e.heal * 0.6f + e.hp * 0.4f, r => ia = r);
+                yield return ChooseDie(a, ra, coin, e => e.atk + e.pierce * 0.75f + e.burn * 0.8f + e.draw * 1.5f + e.heal * 0.6f + e.hp * 0.4f + e.enemyAtk * 0.5f, r => ia = r);   // 약화 = 영웅 반격 감소
                 dice.Highlight(0, ia);
             }
             var ea = NoDice ? Dice.None() : a.data.DiceFor(ra[ia]);
@@ -756,7 +760,7 @@ namespace StrikerZ
 
             yield return ApplyDiceInstant(a, ea);
             if (!gameOver) yield return DamagePlayer(op, dmg, a.Name);
-            if (!gameOver) yield return HeroCounter(a, op, ca + ea.hp);
+            if (!gameOver) yield return HeroCounter(a, op, ca + ea.hp, ea.enemyAtk);
         }
 
         /// <summary>
@@ -898,9 +902,10 @@ namespace StrikerZ
             return s;
         }
 
-        /// <summary>3개(바람 4개) 중 1개 선택. 사람은 버튼, AI 는 aiValue 가 가장 높은 것</summary>
+        /// <summary>굴린 주사위 중 1개 선택 (기본 1개 = 선택 없이 그대로, 바람 2개·필드 보정). 사람은 버튼, AI 는 aiValue 가 가장 높은 것</summary>
         IEnumerator ChooseDie(CardInstance m, int[] values, bool coin, Func<DiceEffect, float> aiValue, Action<int> result)
         {
+            if (values.Length <= 1) { result(0); yield break; }
             var labels = new string[values.Length];
             int best = 0;
             for (int i = 0; i < values.Length; i++)
@@ -1320,7 +1325,7 @@ namespace StrikerZ
             return Mathf.Max(1, v);
         }
 
-        /// <summary>전투 판정 횟수 (바람 4 · 그 외 3, 필드 보정 반영, 최소 1)</summary>
+        /// <summary>전투 판정 횟수 (바람 2 · 그 외 1, 필드 보정 반영, 최소 1)</summary>
         public int Rolls(CardInstance c) => Mathf.Max(1, c.data.DiceRolls + CardData.FieldDelta(center?.data, c).dice);
 
         /// <summary>필드가 바뀌어 HP 가 줄어든 결과 남은 HP 가 0 이 된 몬스터 파괴</summary>

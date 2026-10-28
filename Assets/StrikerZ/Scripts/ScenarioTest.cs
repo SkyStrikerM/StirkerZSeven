@@ -73,11 +73,11 @@ namespace StrikerZ
             yield return AtkScn("RULE 어둠의 대가 코인", () => { Mon(me, "M395"); },
                 logs => logs.Any(l => l.Contains("[어둠의 대가] 코인")));
             {
-                bool wind = CardList.Monsters.Where(m => m.element == Element.Wind).All(m => m.DiceRolls == 4)
-                            && CardList.Monsters.Where(m => m.element != Element.Wind).All(m => m.DiceRolls == 3);
+                bool wind = CardList.Monsters.Where(m => m.element == Element.Wind).All(m => m.DiceRolls == 2)
+                            && CardList.Monsters.Where(m => m.element != Element.Wind).All(m => m.DiceRolls == 1);
                 bool counts = CardList.Monsters.Count == 270 && CardList.Monsters.All(m => m.hp > 0)
                               && CardList.Monsters.GroupBy(m => (m.element, m.minTime)).All(g2 => g2.Count() == 3);
-                Report(wind && counts, $"RULE 바람 판정 4회={wind} · 몬스터 270종(속성×타임×3)={counts}");
+                Report(wind && counts, $"RULE 바람 주사위 2개·그 외 1개={wind} · 몬스터 270종(속성×타임×3)={counts}");
             }
 
             yield return FieldRules();

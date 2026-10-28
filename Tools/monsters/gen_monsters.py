@@ -72,13 +72,15 @@ def stats(elem, t, k, rarity, keys):
 
 W = dict(atk=1, weaken=1, hp=1, guard=2, pierce=0.75, heal=0.6, draw=1.5, burn=0.8, wound=1)
 CS = dict(atk='Atk', weaken='Weaken', hp='Shield', guard='Guard', pierce='Pierce', heal='Heal', draw='Draw', burn='Burn', wound='Wound')
+# 2026-10-28 주사위 1개(바람 2개): 고를 수 없으니 세 구간 모두 "그 전투에 바로 쓰이는 것"(atk·hp·weaken) 또는
+# "언제나 이득인 것"(burn·draw)을 주 효과로. 회복(heal)만 있는 구간은 영웅 HP 가 가득이면 허탕이라 부효과로만 둔다.
 BANDS = {
     'Fire': [('atk', 'pierce'), ('burn', 'atk'), ('wound', 'atk')],
-    'Water': [('hp', 'heal'), ('heal', 'draw'), ('weaken', 'hp')],
-    'Wind': [('atk', 'draw'), ('pierce', 'atk'), ('draw', 'heal')],
+    'Water': [('hp', 'heal'), ('draw', 'hp'), ('weaken', 'hp')],
+    'Wind': [('atk', 'draw'), ('pierce', 'atk'), ('draw', 'hp')],
     'Earth': [('guard', 'hp'), ('hp', 'heal'), ('weaken', 'hp')],
     'Thunder': [('atk', 'burn'), ('burn', 'pierce'), ('weaken', 'atk')],
-    'Light': [('heal', 'hp'), ('hp', 'draw'), ('draw', 'heal')],
+    'Light': [('hp', 'heal'), ('draw', 'hp'), ('atk', 'heal')],
     'Dark': [('wound', 'pierce'), ('weaken', 'burn'), ('pierce', 'atk')],
     'None': [('atk', 'hp'), ('hp', 'atk'), ('guard', 'atk')],
     'Rainbow': [('draw', 'atk'), ('atk', 'hp'), ('hp', 'heal')],
@@ -130,7 +132,7 @@ def ability_cs(elem, t, keys):
         elif k == 'regen': flags.append('regen = true'); texts.append('[재생] 배틀 엔드에 HP를 모두 회복한다.')
         elif k == 'max4': flags.append(f'maxTime = {MAPT[t] + 2}'); texts.append(f'T{MAPT[t] + 2}까지만 소환할 수 있다.')
         elif k == 'snipe': flags.append('snipe = true'); texts.append('[저격] 가장 뒤(오른쪽) 상대 소환수를 공격한다.')
-        elif k == 'vanguard': flags.append('vanguard = true'); texts.append('[선봉] 배틀이 시작되면 칸 순서보다 먼저 공개·공격한다.')
+        elif k == 'vanguard': flags.append('vanguard = true'); texts.append('[선봉] 공격 턴에 칸 순서보다 먼저 공개·공격한다.')
         elif k == 'resist': flags.append('resist = true'); texts.append('[불변] 상대 카드 효과(개기일식·데미지·약화·행동 불능·되돌리기 등)를 받지 않는다. 파괴 효과와 전투로만 쓰러진다. 개기일식 중에도 싸운다.')
         elif k == 'burn': effs.append(f"Effects.Burn({m['burn']})"); texts.append(f"소환 시 상대에게 {m['burn']} 데미지.")
         elif k == 'heal': effs.append(f"Effects.Heal({m['heal']})"); texts.append(f"소환 시 HP {m['heal']} 회복.")
@@ -187,7 +189,7 @@ def main():
         stats_by_el.setdefault(el, []).append((t, rar, atk, hp, e['ab']))
     cs = ('using System.Collections.Generic;\n\nnamespace StrikerZ\n{\n'
           '    // ★ 자동 생성: Tools/monsters/gen_monsters.py (monsters_table.py 편집 후 python gen_monsters.py) — 몬스터 270종 (9속성 × T1~10 × 3)\n'
-          '    // 스탯 기준 (T1): 무속성·무지개 3/3 · 화염 4/2 · 물 2/4 · 바람 주사위 4회(합 -1) · 번개 5/1 · 대지 1/5\n'
+          '    // 스탯 기준 (T1): 무속성·무지개 3/3 · 화염 4/2 · 물 2/4 · 바람 주사위 2개 중 선택(합 -1) · 번개 5/1 · 대지 1/5\n'
           '    //                 빛 2/2 (코인 앞면 ATK·HP +2) · 어둠 5/5 (코인 뒷면 ATK·HP -2). 타임·등급이 오르면 총합 증가, 능력은 스탯을 소모.\n'
           '    public static partial class CardList\n    {\n'
           '        public static readonly List<CardData> Monsters = new List<CardData>\n        {\n'
