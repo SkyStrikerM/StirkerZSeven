@@ -12,6 +12,30 @@ namespace StrikerZ
 
         public void Init(GameManager gm) { g = gm; }
 
+        /// <summary>
+        /// T 시작 원소 고르기: 패에서 지금 보유 원소로 못 내는 카드의 부족분이 큰 속성 (덱에 많은 속성·무속성/무지개 수요 조금 반영),
+        /// 이미 많이 쌓인 속성은 덜. 수련 CPU 는 절반쯤 아무거나.
+        /// </summary>
+        public Element ChooseElement(PlayerState p)
+        {
+            var opts = g.ElementOptions(p);
+            if (opts.Count == 0) return Element.None;
+            var lv = p.isHuman ? CpuLevel.Elite : g.cpuLevel;
+            if (lv == CpuLevel.Trainee && Random.value < 0.5f) return opts[Random.Range(0, opts.Count)];
+            Element best = Element.None; float bestScore = float.MinValue;
+            foreach (var e in opts)
+            {
+                int pool = p.elemPool[(int)e];
+                float demand = p.hand.Where(c => c.data.element == e).Sum(c => Mathf.Max(0, c.data.Cost - pool))
+                               + p.deck.Count(c => c.data.element == e) * 0.15f
+                               + p.hand.Count(c => c.data.element == Element.None && c.data.Cost > p.TotalAvailable) * 0.3f
+                               + (pool == 0 ? p.hand.Count(c => c.data.element == Element.Rainbow) * 0.5f : 0);
+                float score = demand - pool * 0.4f + Random.value * 0.05f;
+                if (score > bestScore) { bestScore = score; best = e; }
+            }
+            return best;
+        }
+
         public IEnumerator MainPhase(PlayerState p)
         {
             yield return g.Wait(0.6f);

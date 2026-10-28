@@ -103,6 +103,7 @@ namespace StrikerZ
             var b = raid.boss;
             var hd = b.Hero;
             p.hero = new CardInstance(hd, p) { zone = Zone.Hero };
+            p.freeCost = true;      // 보스는 원소 없이 하수인을 낸다
             p.maxHp = p.hp = Mathf.RoundToInt(b.baseHp * raid.hpMul);
             board.CreateView(p.hero, board.HeroPos(p) + Vector3.up * 2f);
             // 보스는 카드 위가 아니라 보드 뒤편에 거대하게 선다. 덱·패 없이 스킬 카드로만 싸운다

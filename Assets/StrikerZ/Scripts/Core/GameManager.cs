@@ -107,6 +107,7 @@ namespace StrikerZ
             duelRounds = 0;
             eclipseTime = battleOpenTime = -1;      // 지난 대전의 개기일식이 같은 T 번호에서 다시 켜지지 않게
             ResetExtrasData();
+            ResetElementState();
             board.ClearCards();
             BossModel.Clear();
             statuses.Clear();
@@ -234,6 +235,7 @@ namespace StrikerZ
             var cards = deckList != null && deckList.Count > 0 ? deckList.OrderBy(_ => rng.Next()).ToList() : CardList.BuildRandomDeck(rng);
             p.extra.Clear();
             SplitExtra(p, cards);     // 필드 → 엑스트라 덱 (GameManager.Field.cs)
+            SetupElementDeck(p, cards);   // 원소 덱 (GameManager.Element.cs)
             // 사람: 보유한 가공(StrikerZ → Seven)을 덱 카드에 배정 (표시 전용)
             var finishes = p.isHuman ? Profile.AssignFinishes(cards) : null;
             for (int i = 0; i < cards.Count; i++)
@@ -264,6 +266,7 @@ namespace StrikerZ
             ExpireStatuses(s => s.expire == Expire.CasterNextTime && s.caster == active && s.createdTime < time);
 
             phase = Phase.TimeStart;
+            ResetElementSpent();
             RegenMonsters();
             raidTime = active == Human ? (time + 1) / 2 : raidTime;
             RefreshAll();
@@ -280,6 +283,13 @@ namespace StrikerZ
             // 드로우: 패가 HandMax(7) 장이 될 때까지
             if (active.hand.Count < HandMax && !(raid != null && active == Cpu)) yield return Draw(active, HandMax - active.hand.Count);   // 레이드 보스는 덱 없이 스킬로
             if (gameOver) yield break;
+            // 엑스트라 덱: 원소 1장 (교대 룰은 자기 T 시작에, 비용 없는 보스는 건너뜀)
+            if (!active.freeCost)
+            {
+                Element pick = Element.None;
+                yield return ChooseElement(active, e => pick = e);
+                if (pick != Element.None) { TakeElement(active, pick); RefreshAll(); Sfx.Play("draw", 0.5f); yield return Wait(0.3f); }
+            }
 
             // 메인
             phase = Phase.Main;
@@ -987,8 +997,8 @@ namespace StrikerZ
             if (!c.IsMonster || c.zone != Zone.Hand) { why = "몬스터 카드가 아닙니다"; return false; }
             if (phase != Phase.Main || active != c.owner) { why = "자신의 메인 페이즈에만 소환할 수 있습니다"; return false; }
             if (c.owner.FreeSlot() < 0) { why = "빈 칸이 없습니다 (7칸)"; return false; }
-            if (time < c.data.minTime) { why = $"T{c.data.minTime} 부터 소환 가능합니다"; return false; }
             if (c.data.maxTime > 0 && time > c.data.maxTime) { why = $"T{c.data.maxTime} 까지만 소환 가능합니다"; return false; }
+            if (!CanPay(c)) { why = PayProblem(c); return false; }     // 원소 비용 (GameManager.Element.cs)
             if (StorySummonBlocked(c)) { why = "이번 타임 소환 한도"; return false; }
             return true;
         }
@@ -1007,6 +1017,7 @@ namespace StrikerZ
             if (!CanSummon(c, out _)) yield break;
             if (MustSummonFaceDown || Simul) faceDown = true;
             if (faceDown && !CanSummonFaceDown(c)) yield break;
+            if (!Pay(c)) yield break;
             var p = c.owner;
             int slot = slotAt >= 0 && slotAt < PlayerState.SlotCount && p.slots[slotAt] == null ? slotAt : p.FreeSlot();
             p.hand.Remove(c);
@@ -1028,11 +1039,12 @@ namespace StrikerZ
         }
 
         public bool CanSet(CardInstance c)
-            => c.IsMagic && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0;
+            => c.IsMagic && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0 && CanPay(c);
 
         public IEnumerator SetMagic(CardInstance c, int slotAt = -1)
         {
             if (!CanSet(c)) yield break;
+            if (!Pay(c)) yield break;
             var p = c.owner;
             int slot = slotAt >= 0 && slotAt < PlayerState.SlotCount && p.slots[slotAt] == null ? slotAt : p.FreeSlot();
             p.hand.Remove(c);

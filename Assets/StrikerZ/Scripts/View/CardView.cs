@@ -121,6 +121,26 @@ namespace StrikerZ
             face.glow.gameObject.SetActive(false);
             face.Set(card.data);
             face.SetFinish(card.finish);
+            if (dim) SetDim(true);
+        }
+
+        bool dim;
+        UnityEngine.UI.Image dimImg;
+
+        /// <summary>어둡게 덮기 (이번 T 이미 쓴 원소 카드)</summary>
+        public void SetDim(bool on)
+        {
+            dim = on;
+            if (face == null) return;
+            if (dimImg == null)
+            {
+                if (!on) return;
+                dimImg = UIKit.Img(canvas.transform, "Dim", new Color(0, 0, 0, 0.5f));
+                dimImg.rectTransform.Fill();
+                dimImg.raycastTarget = false;
+            }
+            dimImg.transform.SetAsLastSibling();
+            dimImg.gameObject.SetActive(on);
         }
 
         public void SetTarget(Vector3 pos, Quaternion rot, bool faceUp, float scale = 1f)

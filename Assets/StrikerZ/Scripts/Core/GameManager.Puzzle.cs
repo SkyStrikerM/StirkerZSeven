@@ -32,6 +32,7 @@ namespace StrikerZ
             var oppHero = CardDB.Get(p.oppHero) ?? CardList.Heroes[1];
             SetupHeroOnly(me, humanHero, p.myHp);
             SetupHeroOnly(opp, oppHero, p.oppHp);
+            me.freeCost = opp.freeCost = true;     // 퍼즐은 정해진 패로 푼다 — 원소 비용 없음
             foreach (var id in p.hand)
             {
                 var d = CardDB.Get(id);

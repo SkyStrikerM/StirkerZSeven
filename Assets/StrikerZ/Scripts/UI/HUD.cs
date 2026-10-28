@@ -426,7 +426,8 @@ namespace StrikerZ
             hp.hpFill.color = HpColor(r);
             hp.hp.text = $"HP {p.hp} / {p.maxHp}";
             hp.info.text = $"패 {p.hand.Count}   덱 {p.deck.Count}   묘지 {p.grave.Count}   EX {p.extra.Count}   칸 {p.FieldCount}/7";
-            hp.skill.text = $"영웅 {p.hero.Name} · ATK {p.hero.data.heroAtk} · " + (p.heroUsed ? "능력 사용 완료" : "능력 사용 가능");
+            string pool = g.PoolText(p);     // 원소 제약: 영웅 능력 상태는 아래 '능력' 버튼에 보이므로 이 줄은 원소에 쓴다
+            hp.skill.text = pool.Length > 0 ? pool : $"영웅 {p.hero.Name} · ATK {p.hero.data.heroAtk} · " + (p.heroUsed ? "능력 사용 완료" : "능력 사용 가능");
             if (g.raid != null && p == g.Cpu)
             {
                 hp.info.text = $"하수인 {p.FieldCount}/{RaidData.MaxMinions}   묘지 {p.grave.Count}";
@@ -779,6 +780,7 @@ namespace StrikerZ
                             ? $"t0 마법: [{CardData.TriggerName(c.data.trigger)}] 타이밍에 패/필드에서 발동"
                             : g.Simul ? "뒷면으로 세트 → 배틀 때 그 칸 차례에 공개·발동" : "t/half 마법: 세트 후 배틀페이즈에 클릭해서 발동";
                         if (c.owner.FreeSlot() < 0) note += "\n빈 칸이 없습니다";
+                        if (c.data.Cost > 0) note += "\n" + (g.PayProblem(c) ?? $"비용 {c.data.CostText()}");
                     }
                     else if (c.data.type == CardType.Field)
                     {

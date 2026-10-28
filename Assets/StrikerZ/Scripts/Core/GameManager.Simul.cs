@@ -41,10 +41,11 @@ namespace StrikerZ
             phase = Phase.TimeStart;
             active = Human;
             ResetDirectCap();
+            ResetElementSpent();
             RegenMonsters();
             RefreshAll();
             Sfx.Play("turn", 0.7f);
-            yield return hud.Banner($"TIME {time}", "카드를 칸으로 끌어다 놓으세요 (뒷면)" + (story == null && mode != MatchMode.Puzzle ? $" ({PlanTime:0}초)" : ""));
+            yield return hud.Banner($"TIME {time}", (mode != MatchMode.Puzzle ? "원소 1장 · " : "") + "카드를 칸으로 끌어다 놓으세요 (뒷면)" + (story == null && mode != MatchMode.Puzzle ? $" ({PlanTime:0}초)" : ""));
             if (story != null) { yield return StoryTimeStart(); if (gameOver) yield break; }
 
             // 타임 시작 t0 (예전 '상대 타임 시작 전')
@@ -62,6 +63,11 @@ namespace StrikerZ
                 if (time > 1 && p.hand.Count < HandLimit) yield return Draw(p, Mathf.Min(DrawCount, HandLimit - p.hand.Count));
                 if (gameOver) yield break;
             }
+
+            // ── 엑스트라 덱: 양쪽이 동시에 원소 1장 (GameManager.Element.cs) ──
+            phase = Phase.Main;
+            yield return ElementStep();
+            if (gameOver) yield break;
 
             // ── 배치 ──
             phase = Phase.Main;

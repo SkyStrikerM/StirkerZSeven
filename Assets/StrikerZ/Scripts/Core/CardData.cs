@@ -41,10 +41,25 @@ namespace StrikerZ
         public int hp;
         /// <summary>[재생] 배틀 엔드에 HP 를 모두 회복</summary>
         public bool regen;
-        /// <summary>소환 가능한 최소 타임 (1 = 처음부터)</summary>
+        /// <summary>몬스터의 기본 비용 (예전 '소환 가능한 최소 타임' — 원소 제약으로 바뀐 뒤에는 같은 속성 원소 수)</summary>
         public int minTime = 1;
         /// <summary>소환 가능한 최대 타임 (0 = 제한 없음)</summary>
         public int maxTime = 0;
+        /// <summary>낼 때 쓰는 원소 수. -1 = 자동 (몬스터 = minTime, 마법·필드 = 0). GameManager.Element.cs</summary>
+        public int cost = -1;
+        public int Cost => cost >= 0 ? cost : type == CardType.Monster ? minTime : 0;
+        /// <summary>영웅 아래에 쌓는 원소 카드 (GameManager.ElementCardData)</summary>
+        public bool isElement;
+
+        /// <summary>비용 글: "화염 원소 3" · "원소 2 (아무 속성)" · "서로 다른 원소 4" · "없음"</summary>
+        public string CostText()
+        {
+            int c = Cost;
+            if (c <= 0) return "없음";
+            if (element == Element.None) return $"원소 {c} (아무 속성)";
+            if (element == Element.Rainbow) return $"서로 다른 원소 {c}";
+            return $"{ElementName(element)} 원소 {c}";
+        }
         /// <summary>자신의 효과로 뒷면 세로 표시 소환 가능</summary>
         public bool canSummonFaceDown;
         /// <summary>배틀페이즈 공격 횟수</summary>
@@ -173,9 +188,9 @@ namespace StrikerZ
             switch (type)
             {
                 case CardType.Monster:
-                    string t = maxTime > 0 ? $"T{minTime}~T{maxTime}" : $"T{minTime}~";
-                    return $"몬스터 · {ElementName(element)} · {t}";
+                    return $"몬스터 · {ElementName(element)} · 비용 {Cost}" + (maxTime > 0 ? $" · T{maxTime}까지" : "");
                 case CardType.Magic:
+                    if (isElement) return $"원소 · {ElementName(element)}";
                     return speed == MagicSpeed.T0 ? $"마법 · t0 · {TriggerName(trigger)}" : "마법 · t/half (배틀)";
                 case CardType.Hero: return $"영웅 · ATK {heroAtk} · HP {BattleHeroHp}";
                 default: return $"필드 · {ElementName(element)}";
@@ -341,6 +356,15 @@ namespace StrikerZ
         /// <summary>엑스트라 덱: 필드 카드 (최대 10장, 같은 필드 1장씩) — T2 부터 필드 차례에 꺼내 전개</summary>
         public readonly List<CardInstance> extra = new List<CardInstance>();
         public readonly CardInstance[] slots = new CardInstance[SlotCount];
+
+        // ── 원소 (GameManager.Element.cs): 영웅 아래 보유 · 이번 T 쓴 수 · 원소 덱 남은 장수 (속성 index) ──
+        public readonly int[] elemPool = new int[9];
+        public readonly int[] elemSpent = new int[9];
+        public readonly int[] elemSupply = new int[9];
+        /// <summary>비용 없이 낸다 (레이드 보스 · 퍼즐)</summary>
+        public bool freeCost;
+        public int Available(Element e) => Mathf.Max(0, elemPool[(int)e] - elemSpent[(int)e]);
+        public int TotalAvailable { get { int n = 0; for (int i = 1; i <= 7; i++) n += Mathf.Max(0, elemPool[i] - elemSpent[i]); return n; } }
 
         public int FieldCount
         {

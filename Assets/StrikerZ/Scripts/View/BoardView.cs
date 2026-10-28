@@ -10,6 +10,8 @@ namespace StrikerZ
         public const float SlotSpacing = 0.95f;
         public const float RowZ = 1.25f;
         public const float SideX = 4.15f;
+        /// <summary>영웅 아래 원소 카드 줄 (묘지·덱 오른쪽)</summary>
+        public const float ElemX = 5.0f;
 
         public Camera cam;
         public Transform cardRoot;
@@ -342,6 +344,22 @@ namespace StrikerZ
                         var pos = new Vector3(x, 0.35f + i * 0.004f, 3.2f);
                         Set(p.hand[i], pos, Quaternion.Euler(20, 180, 0), false, 0.85f);
                         p.hand[i].view.hoverLift = false;
+                    }
+                }
+                // 영웅 아래 원소 — 묘지·덱 오른쪽에 세로로 겹쳐 (위 카드의 이름 띠가 보이게, 이번 T 쓴 원소는 어둡게)
+                var elems = g.ElementCards(p);
+                if (elems != null)
+                {
+                    int m = elems.Count;
+                    float step = m > 1 ? Mathf.Min(0.22f, 1.25f / (m - 1)) : 0f;
+                    float z0 = p.index == 0 ? -0.95f : 2.2f;
+                    for (int k = 0; k < m; k++)
+                    {
+                        var c = elems[k];
+                        bool spent = g.ElementSpent(c);
+                        Set(c, new Vector3(ElemX, 0.03f + k * 0.012f, z0 - k * step), flat, true, 0.9f);
+                        c.view.hoverLift = false;
+                        c.view.SetDim(spent);
                     }
                 }
                 foreach (var c in p.deck) if (c.view != null) c.view.hoverLift = false;

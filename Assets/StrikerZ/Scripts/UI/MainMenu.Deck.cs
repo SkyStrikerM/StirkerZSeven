@@ -37,7 +37,7 @@ namespace StrikerZ
         Canvas deckCanvas;
         CanvasGroup deckGroup;
 
-        static readonly string[] SortNames = { "기본", "레어도", "이름", "ATK", "보유 수", "속성", "HP", "타임" };
+        static readonly string[] SortNames = { "기본", "레어도", "이름", "ATK", "보유 수", "속성", "HP", "비용" };
         int sortMode;
         bool sortDesc = true;
         int rarityFilter = -1;              // -1 = 전체
@@ -781,7 +781,7 @@ namespace StrikerZ
                 case 4: o = sortDesc ? list.OrderByDescending(c => Profile.Owned(c.id)) : list.OrderBy(c => Profile.Owned(c.id)); break;
                 case 5: o = sortDesc ? list.OrderByDescending(c => c.element) : list.OrderBy(c => c.element); break;
                 case 6: o = sortDesc ? list.OrderByDescending(c => c.type == CardType.Monster ? c.hp : -1) : list.OrderBy(c => c.type == CardType.Monster ? c.hp : 99); break;
-                case 7: o = sortDesc ? list.OrderByDescending(c => c.type == CardType.Monster ? c.minTime : -1) : list.OrderBy(c => c.type == CardType.Monster ? c.minTime : 99); break;
+                case 7: o = sortDesc ? list.OrderByDescending(c => c.type == CardType.Monster ? c.Cost : -1) : list.OrderBy(c => c.type == CardType.Monster ? c.Cost : 99); break;
                 default: o = sortDesc ? list.OrderBy(CardDB.SortKey) : list.OrderByDescending(CardDB.SortKey); break;
             }
             return o.ThenBy(c => c.id);
@@ -826,7 +826,7 @@ namespace StrikerZ
             switch (c.type)
             {
                 case CardType.Monster:
-                    detailStats.text = $"{dim}몬스터</color>  {el}\n{dim}ATK</color>  <b>{c.atk}</b>   {dim}HP</color>  <b>{c.hp}</b>\n{dim}타임</color>  {(c.maxTime > 0 ? $"T{c.minTime}~T{c.maxTime}" : $"T{c.minTime}~")}\n{dim}판정</color>  {c.DiceRolls}회" + own;
+                    detailStats.text = $"{dim}몬스터</color>  {el}\n{dim}ATK</color>  <b>{c.atk}</b>   {dim}HP</color>  <b>{c.hp}</b>\n{dim}비용</color>  {c.CostText()}{(c.maxTime > 0 ? $" · T{c.maxTime}까지" : "")}\n{dim}판정</color>  {c.DiceRolls}회" + own;
                     detailText.text = (string.IsNullOrWhiteSpace(c.text) ? "" : c.text + "\n\n") + c.DiceText();
                     break;
                 case CardType.Magic:
