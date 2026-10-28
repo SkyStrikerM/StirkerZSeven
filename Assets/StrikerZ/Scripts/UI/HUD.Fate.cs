@@ -54,11 +54,12 @@ namespace StrikerZ
             => ShowPickCards("패 정리", $"패는 엔드 타임에 7장까지 — 버릴 카드 {need}장을 고르세요 · 우클릭: 확대", hand, seconds, need, "버림", done);
 
         /// <summary>
-        /// T 시작 원소 고르기: 원소 카드를 속성 순서대로 화면 가운데 나열하고, 누르는 즉시 그 원소가 영웅 아래로.
-        /// 시간이 지나면 아무것도 고르지 않은 것 (호출 쪽이 추천 원소로 대신한다). 보드가 보이도록 어둡기를 낮춘다
+        /// T 시작 원소 생성: 원소 카드를 속성 순서대로 화면 가운데 나열하고, 누르는 즉시 그 원소가 영웅 아래로.
+        /// 제목과 남은 시간만 보인다 (설명 줄·카드 아래 글 없음). 시간이 지나면 아무것도 고르지 않은 것 (호출 쪽이 추천 원소로 대신한다).
+        /// 보드가 보이도록 어둡기를 낮춘다
         /// </summary>
-        public void ShowElementPick(string title, List<CardInstance> cards, Func<CardInstance, string> caption, float seconds, Action<CardInstance> done)
-            => ShowPickCards(title, "영웅 아래에 놓을 원소를 누르세요 — 쌓인 원소는 매 T 다시 씁니다 · 우클릭: 확대", cards, seconds, 1, "", list => done(list.FirstOrDefault()), caption, true, 0.6f);
+        public void ShowElementPick(string title, List<CardInstance> cards, float seconds, Action<CardInstance> done)
+            => ShowPickCards(title, "", cards, seconds, 1, "", list => done(list.FirstOrDefault()), null, true, 0.6f);
 
         /// <summary>카드 여러 장 고르기 화면 (운명 재배치 · 패 정리 · 원소 고르기 공용). caption = 카드 아래 한 줄, instant = 누르면 바로 확정</summary>
         void ShowPickCards(string title, string sub, List<CardInstance> hand, float seconds, int exact, string markText, Action<List<CardInstance>> done,

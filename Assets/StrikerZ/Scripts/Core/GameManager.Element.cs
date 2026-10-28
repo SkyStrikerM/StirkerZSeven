@@ -142,9 +142,7 @@ namespace StrikerZ
             var aiPick = ai.ChooseElement(p);
             var cis = opts.Select(e => new CardInstance(ElementCardData(e), p) { zone = Zone.Extra }).ToList();
             CardInstance chosen = null; bool done = false;
-            hud.ShowElementPick($"T{time} 엑스트라 덱 — 원소 고르기", cis,
-                c => $"덱 {p.elemSupply[(int)c.data.element]} · 보유 {p.elemPool[(int)c.data.element]}" + (c.data.element == aiPick ? "  <color=#ffd45a>추천</color>" : ""),
-                ElementSeconds, c => { chosen = c; done = true; });
+            hud.ShowElementPick($"T{time} 엑스트라 타임 — 원소 생성", cis, ElementSeconds, c => { chosen = c; done = true; });
             while (!done && !gameOver) yield return null;
             if (chosen == null && !gameOver) Log("원소 선택 시간 초과 — 추천 원소로");
             result(chosen != null ? chosen.data.element : aiPick);
