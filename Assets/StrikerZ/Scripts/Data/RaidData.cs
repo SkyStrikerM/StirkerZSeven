@@ -109,7 +109,7 @@ namespace StrikerZ
             kind = k, laneAll = laneAll, laneOne = laneOne, hero = hero,
             card = new CardData
             {
-                id = id, name = name, type = CardType.Magic, element = e, rarity = Rarity.Unique, speed = MagicSpeed.THalf,
+                id = id, name = name, type = CardType.Magic, element = e, rarity = Rarity.Unique, speed = MagicSpeed.Normal,
                 art = ArtRoot + art, text = text, effect = effect,
             },
         };

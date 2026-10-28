@@ -11,8 +11,8 @@ namespace StrikerZ
     public enum CardFinish { Normal, Seven, StrikerZ }
     public enum Element { None, Fire, Water, Wind, Earth, Thunder, Light, Dark, Rainbow }
 
-    /// <summary>T0 = 지정된 타이밍(트리거)에 발동하는 마법, THalf = 배틀페이즈에 왼쪽부터 순서대로 발동하는 마법</summary>
-    public enum MagicSpeed { T0, THalf }
+    /// <summary>T0 = 지정된 타이밍(트리거)에 발동하는 마법, Normal = 일반 마법 — 메인(배치) 페이즈에 패에서 바로 발동 (2026-10-28, 예전 t/half 세트·배틀 발동 폐지)</summary>
+    public enum MagicSpeed { T0, Normal }
 
     /// <summary>T0 마법이 발동 가능한 타이밍</summary>
     public enum Trigger { None, OpponentTimeStart, BattleEnd, OpponentBattle }
@@ -116,7 +116,7 @@ namespace StrikerZ
         }
 
         // ── 마법 ──
-        public MagicSpeed speed = MagicSpeed.THalf;
+        public MagicSpeed speed = MagicSpeed.Normal;
         public Trigger trigger = Trigger.None;
 
         // ── 영웅 ──
@@ -191,7 +191,7 @@ namespace StrikerZ
                     return $"몬스터 · {ElementName(element)} · 비용 {Cost}" + (maxTime > 0 ? $" · T{maxTime}까지" : "");
                 case CardType.Magic:
                     if (isElement) return $"원소 · {ElementName(element)}";
-                    return speed == MagicSpeed.T0 ? $"마법 · t0 · {TriggerName(trigger)}" : "마법 · t/half (배틀)";
+                    return speed == MagicSpeed.T0 ? $"마법 · t0 · {TriggerName(trigger)}" : "마법 · 일반";
                 case CardType.Hero: return $"영웅 · ATK {heroAtk} · HP {BattleHeroHp}";
                 default: return $"필드 · {ElementName(element)}";
             }

@@ -315,7 +315,7 @@ namespace StrikerZ
             {
                 phase = Phase.Battle;
                 RefreshAll();
-                yield return hud.Banner("BATTLE PHASE", HumanDecides(active) ? "몬스터를 드래그해 공격 · t/half 마법은 클릭" : "상대의 공격");
+                yield return hud.Banner("BATTLE PHASE", HumanDecides(active) ? "몬스터를 드래그해 공격" : "상대의 공격");
                 busy = true;
                 // 방어 측 t0 창 (상대 배틀 개시 시)
                 yield return T0Window(Trigger.OpponentBattle, opp);
@@ -480,7 +480,7 @@ namespace StrikerZ
 
         public bool CanActivateInBattle(CardInstance m)
             => phase == Phase.Battle && m != null && m.owner == active && m.zone == Zone.Slot && m.IsMagic
-               && m.data.speed == MagicSpeed.THalf && (m.data.canActivate == null || m.data.canActivate(this, m));
+               && m.data.speed == MagicSpeed.Normal && (m.data.canActivate == null || m.data.canActivate(this, m));
 
         bool AnyBattleAction(PlayerState p)
             => p.slots.Any(c => c != null && ((CanAttackNow(c) && AttackTargets(c).Count > 0) || CanActivateInBattle(c)));
@@ -564,7 +564,7 @@ namespace StrikerZ
 
                 board.Pulse(next);
                 if (next.IsMonster) yield return MonsterAttacks(next);
-                else if (next.IsMagic && next.data.speed == MagicSpeed.THalf) yield return OfferActivation(next);
+                else if (next.IsMagic && next.data.speed == MagicSpeed.Normal) yield return OfferActivation(next);
             }
         }
 
@@ -953,7 +953,7 @@ namespace StrikerZ
         {
             if (magic.data.canActivate != null && !magic.data.canActivate(this, magic)) yield break;
             int pick = 0;
-            yield return ChooseOption(magic.owner, $"t/half 마법 [{magic.Name}] 발동?", new[] { "발동", "보류" },
+            yield return ChooseOption(magic.owner, $"마법 [{magic.Name}] 발동?", new[] { "발동", "보류" },
                 () => ai.WantsMagic(magic) ? 0 : 1, r => pick = r);
             if (pick == 0) yield return ActivateMagic(magic);
         }
@@ -1043,8 +1043,22 @@ namespace StrikerZ
             RefreshAll();
         }
 
+        /// <summary>칸에 뒷면 세트: t0 마법만 (일반 마법은 패에서 바로 발동 — CastMagic)</summary>
         public bool CanSet(CardInstance c)
-            => c.IsMagic && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0 && CanPay(c);
+            => c.IsMagic && c.data.speed == MagicSpeed.T0 && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0 && CanPay(c);
+
+        /// <summary>일반 마법: 메인(배치) 페이즈에 패에서 바로 발동 (비용 지불, 발동 조건 확인)</summary>
+        public bool CanCast(CardInstance c)
+            => c.IsMagic && c.data.speed == MagicSpeed.Normal && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && CanPay(c)
+               && (c.data.canActivate == null || c.data.canActivate(this, c));
+
+        public IEnumerator CastMagic(CardInstance c)
+        {
+            if (!CanCast(c)) yield break;
+            if (!Pay(c)) yield break;
+            if (c.owner.isHuman && !NoStats) Chronicle.CountUse(c.data.id);
+            yield return ActivateMagic(c);
+        }
 
         public IEnumerator SetMagic(CardInstance c, int slotAt = -1)
         {

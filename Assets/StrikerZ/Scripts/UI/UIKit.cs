@@ -571,7 +571,8 @@ namespace StrikerZ
 
         void ApplyLayout(CardData d, Sprite fullArt)
         {
-            var L = CardFrameLayout.For(d.type);
+            // 원소 카드(마법 종류)는 다른 카드처럼 속성 색 프레임이 보이도록 몬스터 레이아웃(속성 전용 프레임)을 쓴다
+            var L = d.isElement ? CardFrameLayout.Monster : CardFrameLayout.For(d.type);
             bool over = fullArt != null;
             // 모든 종류: 속성 전용 3D 프레임 (Frames/{frame}_{속성}, 예: frame_monster_fire · frame_field_water) 이 있으면 색 틴트 없이 그대로.
             // 새 카드·새 종류도 파일만 넣으면 자동 적용, 없으면 기본 프레임(+속성 틴트)으로 대체
@@ -582,7 +583,7 @@ namespace StrikerZ
             var frameSprite = over ? (GameAssets.FrameSprite(frameName + "_over") ?? GameAssets.FrameSprite(frameName)) : GameAssets.FrameSprite(frameName);
             frame.sprite = frameSprite;
             // 몬스터 대지 프레임은 이름판이 어두운 청동이라 밝은 글자 + 외곽선 (필드 대지는 밝은 사암판)
-            bool darkPlate = elementFrame && d.type == CardType.Monster && d.element == Element.Earth && !over;
+            bool darkPlate = elementFrame && (d.type == CardType.Monster || d.isElement) && d.element == Element.Earth && !over;
             Color fc = L.tintByElement && !elementFrame ? Color.Lerp(Color.white, CardData.ElementColor(d.element), L.tint) : Color.white;
             if (frameSprite == null) fc = new Color(0.8f, 0.8f, 0.85f, 0.25f);
             else if (over) fc.a = L.overFrameAlpha;
@@ -671,11 +672,11 @@ namespace StrikerZ
             LayoutPips(atkPipImgs, atkPips, "icon_sword_pip", pipAtk, 0.004f, 0.104f, 256f / 111f, 0.262f);
             LayoutPips(hpPipImgs, hpPips, "icon_heart", pipHp, 0.935f, 0.992f, 512f / 478f, 0.182f);
 
-            badge.gameObject.SetActive(d.type != CardType.Monster);
+            badge.gameObject.SetActive(d.type != CardType.Monster && !d.isElement);   // 원소 카드는 배지 없음
             switch (d.type)
             {
                 case CardType.Magic:
-                    badgeText.text = d.speed == MagicSpeed.T0 ? "t0" : "t/½";
+                    badgeText.text = d.speed == MagicSpeed.T0 ? "t0" : "일반";
                     badge.color = d.speed == MagicSpeed.T0 ? new Color(0.6f, 0.15f, 0.5f, 0.95f) : new Color(0.1f, 0.35f, 0.7f, 0.95f);
                     break;
                 case CardType.Hero:

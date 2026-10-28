@@ -53,15 +53,7 @@ namespace StrikerZ
                 yield return g.Wait(0.3f);
             }
 
-            // 3) t/half 마법을 몬스터보다 왼쪽에 세트 (AI 는 칸 순서대로 발동하므로)
-            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.THalf).Take(2).ToList())
-            {
-                if (p.FreeSlot() < 0 || p.FreeSlot() >= 5) break;
-                if (!WantsMagic(m, true)) continue;
-                yield return g.SetMagic(m);
-            }
-
-            // 4) 몬스터 소환 (ATK+HP 높은 순, [도발]은 앞쪽(왼쪽)에 먼저)
+            // 3) 몬스터 소환 (ATK+HP 높은 순, [도발]은 앞쪽(왼쪽)에 먼저)
             while (!g.gameOver)
             {
                 var mon = p.hand.Where(c => c.IsMonster && g.CanSummon(c, out _))
@@ -73,9 +65,17 @@ namespace StrikerZ
                 yield return g.Wait(0.25f);
             }
 
-            // 5) 뒷면 몬스터 반전
+            // 4) 뒷면 몬스터 반전
             foreach (var c in p.slots.Where(s => s != null && g.CanFlip(s)).ToList())
                 yield return g.Flip(c);
+
+            // 5) 일반 마법은 소환한 뒤 패에서 바로 발동 (아군 강화가 올라탈 수 있게)
+            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.Normal).Take(2).ToList())
+            {
+                if (!g.CanCast(m) || !WantsMagic(m)) continue;
+                yield return g.CastMagic(m);
+                yield return g.Wait(0.25f);
+            }
 
             yield return g.Wait(0.4f);
         }
@@ -107,15 +107,6 @@ namespace StrikerZ
                 yield return g.Wait(0.2f);
             }
 
-            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.THalf).Take(2).ToList())
-            {
-                if (p.FreeSlot() < 0 || p.FreeSlot() >= 5) break;
-                if (!WantsMagic(m, true)) continue;
-                // 수비 턴: 공격 강화 마법은 다음 공격 턴까지 아낀다 (수련은 가리지 않음)
-                if (!attacking && lv != CpuLevel.Trainee && IsAttackBuff(m)) continue;
-                yield return g.SetMagic(m);
-            }
-
             int placed = 0;
             while (!g.gameOver)
             {
@@ -126,6 +117,15 @@ namespace StrikerZ
                 yield return g.Summon(mon, true);
                 placed++;
                 yield return g.Wait(0.12f);
+            }
+
+            // 일반 마법: 소환한 뒤 패에서 바로 발동 (아군 강화가 올라타게). 수비 턴엔 공격 강화 마법을 다음 공격 턴까지 아낀다 (수련은 가리지 않음)
+            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.Normal).Take(2).ToList())
+            {
+                if (!g.CanCast(m) || !WantsMagic(m)) continue;
+                if (!attacking && lv != CpuLevel.Trainee && IsAttackBuff(m)) continue;
+                yield return g.CastMagic(m);
+                yield return g.Wait(0.2f);
             }
 
             if (lv == CpuLevel.Trainee) { yield return g.Wait(0.3f); yield break; }   // 수련: 놓은 순서 그대로 (튼튼한 카드를 앞에 두지 않는다)
@@ -215,7 +215,8 @@ namespace StrikerZ
             var p = m.owner;
             string t = m.data.text;
             if (t.Contains("파괴") && p.opponent.Monsters().Count == 0 && !planning) return false;
-            if (t.Contains("아군 몬스터") && p.Monsters().Count == 0 && !planning) return false;
+            if ((t.Contains("아군 몬스터") || t.Contains("아군 소환수")) && p.Monsters().Count == 0 && !planning) return false;
+            if (t.Contains("뒷면") && p.Monsters().Count + p.opponent.Monsters().Count == 0 && !planning) return false;   // 개기일식: 뒤집을 소환수가 없으면 아낀다
             if (t.Contains("뒷면 세로 표시로만")) return p.opponent.hand.Count >= 3;
             return true;
         }
