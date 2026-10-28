@@ -198,7 +198,7 @@ namespace StrikerZ
             listCount.rectTransform.Anchor(0.4f, 0, 1, 1, 0, 0, 14, 0);
             searchInput = UIKit.Input(right.transform, "", "텍스트 검색 (이름·효과)", 17, 20);
             searchInput.GetComponent<RectTransform>().Anchor(0, 1, 1, 1, 10, -94, 10, 54);
-            searchInput.onValueChanged.AddListener(v => { search = v.Trim(); RefreshCollection(); });
+            searchInput.onValueChanged.AddListener(v => { search = v.Trim(); RefreshDeckCollection(); });
             filterRow = UIKit.Rect("Filters", right.transform).Anchor(0, 1, 1, 1, 10, -136, 10, 100);
             var fr = filterRow.gameObject.AddComponent<HorizontalLayoutGroup>();
             fr.spacing = 3;
@@ -208,11 +208,11 @@ namespace StrikerZ
             var r2 = row2.gameObject.AddComponent<HorizontalLayoutGroup>();
             r2.spacing = 4;
             r2.childControlWidth = r2.childControlHeight = true;
-            sortBtn = UIKit.Button(row2, "", () => { sortMode = (sortMode + 1) % SortNames.Length; RefreshCollection(); }, Dark, 15);
-            orderBtn = UIKit.Button(row2, "", () => { sortDesc = !sortDesc; RefreshCollection(); }, Dark, 15);
-            rarityBtn = UIKit.Button(row2, "", () => { rarityFilter = rarityFilter >= (int)Rarity.Unique ? -1 : rarityFilter + 1; RefreshCollection(); }, Dark, 15);
-            elementBtn = UIKit.Button(row2, "", () => { elementFilter = elementFilter >= (int)Element.Rainbow ? -1 : elementFilter + 1; RefreshCollection(); }, Dark, 15);
-            finishBtn = UIKit.Button(row2, "가공", () => { finishOnly = !finishOnly; RefreshCollection(); }, Dark, 15);
+            sortBtn = UIKit.Button(row2, "", () => { sortMode = (sortMode + 1) % SortNames.Length; RefreshDeckCollection(); }, Dark, 15);
+            orderBtn = UIKit.Button(row2, "", () => { sortDesc = !sortDesc; RefreshDeckCollection(); }, Dark, 15);
+            rarityBtn = UIKit.Button(row2, "", () => { rarityFilter = rarityFilter >= (int)Rarity.Unique ? -1 : rarityFilter + 1; RefreshDeckCollection(); }, Dark, 15);
+            elementBtn = UIKit.Button(row2, "", () => { elementFilter = elementFilter >= (int)Element.Rainbow ? -1 : elementFilter + 1; RefreshDeckCollection(); }, Dark, 15);
+            finishBtn = UIKit.Button(row2, "가공", () => { finishOnly = !finishOnly; RefreshDeckCollection(); }, Dark, 15);
             foreach (var (b, w) in new[] { (sortBtn, 1.5f), (orderBtn, 0.55f), (rarityBtn, 1.3f), (elementBtn, 1.3f), (finishBtn, 0.8f) })
             {
                 b.bg.gameObject.AddComponent<LayoutElement>().flexibleWidth = w;
@@ -430,11 +430,11 @@ namespace StrikerZ
             {
                 string ff = f;
                 bool sel = filter == f;
-                var fb = UIKit.Button(filterRow, f, () => { filter = ff; RefreshCollection(); }, sel ? UIKit.Accent : Dark, 14, sel ? Color.white : UIKit.Gold);
+                var fb = UIKit.Button(filterRow, f, () => { filter = ff; RefreshDeckCollection(); }, sel ? UIKit.Accent : Dark, 14, sel ? Color.white : UIKit.Gold);
                 fb.bg.gameObject.AddComponent<LayoutElement>().flexibleWidth = f.Length;
                 Compact(fb);
             }
-            RefreshCollection(false);
+            RefreshDeckCollection(false);
             if (pinned != null) ShowDetail(pinned, true);
         }
 
@@ -463,7 +463,7 @@ namespace StrikerZ
                 string.Join("   ", groups.Select(g => $"<color=#{CardData.ElementHex(g.Key)}>■</color> {CardData.ElementName(g.Key)} {g.Count()}"));
         }
 
-        void RefreshCollection(bool rebuildFilters = true)
+        void RefreshDeckCollection(bool rebuildFilters = true)
         {
             if (rebuildFilters) UIKit.HighlightByLabel(filterRow, filter, UIKit.Accent, Dark);   // 상단 종류 필터 버튼 색 갱신
             sortBtn.label.text = $"정렬 {SortNames[sortMode]}";
@@ -860,7 +860,7 @@ namespace StrikerZ
                 var t = UIKit.Txt(row, "N", $"{name} ×{n}", 17, UIKit.Ink, TextAnchor.MiddleLeft, FontStyle.Bold);
                 t.rectTransform.Anchor(0, 0, 0.44f, 1, 10, 0, 0, 0);
                 bool locked = Crafting.IsLocked(c.id, f);
-                var lb = UIKit.Button(row, locked ? "잠금" : "해제", () => { Crafting.SetLock(c.id, ff, !Crafting.IsLocked(c.id, ff)); RefreshCollection(); ShowDetail(c, true); },
+                var lb = UIKit.Button(row, locked ? "잠금" : "해제", () => { Crafting.SetLock(c.id, ff, !Crafting.IsLocked(c.id, ff)); RefreshDeckCollection(); ShowDetail(c, true); },
                     locked ? new Color(0.12f, 0.3f, 0.5f, 0.95f) : new Color(0.12f, 0.12f, 0.16f, 0.95f), 15, locked ? Color.white : UIKit.Muted);
                 lb.rt.Anchor(0.45f, 0.1f, 0.64f, 0.9f);
                 int can = Crafting.Dismantlable(c, f);
