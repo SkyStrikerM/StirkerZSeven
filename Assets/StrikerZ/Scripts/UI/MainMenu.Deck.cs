@@ -818,7 +818,7 @@ namespace StrikerZ
                 detailRarity.text = "<color=#ffd45a>HERO</color>";
                 detailStats.text = $"{dim}종류</color>  영웅\n{dim}ATK</color>  <b>{c.heroAtk}</b>\n{dim}HP</color>  <b>{c.BattleHeroHp}</b>" + (c.taunt ? "\n<color=#fb8>[도발]</color>" : "") +
                                    (editing?.heroId == c.id ? "\n\n<color=#ffd45a>사용 중</color>" : "");
-                detailText.text = $"{c.text}\n\n<color=#a9a3b8>직접 공격을 받으면 공격한 몬스터에게 ATK 만큼 반격합니다.</color>";
+                detailText.text = $"{c.text}\n\n<color=#9cf>원소 상한</color> {GameManager.CapText(c.element)}\n<color=#a9a3b8>직접 공격을 받으면 공격한 몬스터에게 ATK 만큼 반격합니다. 원소 상한 = 영웅 아래에 놓을 수 있는 속성별 원소 수 (상성).</color>";
                 return;
             }
             detailRarity.text = CardData.RarityRich(c.rarity);
