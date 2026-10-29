@@ -12,10 +12,7 @@ namespace StrikerZ
     public enum Element { None, Fire, Water, Wind, Earth, Thunder, Light, Dark, Rainbow }
 
     /// <summary>T0 = 지정된 타이밍(트리거)에 발동하는 마법, Normal = 일반 마법 — 메인(배치) 페이즈에 패에서 바로 발동 (2026-10-28, 예전 t/half 세트·배틀 발동 폐지)</summary>
-    public enum MagicSpeed { T0, Normal }
-
-    /// <summary>T0 마법이 발동 가능한 타이밍</summary>
-    public enum Trigger { None, OpponentTimeStart, BattleEnd, OpponentBattle }
+    public enum MagicSpeed { Set, Normal }   // Set = 칸에 뒷면으로 놓아 두면 배틀 때 그 칸 차례에 공개·발동 (2026-10-29, 트리거 창 폐지) · Normal = 패에서 바로
 
     public enum Phase { None, TimeStart, Main, Battle, BattleEnd, End }
     /// <summary>Extra = 엑스트라 덱 (필드 카드, 뷰 없음 · 낼 때 만든다)</summary>
@@ -117,7 +114,6 @@ namespace StrikerZ
 
         // ── 마법 ──
         public MagicSpeed speed = MagicSpeed.Normal;
-        public Trigger trigger = Trigger.None;
 
         // ── 영웅 ──
         public int heroHp = 30;
@@ -191,7 +187,7 @@ namespace StrikerZ
                     return $"몬스터 · {ElementName(element)} · 비용 {Cost}" + (maxTime > 0 ? $" · T{maxTime}까지" : "");
                 case CardType.Magic:
                     if (isElement) return $"원소 · {ElementName(element)}";
-                    return speed == MagicSpeed.T0 ? $"마법 · t0 · {TriggerName(trigger)}" : "마법 · 일반";
+                    return speed == MagicSpeed.Set ? "마법 · 세트" : "마법 · 일반";
                 case CardType.Hero: return $"영웅 · ATK {heroAtk} · HP {BattleHeroHp}";
                 default: return $"필드 · {ElementName(element)}";
             }
@@ -210,17 +206,6 @@ namespace StrikerZ
                 case Element.Dark: return "어둠";
                 case Element.Rainbow: return "무지개";
                 default: return "무속성";
-            }
-        }
-
-        public static string TriggerName(Trigger t)
-        {
-            switch (t)
-            {
-                case Trigger.OpponentTimeStart: return "타임 시작 시";
-                case Trigger.BattleEnd: return "배틀 엔드";
-                case Trigger.OpponentBattle: return "배틀 개시 시";
-                default: return "-";
             }
         }
 

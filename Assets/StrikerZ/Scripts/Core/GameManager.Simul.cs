@@ -48,14 +48,6 @@ namespace StrikerZ
             yield return hud.Banner($"TIME {time}", (mode != MatchMode.Puzzle ? "원소 1장 · " : "") + "카드를 칸으로 끌어다 놓으세요 (뒷면)" + (story == null && mode != MatchMode.Puzzle ? $" ({PlanTime:0}초)" : ""));
             if (story != null) { yield return StoryTimeStart(); if (gameOver) yield break; }
 
-            // 타임 시작 t0 (예전 '상대 타임 시작 전')
-            foreach (var p in new[] { lf, lf.opponent })
-            {
-                active = p;
-                yield return T0Window(Trigger.OpponentTimeStart, p);
-                if (gameOver) yield break;
-            }
-
             // 양쪽 드로우: T2 2장 · T3 3장 … T7 부터 7장 (패 최대 9장). 첫 T 는 시작 패 7장으로 시작하므로 드로우 없음
             foreach (var p in new[] { lf, lf.opponent })
             {
@@ -111,24 +103,12 @@ namespace StrikerZ
                 RefreshAll();
                 yield return Wait(1.1f);
             }
-            foreach (var p in new[] { lf, lf.opponent })
-            {
-                active = p;
-                yield return T0Window(Trigger.OpponentBattle, p);
-                if (gameOver) yield break;
-            }
             yield return LaneBattle(lf);
             if (gameOver || mode == MatchMode.Puzzle) yield break;   // 퍼즐은 이 배틀로 판정
 
             // ── 배틀 엔드 ──
             phase = Phase.BattleEnd;
             RefreshAll();
-            foreach (var p in new[] { lf, lf.opponent })
-            {
-                active = p;
-                yield return T0Window(Trigger.BattleEnd, p);
-                if (gameOver) yield break;
-            }
             ExpireStatuses(s => s.expire == Expire.NextBattleEnd);
             ClearWeaken();
             yield return HeroDuel();
@@ -210,12 +190,7 @@ namespace StrikerZ
                 yield return Wait(0.2f);
                 yield break;
             }
-            if (c.IsMagic)
-            {
-                if (c.data.speed == MagicSpeed.T0) yield break;   // t0 마법은 자기 타이밍(T0Window)에만 발동 — 칸 차례에는 그대로 둔다
-                yield return RevealMagic(c);
-                yield break;
-            }
+            if (c.IsMagic) { yield return RevealMagic(c); yield break; }   // 세트 마법: 그 칸 차례에 공개·발동
             if (!c.IsMonster) yield break;
             if (c.faceDown) yield return Reveal(c);
             if (gameOver || c.zone != Zone.Slot) yield break;

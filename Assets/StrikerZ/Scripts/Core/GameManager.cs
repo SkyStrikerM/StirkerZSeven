@@ -9,7 +9,7 @@ namespace StrikerZ
     /// <summary>
     /// 규칙 엔진 + 진행 흐름.
     /// TIME 1(선공) → TIME 2(후공) → ... 홀수 타임 = 선공, 짝수 타임 = 후공.
-    /// 각 타임: [상대 t0 창] → 드로우(패 7장까지) → 메인 → 배틀(드래그앤드롭 공격 · t/half 클릭 발동) → 배틀 엔드(t0 창) → 종료
+    /// 각 타임: 드로우(패 7장까지) → 메인 → 배틀(드래그앤드롭 공격 · 세트 마법은 칸 차례에 발동) → 배틀 엔드 → 종료
     /// </summary>
     public partial class GameManager : MonoBehaviour
     {
@@ -276,10 +276,6 @@ namespace StrikerZ
             if (raid != null && active == Cpu) { yield return BossTimeStart(); if (gameOver) yield break; }
             if (story != null && active == Human) { yield return StoryTimeStart(); if (gameOver) yield break; }
 
-            // 상대 타임 시작 전 t0
-            yield return T0Window(Trigger.OpponentTimeStart, opp);
-            if (gameOver) yield break;
-
             active.fieldPlayedThisTime = false;
             // 드로우: 패가 HandMax(7) 장이 될 때까지
             if (active.hand.Count < HandMax && !(raid != null && active == Cpu)) yield return Draw(active, HandMax - active.hand.Count);   // 레이드 보스는 덱 없이 스킬로
@@ -327,21 +323,15 @@ namespace StrikerZ
                 RefreshAll();
                 yield return hud.Banner("BATTLE PHASE", HumanDecides(active) ? "몬스터를 드래그해 공격" : "상대의 공격");
                 busy = true;
-                // 방어 측 t0 창 (상대 배틀 개시 시)
-                yield return T0Window(Trigger.OpponentBattle, opp);
-                if (gameOver) yield break;
-                busy = true;
                 yield return BattlePhase();
                 busy = false;
                 if (gameOver) yield break;
             }
 
-            // 배틀 엔드 — 이후 t0 마법 외 행동 불가
+            // 배틀 엔드
             phase = Phase.BattleEnd;
             RefreshAll();
             busy = true;
-            yield return T0Window(Trigger.BattleEnd, active);
-            if (!gameOver) yield return T0Window(Trigger.BattleEnd, opp);
             ExpireStatuses(s => s.expire == Expire.NextBattleEnd);
             ClearWeaken();
             if (gameOver) yield break;
@@ -490,7 +480,7 @@ namespace StrikerZ
 
         public bool CanActivateInBattle(CardInstance m)
             => phase == Phase.Battle && m != null && m.owner == active && m.zone == Zone.Slot && m.IsMagic
-               && m.data.speed == MagicSpeed.Normal && (m.data.canActivate == null || m.data.canActivate(this, m));
+               && m.data.speed == MagicSpeed.Set && (m.data.canActivate == null || m.data.canActivate(this, m));
 
         bool AnyBattleAction(PlayerState p)
             => p.slots.Any(c => c != null && ((CanAttackNow(c) && AttackTargets(c).Count > 0) || CanActivateInBattle(c)));
@@ -574,7 +564,7 @@ namespace StrikerZ
 
                 board.Pulse(next);
                 if (next.IsMonster) yield return MonsterAttacks(next);
-                else if (next.IsMagic && next.data.speed == MagicSpeed.Normal) yield return OfferActivation(next);
+                else if (next.IsMagic && next.data.speed == MagicSpeed.Set) yield return OfferActivation(next);
             }
         }
 
@@ -968,43 +958,6 @@ namespace StrikerZ
             if (pick == 0) yield return ActivateMagic(magic);
         }
 
-        // ══════════════════════════ t0 창 ══════════════════════════
-
-        public List<CardInstance> EligibleT0(PlayerState p, Trigger trig)
-        {
-            var list = new List<CardInstance>();
-            // 2026-10-29: t0 마법은 칸에 세트해 둔 것만 발동한다 (패에서 바로 발동 폐지 — 함정처럼 미리 깔아야 한다)
-            IEnumerable<CardInstance> src = p.slots.Where(s => s != null);
-            foreach (var c in src)
-            {
-                if (!c.IsMagic || c.data.speed != MagicSpeed.T0 || c.data.trigger != trig) continue;
-                if (c.data.canActivate != null && !c.data.canActivate(this, c)) continue;
-                list.Add(c);
-            }
-            return list;
-        }
-
-        IEnumerator T0Window(Trigger trig, PlayerState p)
-        {
-            bool prevBusy = busy;
-            busy = true;
-            var used = new HashSet<int>();
-            while (!gameOver)
-            {
-                var options = EligibleT0(p, trig).Where(c => !used.Contains(c.uid)).ToList();
-                if (options.Count == 0) break;
-                CardInstance pick = null;
-                if (HumanDecides(p))
-                    yield return ChooseFromList(p, options, $"t0 마법 발동 타이밍 — {CardData.TriggerName(trig)}", null, r => pick = r, allowCancel: true, cancelLabel: "패스");
-                else
-                    pick = ai.PickT0(p, options, trig);
-                if (pick == null) break;
-                used.Add(pick.uid);
-                yield return ActivateMagic(pick);
-            }
-            busy = prevBusy;
-        }
-
         // ══════════════════════════ 행동 ══════════════════════════
 
         public bool CanSummon(CardInstance c, out string why)
@@ -1055,9 +1008,9 @@ namespace StrikerZ
             RefreshAll();
         }
 
-        /// <summary>칸에 뒷면 세트: t0 마법만 (일반 마법은 패에서 바로 발동 — CastMagic)</summary>
+        /// <summary>칸에 뒷면 세트: 세트 마법만 — 배틀 때 그 칸 차례에 공개·발동 (일반 마법은 패에서 바로 발동 — CastMagic)</summary>
         public bool CanSet(CardInstance c)
-            => c.IsMagic && c.data.speed == MagicSpeed.T0 && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0 && CanPay(c);
+            => c.IsMagic && c.data.speed == MagicSpeed.Set && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0 && CanPay(c);
 
         /// <summary>일반 마법: 메인(배치) 페이즈에 패에서 바로 발동 (비용 지불, 발동 조건 확인)</summary>
         public bool CanCast(CardInstance c)

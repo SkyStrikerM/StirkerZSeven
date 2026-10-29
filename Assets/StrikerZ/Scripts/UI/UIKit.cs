@@ -676,8 +676,8 @@ namespace StrikerZ
             switch (d.type)
             {
                 case CardType.Magic:
-                    badgeText.text = d.speed == MagicSpeed.T0 ? "t0" : "일반";
-                    badge.color = d.speed == MagicSpeed.T0 ? new Color(0.6f, 0.15f, 0.5f, 0.95f) : new Color(0.1f, 0.35f, 0.7f, 0.95f);
+                    badgeText.text = d.speed == MagicSpeed.Set ? "세트" : "일반";
+                    badge.color = d.speed == MagicSpeed.Set ? new Color(0.6f, 0.15f, 0.5f, 0.95f) : new Color(0.1f, 0.35f, 0.7f, 0.95f);
                     break;
                 case CardType.Hero:
                     badgeText.text = "HERO"; badge.color = new Color(0.6f, 0.42f, 0.08f, 0.95f); break;

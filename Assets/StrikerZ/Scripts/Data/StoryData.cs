@@ -333,7 +333,7 @@ namespace StrikerZ
             // ─────────────── 3. 물빛의 손 ───────────────
             var s3 = Add(new StoryStage
             {
-                title = "물빛의 손", subtitle = "튜토리얼 · 마법 카드 (일반 · t0)", thumb = "v1_3a", rewardOpal = 50,
+                title = "물빛의 손", subtitle = "튜토리얼 · 마법 카드 (일반 · 세트)", thumb = "v1_3a", rewardOpal = 50,
                 synopsis = "상급생 그레고르의 괴롭힘. 그 앞을 막아선 것은 물의 치유사, 아리아였다.",
                 battle = new StoryBattle
                 {
@@ -343,7 +343,7 @@ namespace StrikerZ
                 },
             });
             s3.battle.tips.Add(Tip("start", "동료 지원: 아리아", "이번 전투에서는 아리아가 함께합니다. 내 타임이 시작될 때마다 아리아가 HP를 2 회복해 줘요."));
-            s3.battle.tips.Add(Tip("magic", "마법 카드", "일반 마법은 내 메인(배치) 페이즈에 패에서 바로 발동하고, t0 마법은 칸에 뒷면으로 세트해 두면 상대 타임의 정해진 순간(타임 시작 · 배틀 개시 · 배틀 엔드)에 반응해 발동합니다."));
+            s3.battle.tips.Add(Tip("magic", "마법 카드", "일반 마법은 내 메인(배치) 페이즈에 패에서 바로 발동하고, 세트 마법은 칸에 뒷면으로 놓아 두면 배틀 때 그 칸 차례에 공개되어 발동합니다."));
             s3.pre.Add(S("v1_3a",
                 L("gregor", "어이, 돌멩이. 요즘 베인 영감한테 과외 받는다며? 무속성 주제에 꼴사납게."),
                 L("kai", "……비켜 주세요, 그레고르 선배. 수업에 늦습니다."),

@@ -19,12 +19,12 @@ namespace StrikerZ
         // ─────────────────────────── 마법 ───────────────────────────
         public static readonly List<CardData> Magics = new List<CardData>
         {
-            new CardData { id = "S001", name = "봉화", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.T0, trigger = Trigger.OpponentTimeStart,
-                text = "타임 시작 시 발동 가능. 카드 1장 드로우. 이번 배틀 엔드까지 상대의 가장 앞 소환수 ATK -2.",
+            new CardData { id = "S001", name = "봉화", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.Set,
+                text = "카드 1장 드로우. 이번 배틀 엔드까지 상대의 가장 앞 소환수 ATK -2.",
                 effect = Effects.Seq(Effects.Draw(1), Effects.WeakenEnemies(1, 2, front: true)) },
 
-            new CardData { id = "S002", name = "포기란없다", type = CardType.Magic, rarity = Rarity.Uncommon, speed = MagicSpeed.T0, trigger = Trigger.BattleEnd,
-                text = "배틀 엔드에, 상대보다 필드 카드 수와 HP가 모두 적을 경우 발동 가능. 묘지에서 몬스터 1장과 마법 1장을 패로 가져온다.",
+            new CardData { id = "S002", name = "포기란없다", type = CardType.Magic, rarity = Rarity.Uncommon, speed = MagicSpeed.Set,
+                text = "상대보다 필드 카드 수와 HP가 모두 적을 때만 발동. 묘지에서 몬스터 1장과 마법 1장을 패로 가져온다.",
                 canActivate = (g, c) => c.owner.FieldCount < c.owner.opponent.FieldCount && c.owner.hp < c.owner.opponent.hp,
                 effect = Effects.ReturnFromGrave(1, 1) },
 
@@ -47,19 +47,19 @@ namespace StrikerZ
             new CardData { id = "S008", name = "질풍 가속", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.Normal,
                 text = "아군 가장 앞 소환수의 ATK +3 (이번 타임).", effect = Effects.BuffFront(3) },
 
-            new CardData { id = "S009", name = "치유의 빛", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.T0, trigger = Trigger.BattleEnd,
-                text = "배틀 엔드에 발동 가능. HP 5 회복.",
+            new CardData { id = "S009", name = "치유의 빛", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.Set,
+                text = "HP 5 회복.",
                 canActivate = (g, c) => c.owner.hp < c.owner.maxHp, effect = Effects.Heal(5) },
 
-            new CardData { id = "S010", name = "반격의 결의", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.T0, trigger = Trigger.OpponentTimeStart,
-                text = "타임 시작 시 발동 가능. 다음 배틀 엔드까지 아군 몬스터 ATK +2.",
+            new CardData { id = "S010", name = "반격의 결의", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.Set,
+                text = "이번 배틀 엔드까지 아군 몬스터 ATK +2.",
                 effect = Effects.BuffAllies(2, Expire.NextBattleEnd) },
 
             new CardData { id = "S011", name = "저격 조준", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.Normal,
                 text = "이번 타임 동안 아군 소환수는 가장 뒤(오른쪽) 상대 소환수를 공격한다. ([도발] 무시)",
                 effect = Effects.AddStatus(StatusKind.FreeTarget, Expire.EndOfTime) },
-            new CardData { id = "S012", name = "도발의 깃발", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.T0, trigger = Trigger.OpponentTimeStart,
-                text = "타임 시작 시 발동 가능. 아군 몬스터 1장은 이번 타임 동안 [도발]을 얻는다.",
+            new CardData { id = "S012", name = "도발의 깃발", type = CardType.Magic, rarity = Rarity.Common, speed = MagicSpeed.Set,
+                text = "아군 몬스터 1장은 이번 타임 동안 [도발]을 얻는다.",
                 effect = Effects.GrantTaunt() },
         };
 
@@ -99,8 +99,8 @@ namespace StrikerZ
         // "순속성" = 아군 필드 몬스터가 모두 같은 속성 (무지개는 어느 속성과도 일치).
         public static readonly List<CardData> Mythics = new List<CardData>
         {
-            new CardData { id = "S101", name = "저스티아", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Light, speed = MagicSpeed.T0, trigger = Trigger.OpponentBattle,
-                text = "배틀 개시 시 발동. 아군 패·필드의 빛 속성 카드 수+1장까지 상대 필드 마법을 파괴하고, 파괴한 수만큼 ATK가 높은 상대 몬스터를 이번 타임 행동 불능으로 만든다.",
+            new CardData { id = "S101", name = "저스티아", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Light, speed = MagicSpeed.Set,
+                text = "아군 패·필드의 빛 속성 카드 수+1장까지 상대 필드 마법을 파괴하고, 파괴한 수만큼 ATK가 높은 상대 몬스터를 이번 타임 행동 불능으로 만든다.",
                 canActivate = MythicEffects.OpponentHasField, effect = MythicEffects.Judgment },
             new CardData { id = "S102", name = "블래스트 플레어", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Fire, speed = MagicSpeed.Normal,
                 text = "아군 필드에 화염 몬스터가 있을 때 발동. ATK 4 이하인 상대 몬스터를 모두 파괴한다. 그 후 아군 필드 가장 오른쪽 화염 몬스터는 이번 타임 행동 불능.",
@@ -108,8 +108,8 @@ namespace StrikerZ
             new CardData { id = "S103", name = "게헨나 플레임", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Fire, speed = MagicSpeed.Normal,
                 text = "상대 필드 왼쪽 몬스터 2장에게 지옥불을 붙인다: 3타임 동안 ATK -3. 상대 영웅에게 3 데미지.",
                 effect = MythicEffects.Hellfire },
-            new CardData { id = "S104", name = "데스 사이즈", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Dark, speed = MagicSpeed.T0, trigger = Trigger.OpponentBattle,
-                text = "배틀 개시 시 발동. 상대 필드 왼쪽 몬스터 2장 중 기본 ATK 5 이하인 몬스터를 파괴한다.",
+            new CardData { id = "S104", name = "데스 사이즈", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Dark, speed = MagicSpeed.Set,
+                text = "상대 필드 왼쪽 몬스터 2장 중 기본 ATK 5 이하인 몬스터를 파괴한다.",
                 canActivate = (g, c) => c.owner.opponent.Monsters().Count > 0, effect = MythicEffects.DeathBlade },
             new CardData { id = "S105", name = "세인트 리벤저", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Light, speed = MagicSpeed.Normal,
                 text = "상대 필드에서 ATK가 가장 높은 몬스터의 ATK를 이번 배틀 엔드까지 절반(올림)으로 만들고, 줄어든 수치만큼 아군 필드 몬스터 전체 ATK 증가. 순속성: 줄어든 수치만큼 HP 회복.",
@@ -120,11 +120,11 @@ namespace StrikerZ
             new CardData { id = "S107", name = "천둥 포화", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Thunder, speed = MagicSpeed.Normal,
                 text = "아군 왼쪽 1·2번째 몬스터가 각각 상대 왼쪽 1·2번째 몬스터를 조준한다. 아군 ATK가 같거나 높으면 대상을 파괴. 순속성: 파괴한 수×3 만큼 상대 영웅에게 데미지.",
                 canActivate = (g, c) => c.owner.Monsters().Count > 0 && g.EffectTargets(c.owner.opponent).Count > 0, effect = MythicEffects.Volley },
-            new CardData { id = "S108", name = "세이렌의 눈물", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Water, speed = MagicSpeed.T0, trigger = Trigger.OpponentBattle,
-                text = "배틀 개시 시 발동. 상대 필드 왼쪽 몬스터 3장의 ATK를 이번 배틀 엔드까지 아군 패의 물 속성 카드 수(최소 2)로 나눈다(내림). 상대 필드 마법 1장을 상대 패로 되돌린다.",
+            new CardData { id = "S108", name = "세이렌의 눈물", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Water, speed = MagicSpeed.Set,
+                text = "상대 필드 왼쪽 몬스터 3장의 ATK를 이번 배틀 엔드까지 아군 패의 물 속성 카드 수(최소 2)로 나눈다(내림). 상대 필드 마법 1장을 상대 패로 되돌린다.",
                 canActivate = MythicEffects.OpponentHasField, effect = MythicEffects.MermaidTear },
-            new CardData { id = "S109", name = "루미너스 보이드", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Light, speed = MagicSpeed.T0, trigger = Trigger.OpponentBattle,
-                text = "배틀 개시 시 발동. 아군 필드 빛 속성 몬스터를 오른쪽부터 모두 패로 되돌리고, 되돌린 수만큼 상대 필드 카드(ATK 높은 몬스터 우선)를 상대 덱으로 보낸다.",
+            new CardData { id = "S109", name = "루미너스 보이드", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Light, speed = MagicSpeed.Set,
+                text = "아군 필드 빛 속성 몬스터를 오른쪽부터 모두 패로 되돌리고, 되돌린 수만큼 상대 필드 카드(ATK 높은 몬스터 우선)를 상대 덱으로 보낸다.",
                 canActivate = (g, c) => MythicEffects.HasElement(c.owner, Element.Light) && c.owner.opponent.FieldCount > 0, effect = MythicEffects.WhiteHole },
             new CardData { id = "S110", name = "테라 사이클론", type = CardType.Magic, rarity = Rarity.Unique, element = Element.Wind, speed = MagicSpeed.Normal,
                 text = "상대 필드 왼쪽 몬스터부터 차례로 파괴한다. 파괴한 몬스터의 기본 ATK 합계가 9를 넘을 수 없다. 아군 필드 몬스터가 모두 바람 속성이 아니면 한도 7.",
