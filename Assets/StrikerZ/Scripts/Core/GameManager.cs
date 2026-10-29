@@ -61,9 +61,29 @@ namespace StrikerZ
         public List<CardData> humanDeck;
         public string humanName = "플레이어", humanAvatar = "avatar_01";
         public const string CpuName = "CPU";
-        /// <summary>자동 테스트: 사람 쪽도 AI 가 조작</summary>
+        /// <summary>오토 모드: 사람 쪽도 AI 가 조작 (HUD [AUTO] 버튼 · 1분 무입력 AFK · 자동 테스트)</summary>
         public bool autoHuman;
+        /// <summary>오토 모드가 AFK(1분 무입력)로 켜졌는가 — 이때는 입력이 들어오면 바로 수동으로 돌아간다</summary>
+        public bool autoByAfk;
         bool HumanDecides(PlayerState p) => p.isHuman && !autoHuman;
+        /// <summary>시간 초과·오토 모드로 AI 가 대신 고를 때의 기록 문구</summary>
+        string AutoPickNote => autoHuman ? "오토 모드 — 자동 선택" : "선택 시간 초과 — 자동 선택";
+
+        /// <summary>
+        /// 오토 모드 켜기/끄기. 켜면 지금 기다리던 사람 입력(배치 · 배틀 · 선택창 · 운명 재배치 · 원소 · 패 정리)은
+        /// 그 자리에서 AI 가 이어받고, 끄면 다음 입력 차례부터 다시 사람이 고른다.
+        /// </summary>
+        public void SetAuto(bool on, bool byAfk = false)
+        {
+            if (autoHuman == on && autoByAfk == (on && byAfk)) return;
+            bool was = autoHuman;
+            autoHuman = on;
+            autoByAfk = on && byAfk;
+            if (players[0] == null || was == on) return;
+            if (on) { hud.CloseMenu(); hud.CancelPlanInput(); }
+            Log(on ? (byAfk ? "1분 동안 입력이 없어 오토 모드로 전환 — 움직이면 수동으로 돌아갑니다" : "오토 모드 ON — 카드 배치·배틀·선택을 자동으로") : "수동 모드 — 직접 조작");
+            RefreshAll();
+        }
         public event Action OnMatchFinished;
 
         bool endMainRequested, battleRequested;
@@ -76,7 +96,7 @@ namespace StrikerZ
 
         void Awake() { I = this; }
 
-        public bool IsHumanMain => !gameOver && phase == Phase.Main && active == Human && !busy && choiceOptions == null;
+        public bool IsHumanMain => !gameOver && phase == Phase.Main && active == Human && !busy && choiceOptions == null && !autoHuman;
         public bool ChoicePending => choiceOptions != null;
         public bool IsChoiceOption(CardInstance c) => choiceOptions != null && choiceOptions.Contains(c);
 
@@ -300,14 +320,16 @@ namespace StrikerZ
             // 메인
             phase = Phase.Main;
             RefreshAll();
+            bool humanDone = false;
             if (HumanDecides(active))
             {
                 StoryMainCoach();
                 endMainRequested = battleRequested = false;
-                while (!endMainRequested && !gameOver) yield return null;
+                while (!endMainRequested && !gameOver && !autoHuman) yield return null;   // 오토로 바뀌면 아래에서 AI 가 이어받음
                 while (busy) yield return null;
+                humanDone = endMainRequested;
             }
-            else
+            if (!humanDone && !gameOver)
             {
                 busy = true;
                 yield return raid != null && active == Cpu ? BossMainPhase() : ai.MainPhase(active);
@@ -387,7 +409,8 @@ namespace StrikerZ
             {
                 List<CardInstance> picked = null;
                 hud.ShowDiscard(p.hand.ToList(), over, PlanSeconds, r => picked = r);
-                while (picked == null && !gameOver) yield return null;
+                while (picked == null && !gameOver && !autoHuman) yield return null;
+                if (picked == null) hud.CancelPick();      // 오토 전환: 남은 장수는 아래 AI 기준으로
                 foreach (var c in picked ?? new List<CardInstance>())
                 {
                     if (p.hand.Count <= EndHandMax || !p.hand.Contains(c)) continue;
@@ -532,10 +555,17 @@ namespace StrikerZ
                 HumanBattleOpen = true;
                 RefreshAll();
                 hud.ShowBattleMode();
-                while (!gameOver && !battleEndRequested && pendingAttacker == null && pendingMagic == null) yield return null;
+                while (!gameOver && !battleEndRequested && pendingAttacker == null && pendingMagic == null && !autoHuman) yield return null;
                 HumanBattleOpen = false;
                 hud.HideBattleMode();
                 RefreshAll();
+                if (autoHuman && pendingAttacker == null && pendingMagic == null && !battleEndRequested && !gameOver)
+                {
+                    // 오토 전환: 남은 공격·발동은 AI 순서로
+                    pendingAttacker = pendingTarget = pendingMagic = null;
+                    yield return AutoBattle();
+                    break;
+                }
                 if (pendingMagic != null) { board.Pulse(pendingMagic); yield return ActivateMagic(pendingMagic); }
                 else if (pendingAttacker != null) yield return AttackWith(pendingAttacker, pendingTarget);
                 RefreshAll();
@@ -942,7 +972,7 @@ namespace StrikerZ
                 hud.ShowBandChoice($"{m.Name} — 효과를 선택하세요", bandText, active, rolled, coin, r => { band = r; done = true; });
                 bool ok = true;
                 yield return WaitChoice(() => done, r => ok = r);
-                if (!ok) { band = Dice.Band(values[best]); Log($"{m.Name}: 선택 시간 초과 — 자동 선택"); }
+                if (!ok) { band = Dice.Band(values[best]); Log($"{m.Name}: {AutoPickNote}"); }
                 hud.HideChoice();
                 pick = Array.FindIndex(values, v => Dice.Band(v) == band);
                 if (pick < 0) pick = best;
@@ -1633,6 +1663,7 @@ namespace StrikerZ
             float left = BattleChoiceSeconds;
             while (!done() && !gameOver)
             {
+                if (autoHuman) { hud.ChoiceTimer(-1); finished(false); yield break; }   // 오토 모드: AI 기준으로 바로
                 if (timed)
                 {
                     if (Time.timeScale > 0) left -= Time.unscaledDeltaTime;
@@ -1662,7 +1693,7 @@ namespace StrikerZ
             {
                 choiceResult = onTimeout?.Invoke();
                 choiceDone = true;
-                Log("선택 시간 초과 — 자동 선택" + (choiceResult != null ? $" ({choiceResult.Name})" : ""));
+                Log(AutoPickNote + (choiceResult != null ? $" ({choiceResult.Name})" : ""));
             }
             hide();
             choiceOptions = null;
@@ -1713,7 +1744,7 @@ namespace StrikerZ
             hud.ShowOptions(prompt, labels, i => { pick = i; done = true; });
             bool ok = true;
             yield return WaitChoice(() => done, r => ok = r);
-            if (!ok) { pick = aiPick != null ? aiPick() : 0; Log($"선택 시간 초과 — 자동 선택 ({labels[Mathf.Clamp(pick, 0, labels.Length - 1)]})"); }
+            if (!ok) { pick = aiPick != null ? aiPick() : 0; Log($"{AutoPickNote} ({labels[Mathf.Clamp(pick, 0, labels.Length - 1)]})"); }
             hud.HideChoice();
             result(pick);
         }

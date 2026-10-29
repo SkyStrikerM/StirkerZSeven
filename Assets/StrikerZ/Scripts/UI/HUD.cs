@@ -182,14 +182,73 @@ namespace StrikerZ
             // 2배속 (CPU · 스토리 대전). 누를 때마다 켜기/끄기, 설정에 기억
             speedBtn = UIKit.Button(root, "▶▶ x2", ToggleSpeed, null, 22);
             speedBtn.rt.Place(new Vector2(1, 0.5f), new Vector2(-24, 128), new Vector2(150, 56));
+            // 오토 모드 (모든 대전): 누를 때마다 자동/수동. 1분 동안 입력이 없으면 저절로 켜지고, 움직이면 다시 수동
+            autoBtn = UIKit.Button(root, "AUTO", ToggleAuto, null, 22);
+            autoBtn.rt.Place(new Vector2(1, 0.5f), new Vector2(-24, 190), new Vector2(150, 56));
             // 메인 메뉴처럼 아이콘 + 이름 (VARCO 아이콘, Tools/nav)
             battleBtn.Icon(GameAssets.TexSprite("btl_ready"), 58);
             heroBtn.Icon(GameAssets.TexSprite("btl_hero"), 46);
             speedBtn.Icon(GameAssets.TexSprite("btl_speed"), 42);
+            autoBtn.Icon(GameAssets.TexSprite("btl_auto"), 42);
         }
 
         UIKit.Btn speedBtn;
         bool speedShown;
+
+        // ── 오토 모드 ──
+        /// <summary>이만큼 입력(마우스 움직임·클릭·키)이 없으면 오토 모드로 (실제 시간)</summary>
+        public static float AfkSeconds = 60f;
+        UIKit.Btn autoBtn;
+        bool autoShown;
+        float lastInputTime;
+        int afkRevertFrame = -1;
+
+        void ToggleAuto()
+        {
+            if (g == null || g.players[0] == null) return;
+            if (Time.frameCount == afkRevertFrame) return;    // 이 클릭이 AFK 오토를 이미 수동으로 되돌렸다
+            g.SetAuto(!g.autoHuman);
+            RefreshAutoBtn();
+        }
+
+        void RefreshAutoBtn()
+        {
+            if (autoBtn == null || g == null) return;
+            bool on = g.autoHuman;
+            autoBtn.label.text = on ? "AUTO  ON" : "AUTO";
+            autoBtn.label.color = on ? new Color(0.18f, 0.08f, 0.02f) : UIKit.Gold;
+            autoBtn.bg.color = on ? new Color(0.45f, 0.95f, 0.75f, 0.97f) : new Color(0.06f, 0.04f, 0.1f, 0.9f);
+        }
+
+        /// <summary>새 입력이 있었는가 (마우스 움직임·버튼·휠, 키보드)</summary>
+        static bool AnyInput()
+        {
+            var m = Mouse.current;
+            if (m != null && (m.delta.ReadValue().sqrMagnitude > 0.5f || m.leftButton.isPressed || m.rightButton.isPressed || m.middleButton.isPressed || m.scroll.ReadValue().sqrMagnitude > 0.5f)) return true;
+            var k = Keyboard.current;
+            return k != null && k.anyKey.isPressed;
+        }
+
+        /// <summary>
+        /// 오토 버튼 표시(대전 중 · 결과 화면 전까지)와 AFK 전환: 1분 동안 입력이 없으면 오토 모드,
+        /// AFK 로 켜진 오토는 입력이 들어오는 순간 수동으로 돌아간다 (버튼으로 켠 오토는 그대로).
+        /// </summary>
+        void UpdateAutoMode()
+        {
+            bool inMatch = g != null && g.players[0] != null && !g.gameOver;
+            if (autoBtn != null && autoShown != inMatch)
+            {
+                autoShown = inMatch;
+                autoBtn.bg.gameObject.SetActive(inMatch);
+                RefreshAutoBtn();
+            }
+            if (!inMatch || Paused || AutoTest.Enabled) { lastInputTime = Time.unscaledTime; return; }   // 자동 테스트는 autoHuman 을 직접 다룬다
+            bool input = AnyInput();
+            if (input) lastInputTime = Time.unscaledTime;
+            if (input && g.autoHuman && g.autoByAfk) { g.SetAuto(false); afkRevertFrame = Time.frameCount; RefreshAutoBtn(); }
+            else if (!g.autoHuman && Time.unscaledTime - lastInputTime >= AfkSeconds) { g.SetAuto(true, true); RefreshAutoBtn(); }
+            else if (autoBtn != null && (autoBtn.label.text == "AUTO  ON") != g.autoHuman) RefreshAutoBtn();   // 코드로 바뀐 경우
+        }
 
         void ToggleSpeed()
         {
@@ -1069,6 +1128,7 @@ namespace StrikerZ
         void Update()
         {
             UpdateSpeedBoost();
+            UpdateAutoMode();
             if (g == null || g.players[0] == null) return;
             if (CardZoom.IsOpen)
             {
@@ -1166,6 +1226,9 @@ namespace StrikerZ
                 else if (slot >= 0) g.Log(fromHand ? "그 칸에는 놓을 수 없습니다" : "그 칸으로는 옮길 수 없습니다");
             }
         }
+
+        /// <summary>오토 전환: 끌고 있던 배치 카드를 놓는다</summary>
+        public void CancelPlanInput() => CancelPlanDrag();
 
         void CancelPlanDrag()
         {

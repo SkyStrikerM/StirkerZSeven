@@ -173,6 +173,15 @@ namespace StrikerZ
             cb?.Invoke(fatePicked.ToList());
         }
 
+        /// <summary>오토 전환: 고르기 화면을 결과 없이 닫는다 (호출 쪽이 AI 기준으로 대신 고른다)</summary>
+        public void CancelPick()
+        {
+            if (fateRoot == null || !fateRoot.gameObject.activeSelf) return;
+            CardZoom.Close();
+            fateDone = null;
+            fateRoot.gameObject.SetActive(false);
+        }
+
         /// <summary>테스트용: 지금 고른 그대로 확정</summary>
         public void TestConfirmFate() => ConfirmFate();
         public bool FateOpen => fateRoot != null && fateRoot.gameObject.activeSelf;

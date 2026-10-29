@@ -65,18 +65,21 @@ namespace StrikerZ
             phase = Phase.Main;
             active = Human;
             RefreshAll();
+            bool humanDone = false;
             if (HumanDecides(Human))
             {
                 StoryMainCoach();
                 endMainRequested = battleRequested = false;
                 // 배치 시간은 실제 시간 (2배속·연출 속도와 무관하게 30초). 스토리(튜토리얼)는 시간 제한 없음
                 planDeadline = story == null && mode != MatchMode.Puzzle ? Time.unscaledTime + PlanTime : -1f;
-                while (!endMainRequested && !gameOver && !(planDeadline > 0 && Time.unscaledTime >= planDeadline)) yield return null;
-                if (!endMainRequested && !gameOver) { Log("배치 시간 종료 — 놓은 카드로 진행"); hud.CloseMenu(); }
+                while (!endMainRequested && !gameOver && !autoHuman && !(planDeadline > 0 && Time.unscaledTime >= planDeadline)) yield return null;
+                bool timeUp = planDeadline > 0 && Time.unscaledTime >= planDeadline;
+                if (!endMainRequested && !gameOver && timeUp) { Log("배치 시간 종료 — 놓은 카드로 진행"); hud.CloseMenu(); }
                 planDeadline = -1f;
                 while (busy) yield return null;
+                humanDone = endMainRequested || timeUp;     // 오토로 바뀌었으면 아래에서 AI 가 남은 배치를 이어받음
             }
-            else
+            if (!humanDone && !gameOver)
             {
                 busy = true;
                 yield return ai.PlanPhase(Human);

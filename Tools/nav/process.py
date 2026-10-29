@@ -28,7 +28,7 @@ def key(path):
 
 PICK = {'nav_home': 'home_b', 'nav_story': 'story_b', 'nav_raid': 'raid_a', 'nav_challenge': 'challenge_b',
         'nav_deck': 'deck_a', 'nav_shop': 'shop_b', 'nav_quest': 'quest_b', 'nav_profile': 'profile_b',
-        'nav_settings': 'settings_a', 'nav_title': 'title_a', 'nav_quit': 'quit_a', 'cp_unique': 'cpu_a', 'nav_collection': 'collection_a', 'tab_quest': 'trophy_a', 'tab_pass': 'pass_b', 'tab_attend': 'attend_a', 'btl_hero': 'hero_a', 'btl_field': 'field_a', 'btl_ready': 'ready_b', 'btl_speed': 'speed_a', 'btl_stamp': 'stamp_b', 'btl_scout': 'scout_b'}
+        'nav_settings': 'settings_a', 'nav_title': 'title_a', 'nav_quit': 'quit_a', 'cp_unique': 'cpu_a', 'nav_collection': 'collection_a', 'tab_quest': 'trophy_a', 'tab_pass': 'pass_b', 'tab_attend': 'attend_a', 'btl_hero': 'hero_a', 'btl_field': 'field_a', 'btl_ready': 'ready_b', 'btl_speed': 'speed_a', 'btl_stamp': 'stamp_b', 'btl_scout': 'scout_b', 'btl_auto': 'auto_a'}
 
 if __name__ == '__main__':
     only = sys.argv[1:]

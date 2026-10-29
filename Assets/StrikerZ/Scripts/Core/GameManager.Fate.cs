@@ -23,7 +23,8 @@ namespace StrikerZ
             {
                 bool done = false;
                 hud.ShowFate(Human.hand.ToList(), FateSeconds, list => { humanPick = list; done = true; });
-                while (!done && !gameOver) yield return null;
+                while (!done && !gameOver && !autoHuman) yield return null;
+                if (!done) { hud.CancelPick(); humanPick = ai.FatePick(Human); }   // 오토 전환
             }
             else humanPick = ai.FatePick(Human);
             var cpuPick = raid != null ? new List<CardInstance>() : ai.FatePick(Cpu);
