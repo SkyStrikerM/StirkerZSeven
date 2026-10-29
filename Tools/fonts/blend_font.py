@@ -68,7 +68,7 @@ class Src:
 def trace_to_glyph(mask, upm):
     """0/1 마스크 → potrace → TrueType 글리프 (픽셀 → 폰트 단위, y 뒤집기)"""
     bm = potrace.Bitmap(~mask)      # potracer 는 0 을 검정(글자)으로 본다
-    path = bm.trace(turdsize=14, alphamax=1.0, opticurve=True, opttolerance=0.25)
+    path = bm.trace(turdsize=14, alphamax=1.0, opticurve=True, opttolerance=0.45)
     k = upm / S
     tt = TTGlyphPen(None)
     pen = TransformPen(Cu2QuPen(tt, max_err=upm / 500.0), (k, 0, 0, -k, -X0 * k, Y0 * k))
@@ -83,19 +83,54 @@ def trace_to_glyph(mask, upm):
         pen.closePath()
     return tt.glyph()
 
-def blend_mask(srcs, ch, weights=None, thresh=0.45, blur=1.6):
-    """폰트별 래스터를 가중 평균 → 살짝 흐려 잔선을 없앤 뒤 thresh 로 자른다 (0.5 보다 조금 낮춰 획이 끊기지 않게)"""
-    from PIL import ImageFilter
-    acc = None
-    for i, s in enumerate(srcs):
-        a = s.render(ch) * (1.0 if weights is None else weights[i])
-        acc = a if acc is None else acc + a
-    acc /= (len(srcs) if weights is None else sum(weights))
-    if blur > 0:
-        im = Image.fromarray((np.clip(acc, 0, 1) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(blur))
-        acc = np.asarray(im, dtype=np.float32) / 255.0
-    return acc >= thresh
+def align_to(base, m, max_shift):
+    """m 을 base 에 가장 잘 겹치도록 평행이동 (FFT 상호상관, ±max_shift 픽셀)"""
+    from scipy.signal import fftconvolve
+    b = base[::2, ::2].astype(np.float32); mm = m[::2, ::2].astype(np.float32)
+    corr = fftconvolve(b, mm[::-1, ::-1], mode='same')
+    cy, cx = np.array(corr.shape) // 2
+    r = max(1, max_shift // 2)
+    win = corr[cy - r:cy + r + 1, cx - r:cx + r + 1]
+    dy, dx = np.unravel_index(np.argmax(win), win.shape)
+    dy = (dy - r) * 2; dx = (dx - r) * 2
+    out = np.zeros_like(m)
+    H_, W_ = m.shape
+    ys = slice(max(0, dy), min(H_, H_ + dy)); yd = slice(max(0, -dy), min(H_, H_ - dy))
+    xs = slice(max(0, dx), min(W_, W_ + dx)); xd = slice(max(0, -dx), min(W_, W_ - dx))
+    out[ys, xs] = m[yd, xd]
+    return out
 
+def blend_mask(srcs, ch, weights=None, thresh=0.35, blur=2.2):
+    """첫 폰트(바탕)에 나머지 폰트의 글자를 평행이동으로 맞춘 뒤 가중 평균 → 흐림 → thresh 로 자른다.
+    바탕 가중치(0.4) 가 thresh 보다 크므로 바탕의 획은 절대 사라지지 않고, 다른 폰트는 획 굵기·곡선·끝모양을 바꾸거나
+    둘 이상이 동의하는 곳에 새 획 모양을 더한다 (단순 평균은 위치가 다른 가는 획을 통째로 지워 글자가 깨졌다)."""
+    from PIL import ImageFilter
+    ws = weights if weights is not None else [1.0] * len(srcs)
+    imgs = []
+    for s in srcs:
+        img = s.render(ch)
+        imgs.append(np.asarray(Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.0)), dtype=np.float32) / 255.0)
+    base = imgs[0] >= 0.5
+    acc = imgs[0] * ws[0]
+    for i in range(1, len(imgs)):
+        m = imgs[i] >= 0.5
+        if base.any() and m.any():
+            aligned = align_to(base, imgs[i], int(S * 0.08))
+        else:
+            aligned = imgs[i]
+        acc = acc + aligned * ws[i]
+    acc /= sum(ws)
+    if blur > 0:
+        acc = np.asarray(Image.fromarray((np.clip(acc, 0, 1) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(blur)), dtype=np.float32) / 255.0
+    m = acc >= thresh
+    # 획 가장자리의 잔 톱니·패임을 정리: 작은 원판으로 닫기(틈 메움) → 열기(돌기 제거). 작은 글씨에서 '깨져' 보이던 원인
+    from scipy import ndimage
+    r = max(2, int(round(S * 0.012)))
+    yy, xx = np.ogrid[-r:r + 1, -r:r + 1]
+    disk = (xx * xx + yy * yy) <= r * r
+    m = ndimage.binary_closing(m, structure=disk)
+    m = ndimage.binary_opening(m, structure=disk)
+    return m
 def main(sample_only=False):
     t0 = time.time()
     malgun = Src(os.path.join(WIN, 'malgun.ttf'))
@@ -103,7 +138,7 @@ def main(sample_only=False):
     dotum = Src(os.path.join(WIN, 'gulim.ttc'), ttc_index(os.path.join(WIN, 'gulim.ttc'), 'Dotum'))
     gulim = Src(os.path.join(WIN, 'gulim.ttc'), ttc_index(os.path.join(WIN, 'gulim.ttc'), 'Gulim'))
     hangul = [malgun, noto, dotum, gulim]
-    HANGUL_W = [0.3, 0.3, 0.2, 0.2]       # 맑은 고딕·Noto 를 조금 더 (돋움·굴림은 비트맵 출신이라 획이 가늘고 모양이 다르다)
+    HANGUL_W = [0.4, 0.3, 0.15, 0.15]     # 바탕(맑은 고딕) 0.4 > thresh 0.35: 바탕 획은 늘 남고, 다른 폰트는 굵기·곡선을 바꾼다
     h0 = malgun.hangul_height()
     for s in hangul[1:]:
         s.scale = h0 / s.hangul_height()
@@ -124,7 +159,7 @@ def main(sample_only=False):
 
     codes = list(range(0xAC00, 0xD7A4))
     if sample_only:
-        codes = [ord(c) for c in '스트라이커즈세븐가나다라마바사아자차카타파하대장장이거한빛의견습사제개기일식배틀시작공격턴수비']
+        codes = [ord(c) for c in '스트라이커즈세븐가나다라마바사아자차카타파하대장장이거한빛의견습사제개기일식배틀시작공격턴수비양쪽모두생존엔시아나마도기갑병용암석타이탄약화회복드로우']
     n = 0
     for code in codes:
         if code not in cmap: continue
@@ -171,7 +206,7 @@ def main(sample_only=False):
     preview(out)
 
 def preview(path):
-    lines = ['스트라이커즈 세븐 — 합성 폰트 미리보기 0123456789', '가나다라마바사 아자차카타파하', '대장장이 거한 · 빛의 견습사제 · 개기일식',
+    lines = ['스트라이커즈 세븐 — 합성 폰트 미리보기 0123456789', '가나다라마바사 아자차카타파하', '양쪽 모두 생존 — 엔시아나 · 마도 기갑병 · 용암석 타이탄', '대장장이 거한 · 빛의 견습사제 · 개기일식',
              '배틀 시작 — 공격 턴 · 수비 턴  HP 36 / 36  ATK 7', 'ABC abc !?()[]…·']
     img = Image.new('RGB', (1500, 60 + 76 * len(lines)), (18, 18, 26))
     d = ImageDraw.Draw(img)
