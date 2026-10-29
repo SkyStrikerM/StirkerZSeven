@@ -801,6 +801,7 @@ namespace StrikerZ
         /// <summary>
         /// 파괴: 카드가 가루가 되어 묘지로 빨려 들어간다 — 카드 면에서 아래줄부터 모래알(grain)과 속성 빛가루(mote)가 떨어져 나와
         /// 묘지 위 소용돌이(vortex)로 가속하며 빨려 들고, 카드도 작아지며 묘지 쪽으로 끌려간다.
+        /// 레어도가 높을수록 가루가 많고 오래(Common 1 · Uncommon 1.3 · Rare 1.7 · Unique 2.4배), 가공 카드는 은빛(Seven)·금빛(StrikerZ) 가루와 반짝임이 섞인다.
         /// 끝나면 카드는 보이지 않는 크기(fxScale 0)로 묘지로 날아가고, Reappear 가 묘지에서 다시 보이게 한다
         /// </summary>
         public IEnumerator Dissolve(CardInstance c, float dur = 0.75f)
@@ -813,11 +814,21 @@ namespace StrikerZ
             var start = v.transform.position;
             var sand = new Color(0.85f, 0.78f, 0.65f);
             var sandDark = new Color(0.45f, 0.4f, 0.35f);
-            // 묘지 위 흡입 소용돌이 (속성 색, 안으로 돈다)
-            StartCoroutine(QuadRoutine("vortex", grave + Vector3.up * 0.06f, Color.Lerp(col, Color.white, 0.35f), 2.6f, 1.1f, dur + 0.9f, true, -720f, 0f,
+            // 레어도 → 가루 양·지속, 가공 → 은빛/금빛
+            float k = c.data.rarity == Rarity.Unique ? 2.4f : c.data.rarity == Rarity.Rare ? 1.7f : c.data.rarity == Rarity.Uncommon ? 1.3f : 1f;
+            float kk = (k - 1f) / 1.4f;
+            dur *= Mathf.Lerp(1f, 1.35f, kk);
+            bool finished = c.finish != CardFinish.Normal;
+            var shine = c.finish == CardFinish.StrikerZ ? new Color(1f, 0.84f, 0.38f) : new Color(0.88f, 0.93f, 1f);        // 금빛 · 은빛
+            var shineDark = c.finish == CardFinish.StrikerZ ? new Color(0.75f, 0.5f, 0.12f) : new Color(0.6f, 0.68f, 0.8f);
+            // 묘지 위 흡입 소용돌이 (속성 색, 안으로 돈다 — 가공 카드는 은빛/금빛이 섞인다)
+            var vortexCol = Color.Lerp(col, Color.white, 0.35f);
+            if (finished) vortexCol = Color.Lerp(vortexCol, shine, 0.5f);
+            StartCoroutine(QuadRoutine("vortex", grave + Vector3.up * 0.06f, vortexCol, 2.6f * Mathf.Lerp(1f, 1.5f, kk), 1.1f, dur + 0.9f, true, -720f, 0f,
                                        t => t < 0.12f ? t / 0.12f : t > 0.72f ? 1f - (t - 0.72f) / 0.28f : 1f, float.NaN, 1f, 0.9f));
             var psGrain = AshSystem(start, "grain", 0f);
             var psSpark = AshSystem(start, Tex("mote_" + Suffix(s)) != null ? "mote_" + Suffix(s) : "mote_neutral", 0f);
+            var psShine = finished ? AshSystem(start, "star", 0f) : null;   // 가공 반짝임
             var ep = new ParticleSystem.EmitParams();
             float emit = 0;
             for (float t = 0; t < 1f; t += Time.deltaTime / dur)
@@ -826,41 +837,48 @@ namespace StrikerZ
                 v.fxScale = Mathf.Lerp(1f, 0.05f, t * t);
                 v.lunge = (grave - start) * (0.45f * t * t) + Vector3.up * 0.2f * t;   // 카드도 묘지 쪽으로 끌려간다
                 // 아래쪽 줄부터 위로 쓸려 올라가며 가루가 된다
-                emit += Time.deltaTime * 380f;
+                emit += Time.deltaTime * 380f * k;
                 while (emit > 1)
                 {
                     emit--;
                     float sx = Random.Range(-CardView.W, CardView.W) * 0.5f;
                     float sz0 = Mathf.Lerp(-CardView.H * 0.5f, CardView.H * 0.5f, Mathf.Clamp01(t + Random.Range(-0.2f, 0.2f)));
-                    bool spark = Random.value < 0.35f;
+                    float roll = Random.value;
+                    bool glint = finished && roll < 0.18f;                 // 가공: 은빛/금빛 반짝임
+                    bool shiny = finished && !glint && roll < 0.45f;       // 가공: 은빛/금빛 모래알
+                    bool spark = !glint && !shiny && Random.value < 0.35f;
                     float area = Mathf.Lerp(1f, 0.6f, t);
                     ep.position = v.transform.position + v.lunge + v.transform.rotation * new Vector3(sx * area, 0.02f, sz0 * area);
                     ep.velocity = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.2f, 0.7f), Random.Range(-0.5f, 0.5f));
-                    ep.startColor = spark ? Color.Lerp(col, Color.white, Random.value * 0.6f) : Color.Lerp(sand, sandDark, Random.value);
-                    ep.startSize = (spark ? 0.08f : 0.11f) * SizeK * MoteK * Random.Range(0.5f, 1.2f);
+                    ep.startColor = glint ? Color.Lerp(shine, Color.white, Random.value * 0.5f)
+                                  : shiny ? Color.Lerp(shine, shineDark, Random.value)
+                                  : spark ? Color.Lerp(col, Color.white, Random.value * 0.6f) : Color.Lerp(sand, sandDark, Random.value);
+                    ep.startSize = (glint ? 0.07f : spark ? 0.08f : 0.11f) * SizeK * MoteK * Random.Range(0.5f, 1.2f) * Mathf.Lerp(1f, 1.25f, kk);
                     ep.startLifetime = Random.Range(1.2f, 1.7f);
                     ep.rotation = Random.Range(0f, 360f);
-                    (spark ? psSpark : psGrain).Emit(ep, 1);
+                    (glint ? psShine : spark ? psSpark : psGrain).Emit(ep, 1);
                 }
                 Steer(psGrain, grave, Time.deltaTime, 18f);
                 Steer(psSpark, grave, Time.deltaTime, 18f);
+                if (psShine != null) Steer(psShine, grave, Time.deltaTime, 18f);
                 yield return null;
             }
             if (c.view == v) { v.fxScale = 0.001f; v.lunge = Vector3.zero; }
-            StartCoroutine(SuckTail(psGrain, psSpark, grave, s));   // 남은 가루는 게임 진행을 막지 않고 계속 빨려 들어간다
+            StartCoroutine(SuckTail(new[] { psGrain, psSpark, psShine }, grave, s, finished, shine, k));   // 남은 가루는 게임 진행을 막지 않고 계속 빨려 들어간다
         }
 
-        IEnumerator SuckTail(ParticleSystem a, ParticleSystem b, Vector3 grave, Style s)
+        IEnumerator SuckTail(ParticleSystem[] systems, Vector3 grave, Style s, bool finished, Color shine, float k)
         {
-            for (float t = 0; t < 1.8f && (a.particleCount > 0 || b.particleCount > 0); t += Time.deltaTime)
+            for (float t = 0; t < 2.2f; t += Time.deltaTime)
             {
-                Steer(a, grave, Time.deltaTime, 24f);
-                Steer(b, grave, Time.deltaTime, 24f);
+                bool any = false;
+                foreach (var ps in systems) if (ps != null && ps.particleCount > 0) { Steer(ps, grave, Time.deltaTime, 24f); any = true; }
+                if (!any) break;
                 yield return null;
             }
-            Ring(grave, s, 1.3f, 0.35f, true);
-            Destroy(a.gameObject, 0.2f);
-            Destroy(b.gameObject, 0.2f);
+            Ring(grave, s, 1.3f * k, 0.35f, true);
+            if (finished) Sparks(grave, shine, Color.white, Mathf.RoundToInt(8 * k), Vector3.up * 1.2f, 0.5f, 0.07f, 0.7f, -0.1f, 0.25f, "star");   // 가공: 묘지에서 은빛/금빛 반짝 마무리
+            foreach (var ps in systems) if (ps != null) Destroy(ps.gameObject, 0.2f);
         }
 
         /// <summary>소멸한 카드가 묘지에 닿을 때쯤 다시 보이게</summary>
