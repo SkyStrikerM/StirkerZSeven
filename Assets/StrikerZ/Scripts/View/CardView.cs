@@ -333,6 +333,14 @@ namespace StrikerZ
             if (card != null && card.zone != Zone.Slot && (stage != Vector3.zero || stageScale != 1f)) { stage = Vector3.zero; stageScale = 1f; }   // 칸을 떠나면 무대에서 내려온다
             Vector3 pos = tPos + lunge + stage;
             Quaternion rot = tRot;
+            if (stageScale > 1.01f && Camera.main != null)
+            {
+                // 전투 무대: 카메라 정면을 보도록 세운다 (앞면 = 로컬 +y 가 카메라 쪽, 카드 위쪽 = 로컬 +z 가 하늘 쪽). 아직 뒷면이면 뒷면을 보인다
+                var toCam = (Camera.main.transform.position - (tPos + stage)).normalized;
+                var top = Vector3.ProjectOnPlane(Vector3.up, toCam).normalized;
+                rot = Quaternion.LookRotation(top, toCam);
+                if (card != null && card.faceDown) rot *= Quaternion.Euler(0, 0, 180);
+            }
             float scale = tScale * fxScale * stageScale;
             bool lifted = hovered && hoverLift;
             if (lifted)

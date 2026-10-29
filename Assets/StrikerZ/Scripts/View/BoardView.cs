@@ -440,9 +440,9 @@ namespace StrikerZ
 
         /// <summary>전투 무대 열: 보드 왼쪽 절반 가운데(내 소환수) · 오른쪽 절반 가운데(상대 소환수). 주사위·코인도 같은 열 아래에 구른다 (DiceRoller.SideX)</summary>
         public const float StageX = 2.4f;
-        /// <summary>전투 무대 자리: 양쪽 줄 사이 위쪽에 크게 띄운다, 가운데(필드 카드 위)엔 VS</summary>
-        public static Vector3 StagePos(bool human) => CenterPos + new Vector3(human ? -StageX : StageX, 1.05f, 0.35f);
-        public static Vector3 VsPos => CenterPos + new Vector3(0, 1.2f, 0.35f);
+        /// <summary>전투 무대 자리: 양쪽 줄 사이 위쪽에 카메라 정면을 보게 세워 크게 띄운다 (CardView 가 빌보드 회전), 가운데(필드 카드 위)엔 VS</summary>
+        public static Vector3 StagePos(bool human) => CenterPos + new Vector3(human ? -StageX : StageX, 1.75f, 0.3f);
+        public static Vector3 VsPos => CenterPos + new Vector3(0, 1.9f, 0.3f);
 
         /// <summary>전투 시작: 싸우는 두 소환수를 가운데 위로 띄워 마주 세운다 (내 쪽 왼쪽 · 상대 오른쪽), 바닥엔 진영 색 마법진</summary>
         public void StageBegin(CardInstance a, CardInstance d)
@@ -453,7 +453,7 @@ namespace StrikerZ
                 bool human = c.owner != null && c.owner.isHuman;
                 var p = StagePos(human);
                 c.view.stage = p - c.view.TargetPos;
-                c.view.stageScale = 1.65f;
+                c.view.stageScale = 2.3f;
                 if (CardFx.I != null)
                 {
                     var col = human ? new Color(0.45f, 0.75f, 1f) : new Color(1f, 0.45f, 0.35f);

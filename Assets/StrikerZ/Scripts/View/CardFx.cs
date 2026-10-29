@@ -951,7 +951,7 @@ namespace StrikerZ
             while (q != null && vsQuad == q)
             {
                 t += Time.deltaTime;
-                float s = 1.9f * (1f + 0.05f * Mathf.Sin(t * 4f)) * Mathf.Lerp(2.2f, 1f, Mathf.Clamp01(t / 0.25f));
+                float s = 2.6f * (1f + 0.05f * Mathf.Sin(t * 4f)) * Mathf.Lerp(2.2f, 1f, Mathf.Clamp01(t / 0.25f));
                 q.transform.position = pos;
                 if (Cam != null) q.transform.rotation = Cam.transform.rotation;
                 q.transform.localScale = new Vector3(s, s, 1);
