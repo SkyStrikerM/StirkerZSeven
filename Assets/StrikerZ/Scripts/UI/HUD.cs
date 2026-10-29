@@ -804,6 +804,7 @@ namespace StrikerZ
             if (planDrag != null || Time.frameCount <= suppressClickFrame) return;   // 드래그 배치를 놓은 클릭은 확대하지 않는다
             if (g.ChoicePending) { g.TryPickChoice(c); return; }
             if (c.zone == Zone.Grave) { OpenGrave(c.owner == g.Human); return; }   // 묘지 더미 = 묘지 보기
+            if (c.data.isElement && c.zone == Zone.Center) { OpenElements(c.owner == g.Human); return; }   // 영웅 아래 원소 더미 = 원소 보기
             if (g.HumanBattleOpen)
             {
                 // 배틀: 세트한 t/half 마법은 클릭해서 발동 (몬스터 공격은 드래그)
