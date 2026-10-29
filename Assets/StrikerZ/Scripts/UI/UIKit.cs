@@ -584,7 +584,7 @@ namespace StrikerZ
             frame.sprite = frameSprite;
             // 몬스터 대지 프레임은 이름판이 어두운 청동이라 밝은 글자 + 외곽선 (필드 대지는 밝은 사암판)
             bool darkPlate = elementFrame && (d.type == CardType.Monster || d.isElement) && d.element == Element.Earth && !over;
-            Color fc = L.tintByElement && !elementFrame ? Color.Lerp(Color.white, CardData.ElementColor(d.element), L.tint) : Color.white;
+            Color fc = L.tintByElement && !elementFrame ? Color.Lerp(Color.white, CardData.ElementColor(d.element), L.tint) : L.frameTint;
             if (frameSprite == null) fc = new Color(0.8f, 0.8f, 0.85f, 0.25f);
             else if (over) fc.a = L.overFrameAlpha;
             frame.color = fc;

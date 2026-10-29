@@ -210,7 +210,12 @@ namespace StrikerZ
                 yield return Wait(0.2f);
                 yield break;
             }
-            if (c.IsMagic) { yield return RevealMagic(c); yield break; }
+            if (c.IsMagic)
+            {
+                if (c.data.speed == MagicSpeed.T0) yield break;   // t0 마법은 자기 타이밍(T0Window)에만 발동 — 칸 차례에는 그대로 둔다
+                yield return RevealMagic(c);
+                yield break;
+            }
             if (!c.IsMonster) yield break;
             if (c.faceDown) yield return Reveal(c);
             if (gameOver || c.zone != Zone.Slot) yield break;

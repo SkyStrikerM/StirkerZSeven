@@ -973,7 +973,8 @@ namespace StrikerZ
         public List<CardInstance> EligibleT0(PlayerState p, Trigger trig)
         {
             var list = new List<CardInstance>();
-            IEnumerable<CardInstance> src = p.hand.Concat(p.slots.Where(s => s != null));
+            // 2026-10-29: t0 마법은 칸에 세트해 둔 것만 발동한다 (패에서 바로 발동 폐지 — 함정처럼 미리 깔아야 한다)
+            IEnumerable<CardInstance> src = p.slots.Where(s => s != null);
             foreach (var c in src)
             {
                 if (!c.IsMagic || c.data.speed != MagicSpeed.T0 || c.data.trigger != trig) continue;

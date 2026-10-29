@@ -76,8 +76,20 @@ namespace StrikerZ
                 yield return g.CastMagic(m);
                 yield return g.Wait(0.25f);
             }
+            // 6) t0 마법은 칸에 세트해 둬야 발동한다 — 소환수 자리를 남기고 2장까지
+            yield return SetT0Magics(p);
 
             yield return g.Wait(0.4f);
+        }
+
+        /// <summary>t0 마법을 칸에 뒷면으로 세트 (패에서는 발동할 수 없다). 소환수 칸을 남기려고 1~5번 칸이 비어 있을 때만, 2장까지</summary>
+        IEnumerator SetT0Magics(PlayerState p)
+        {
+            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.T0).Take(2).ToList())
+            {
+                if (p.FreeSlot() < 0 || p.FreeSlot() >= 5 || !g.CanSet(m)) break;
+                yield return g.SetMagic(m);
+            }
         }
 
         /// <summary>
@@ -127,6 +139,7 @@ namespace StrikerZ
                 yield return g.CastMagic(m);
                 yield return g.Wait(0.2f);
             }
+            yield return SetT0Magics(p);   // t0 마법은 세트해 둬야 발동
 
             if (lv == CpuLevel.Trainee) { yield return g.Wait(0.3f); yield break; }   // 수련: 놓은 순서 그대로 (튼튼한 카드를 앞에 두지 않는다)
             List<CardInstance> order;

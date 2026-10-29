@@ -779,7 +779,7 @@ namespace StrikerZ
                         if (c.data.speed == MagicSpeed.T0)
                         {
                             items.Add(("칸에 세트", () => g.HumanAct(g.SetMagic(c)), g.CanSet(c)));
-                            note = $"t0 마법: [{CardData.TriggerName(c.data.trigger)}] 타이밍에 패/필드에서 발동";
+                            note = $"t0 마법: 칸에 뒷면으로 세트해 두면 [{CardData.TriggerName(c.data.trigger)}] 타이밍에 발동 (패에서는 발동 불가)";
                             if (c.owner.FreeSlot() < 0) note += "\n빈 칸이 없습니다";
                         }
                         else

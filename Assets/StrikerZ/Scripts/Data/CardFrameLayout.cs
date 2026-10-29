@@ -14,6 +14,8 @@ namespace StrikerZ
         public string frame;                 // Textures/Frames/ 아래 파일명 (확장자 제외)
         public bool tintByElement;           // 속성 색으로 프레임 틴트
         public float tint = 0.5f;            // 틴트 강도 0~1
+        /// <summary>종류 고정 틴트 (속성 틴트를 안 쓰는 종류용). 프레임 이미지에 곱해져 더 진하고 선명해진다 — 마법 카드 구분용 (2026-10-29)</summary>
+        public Color frameTint = Color.white;
         public Vector4 art;                  // 아트 창 (프레임 뒤에 깔림)
         public Vector4 name;                 // 이름 배너
         public Vector4 type;                 // 종류/속성/타임 줄
@@ -61,6 +63,7 @@ namespace StrikerZ
         public static FrameLayout Magic = new FrameLayout
         {
             frame = "frame_magic",
+            frameTint = new Color(0.42f, 0.78f, 0.92f),   // 연한 청록 프레임을 진한 청록으로 — 마법 카드임이 한눈에 보이게
             art = new Vector4(0.077f, 0.442f, 0.935f, 0.899f),
             name = new Vector4(0.16f, 0.908f, 0.84f, 0.971f),
             type = new Vector4(0.101f, 0.368f, 0.909f, 0.44f),
