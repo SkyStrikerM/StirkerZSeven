@@ -931,6 +931,103 @@ namespace StrikerZ
             }
         }
 
+        // ══════════════════════════ 지속 오라 (버프·디버프가 걸려 있는 동안) ══════════════════════════
+
+        /// <summary>한 카드의 한 종류(버프/디버프) 오라: 카드 아래에서 도는 고리 + 이따금 떠오르는(가라앉는) 입자</summary>
+        class Aura
+        {
+            public GameObject ring;
+            public float age, spin, emitT;
+        }
+
+        readonly Dictionary<(CardInstance, int), Aura> auras = new Dictionary<(CardInstance, int), Aura>();
+        readonly HashSet<(CardInstance, int)> auraWanted = new HashSet<(CardInstance, int)>();
+        readonly List<(CardInstance, int)> auraDead = new List<(CardInstance, int)>();
+
+        const int AuraBuff = 1, AuraDebuff = 2;
+        static readonly Color BuffCol = new Color(1f, 0.82f, 0.4f);
+        static readonly Color DebuffCol = new Color(0.72f, 0.38f, 1f);
+
+        /// <summary>
+        /// 카드에 걸린 지속 효과를 모아 오라 종류를 정한다 (비트: 1 = 버프, 2 = 디버프).
+        /// 버프 = 임시 ATK +, 기간 ATK/HP +, 아군 전체 ATK + 상태(대장장이 거한·전투의 함성 등), 자유 대상(저격 조준)
+        /// 디버프 = 약화, 임시 ATK −, 기간 ATK/HP −, 상대가 건 ATK − 상태(봉화 등), 행동 불능, [상처]
+        /// 뒷면 카드는 정보가 새지 않게 표시하지 않는다
+        /// </summary>
+        static int AuraKind(GameManager g, CardInstance c)
+        {
+            if (c == null || !c.IsMonster || c.zone != Zone.Slot || c.view == null || c.faceDown) return 0;
+            int plus = 0, minus = 0;
+            if (c.tempAtk > 0) plus += c.tempAtk; else minus -= c.tempAtk;
+            minus += c.weaken;
+            foreach (var b in c.buffs) if (b.untilTime >= g.time) { if (b.value > 0) plus += b.value; else minus -= b.value; }
+            foreach (var b in c.hpBuffs) if (b.untilTime >= g.time) { if (b.value > 0) plus += b.value; else minus -= b.value; }
+            foreach (var s in g.statuses)
+            {
+                if (s.target != null && s.target != c.owner) continue;
+                if (s.kind == StatusKind.AtkBonus)
+                {
+                    if (s.value > 0) plus += s.value;
+                    else if (s.value < 0 && !(g.Resist(c) && s.caster != c.owner)) minus -= s.value;
+                }
+                else if (s.kind == StatusKind.FreeTarget && s.target == c.owner) plus += 1;
+            }
+            if (c.stunUntil >= g.time || c.noRegenUntil >= g.time) minus += 1;
+            return (plus > 0 ? AuraBuff : 0) | (minus > 0 ? AuraDebuff : 0);
+        }
+
+        void LateUpdate() => UpdateAuras();
+
+        void UpdateAuras()
+        {
+            var g = GameManager.I;
+            auraWanted.Clear();
+            if (g != null && g.players != null)
+                foreach (var p in g.players)
+                {
+                    if (p == null) continue;
+                    foreach (var c in p.slots)
+                    {
+                        int k = AuraKind(g, c);
+                        if ((k & AuraBuff) != 0) auraWanted.Add((c, AuraBuff));
+                        if ((k & AuraDebuff) != 0) auraWanted.Add((c, AuraDebuff));
+                    }
+                }
+            auraDead.Clear();
+            foreach (var kv in auras) if (!auraWanted.Contains(kv.Key) || kv.Key.Item1.view == null || kv.Value.ring == null) auraDead.Add(kv.Key);
+            foreach (var key in auraDead) { Kill(auras[key].ring); auras.Remove(key); }
+            foreach (var key in auraWanted)
+            {
+                bool buff = key.Item2 == AuraBuff;
+                if (!auras.TryGetValue(key, out var a))
+                {
+                    string tex = buff ? (Tex("aura_buff") != null ? "aura_buff" : "ring_light") : (Tex("aura_debuff") != null ? "aura_debuff" : "ring_dark");
+                    a = new Aura { ring = Quad("FxAura", tex, buff ? BuffCol : DebuffCol), spin = Random.Range(0f, 360f) };
+                    auras[key] = a;
+                }
+                var v = key.Item1.view;
+                a.age += Time.deltaTime;
+                a.spin += Time.deltaTime * (buff ? 45f : -30f);
+                float fadeIn = Mathf.Clamp01(a.age / 0.35f);
+                float size = (buff ? 1.75f : 1.9f) * (1f + 0.035f * Mathf.Sin(Time.time * 3.2f)) * Mathf.Lerp(1.6f, 1f, fadeIn);
+                a.ring.transform.position = v.transform.position + Vector3.up * (buff ? 0.06f : 0.075f);
+                a.ring.transform.rotation = Quaternion.Euler(90, a.spin, 0);
+                a.ring.transform.localScale = new Vector3(size, size, 1);
+                var col = buff ? BuffCol : DebuffCol;
+                float alpha = fadeIn * (0.55f + 0.2f * Mathf.Sin(Time.time * 3.2f + (buff ? 0f : 1.5f)));
+                SetColor(a.ring, new Color(col.r, col.g, col.b, alpha));
+                // 이따금 입자: 버프는 금빛 반짝임이 떠오르고, 디버프는 어둠 입자가 내려앉는다
+                a.emitT += Time.deltaTime;
+                if (a.emitT > (buff ? 0.4f : 0.5f))
+                {
+                    a.emitT = 0;
+                    var pos = v.transform.position + Vector3.up * 0.1f;
+                    if (buff) Sparks(pos, BuffCol, Color.white, 2, Vector3.up * 0.9f, 0.25f, 0.05f, 0.8f, -0.1f, 0.35f, "star");
+                    else Sparks(pos + Vector3.up * 0.7f, DebuffCol, new Color(0.3f, 0.1f, 0.5f), 2, Vector3.down * 0.5f, 0.2f, 0.1f, 0.9f, 0.15f, 0.35f, "mote_dark");
+                }
+            }
+        }
+
         // ══════════════════════════ 카드 고유 연출 (발동 순간) ══════════════════════════
 
         public IEnumerator Signature(GameManager g, CardInstance c)
