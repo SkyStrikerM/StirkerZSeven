@@ -931,6 +931,42 @@ namespace StrikerZ
             }
         }
 
+        // ══════════════════════════ 전투 무대 VS ══════════════════════════
+
+        GameObject vsQuad;
+
+        /// <summary>전투 무대 가운데 VS 엠블럼(VARCO "vs" 텍스처, 카메라를 본다). 무대가 내려갈 때 HideVs</summary>
+        public void ShowVs(Vector3 pos)
+        {
+            HideVs();
+            if (Tex("vs") == null) return;
+            vsQuad = Quad("FxVs", "vs", Color.white);
+            Burst(pos, Color.white, 2.6f, 0.4f);
+            StartCoroutine(VsRoutine(vsQuad, pos));
+        }
+
+        IEnumerator VsRoutine(GameObject q, Vector3 pos)
+        {
+            float t = 0;
+            while (q != null && vsQuad == q)
+            {
+                t += Time.deltaTime;
+                float s = 1.9f * (1f + 0.05f * Mathf.Sin(t * 4f)) * Mathf.Lerp(2.2f, 1f, Mathf.Clamp01(t / 0.25f));
+                q.transform.position = pos;
+                if (Cam != null) q.transform.rotation = Cam.transform.rotation;
+                q.transform.localScale = new Vector3(s, s, 1);
+                SetColor(q, new Color(1f, 1f, 1f, Mathf.Clamp01(t / 0.2f)));
+                yield return null;
+            }
+        }
+
+        public void HideVs()
+        {
+            if (vsQuad == null) return;
+            Kill(vsQuad);
+            vsQuad = null;
+        }
+
         // ══════════════════════════ 배틀 시작: 공격 턴 · 수비 턴 ══════════════════════════
 
         /// <summary>

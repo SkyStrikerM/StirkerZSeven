@@ -44,6 +44,10 @@ namespace StrikerZ
 
         Camera Cam => Camera.main;
 
+        /// <summary>전투 무대 아래 주사위 자리: 내(사람) 쪽은 왼쪽, 상대는 오른쪽 (BoardView.StageX 와 같은 열), 카드보다 앞(아래)쪽 줄</summary>
+        float SideX(int side) => side == humanSide ? -BoardView.StageX : BoardView.StageX;
+        const float DiceZ = -0.95f;
+
         public void Init()
         {
             var go = new GameObject("DiceLabels", typeof(RectTransform));
@@ -70,17 +74,17 @@ namespace StrikerZ
             if (withDefender) for (int i = 0; i < countD; i++) rd[i] = coinD ? (rng.Next(2) == 0 ? 6 : 1) : rng.Next(1, 7);
 
             int running = 0;
-            float cA = withDefender ? -1.8f : 0f, cD = 1.8f;
+            float cA = withDefender ? SideX(0) : 0f, cD = SideX(1), z0 = withDefender ? DiceZ : 0f;
             for (int i = 0; i < countA; i++)
             {
-                var pa = new Vector3(cA + (i - (countA - 1) * 0.5f) * 0.68f, 0.02f, (withDefender && !coinA ? (i - 1) * 0.12f : 0));     // 보드 중앙선 위, 코인은 엇갈리지 않게 한 줄
+                var pa = new Vector3(cA + (i - (countA - 1) * 0.5f) * 0.68f, 0.02f, z0 + (withDefender && !coinA ? (i - 1) * 0.12f : 0));     // 무대 카드 아래, 코인은 엇갈리지 않게 한 줄
                 running++;
                 StartCoroutine(Track(RollOne(0, i, coinA, ra[i], pa, new Vector3(-0.5f, 0, -3f), i * 0.3f, new Color(0.45f, 0.82f, 1f)), () => running--));
             }
             if (withDefender)
                 for (int i = 0; i < countD; i++)
                 {
-                    var pd = new Vector3(cD + (i - (countD - 1) * 0.5f) * 0.68f, 0.02f, coinD ? 0f : -(i - 1) * 0.12f);
+                    var pd = new Vector3(cD + (i - (countD - 1) * 0.5f) * 0.68f, 0.02f, z0 + (coinD ? 0f : -(i - 1) * 0.12f));
                     running++;
                     StartCoroutine(Track(RollOne(1, i, coinD, rd[i], pd, new Vector3(0.5f, 0, 3f), i * 0.3f + 0.1f, new Color(1f, 0.55f, 0.45f)), () => running--));
                 }
@@ -561,8 +565,8 @@ namespace StrikerZ
         public IEnumerator FlipCoin(int side, bool heads)
         {
             Sfx.Play("dice", 0.7f);
-            // 보드 중앙선(z 0) 위에 좌우 대칭으로 (예전엔 위아래로 엇갈려 대각선이 됐다)
-            var land = new Vector3(side == 0 ? -1.8f : 1.8f, 0.02f, 0f);
+            // 무대 카드 아래 좌우 대칭으로 (내 쪽 왼쪽 · 상대 오른쪽)
+            var land = new Vector3(SideX(side), 0.02f, DiceZ);
             yield return RollOne(side, MaxDice - 1, true, heads ? 6 : 1, land, new Vector3(side == 0 ? -0.5f : 0.5f, 0, side == 0 ? -3f : 3f), 0f,
                 side == 0 ? new Color(0.45f, 0.82f, 1f) : new Color(1f, 0.55f, 0.45f));
             yield return new WaitForSeconds(0.25f);
