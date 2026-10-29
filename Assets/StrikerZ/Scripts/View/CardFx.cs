@@ -931,6 +931,40 @@ namespace StrikerZ
             }
         }
 
+        // ══════════════════════════ 배틀 시작: 공격 턴 · 수비 턴 ══════════════════════════
+
+        /// <summary>
+        /// 배틀 시작 연출: 공격 측 줄에는 붉은 충격파와 화염 폭발이 줄을 따라 번지고, 수비 측 줄에는 푸른 보호막 고리가 조여들며 소환수마다 방어막이 떠오른다.
+        /// 화면도 내 턴에 맞춰 붉게/푸르게 번쩍인다
+        /// </summary>
+        public void TurnSignal(PlayerState attacker, PlayerState defender)
+        {
+            if (attacker == null || defender == null) return;
+            StartCoroutine(TurnSignalRoutine(attacker, defender));
+        }
+
+        IEnumerator TurnSignalRoutine(PlayerState attacker, PlayerState defender)
+        {
+            var red = new Color(1f, 0.42f, 0.25f);
+            var blue = new Color(0.45f, 0.72f, 1f);
+            bool mine = attacker.isHuman;
+            Flash(mine ? new Color(1f, 0.45f, 0.2f, 0.2f) : new Color(0.3f, 0.55f, 1f, 0.2f), 0.45f);
+            // 공격 측: 줄 가운데에서 큰 붉은 충격파 + 왼쪽부터 오른쪽으로 번지는 화염 폭발
+            Ring(RowCenter(attacker), red, 8f, 0.9f);
+            Glyph(RowCenter(attacker), Style.Fire, 4.5f, 1.0f);
+            // 수비 측: 푸른 고리가 안으로 조여들고 소환수마다 방어막
+            Ring(RowCenter(defender), blue, 8f, 0.9f, true);
+            Glyph(RowCenter(defender), Style.Water, 4.5f, 1.0f);
+            foreach (var m in defender.Monsters()) if (m.view != null && !m.faceDown) Bubble(PosOf(m) + Vector3.up * 0.1f, blue, 1.0f);
+            for (int i = 0; i < PlayerState.SlotCount; i++)
+            {
+                var p = board.SlotPos(attacker, i);
+                Burst(p, Style.Fire, 1.5f, 0.4f);
+                Motes(p, Style.Fire, 5, Vector3.up * 1.4f, 0.5f, 0.1f, 0.6f, -0.15f, 0.3f);
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+
         // ══════════════════════════ 지속 오라 (버프·디버프가 걸려 있는 동안) ══════════════════════════
 
         /// <summary>한 카드의 한 종류(버프/디버프) 오라: 카드 아래에서 도는 고리 + 이따금 떠오르는(가라앉는) 입자</summary>

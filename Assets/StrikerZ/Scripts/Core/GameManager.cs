@@ -767,7 +767,16 @@ namespace StrikerZ
         /// 몬스터 전투: 양쪽이 동시에 서로의 ATK 만큼 피해를 준다. HP 가 0 이 되면 파괴되고,
         /// 남은 HP 를 넘긴 초과 피해의 절반(+관통)은 그 몬스터 주인 영웅에게 들어간다.
         /// </summary>
+        /// <summary>전투: 두 소환수를 보드 가운데 위로 띄워 마주 세우고(내 쪽 왼쪽 · 상대 오른쪽) 싸운 뒤 제자리로 내린다</summary>
         IEnumerator Battle(CardInstance a, CardInstance d)
+        {
+            if (board != null) board.StageBegin(a, d);
+            yield return Wait(0.3f);
+            yield return BattleCore(a, d);
+            if (board != null) board.StageEnd(a, d);
+        }
+
+        IEnumerator BattleCore(CardInstance a, CardInstance d)
         {
             if (d.faceDown)
             {

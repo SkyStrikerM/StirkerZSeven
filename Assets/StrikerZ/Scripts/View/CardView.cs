@@ -18,6 +18,10 @@ namespace StrikerZ
         public Vector3 lunge;       // 공격 연출 오프셋
         /// <summary>연출용 크기 배율 (파괴 소멸: 1 → 0, 묘지에 닿으면 다시 1). 목표 크기에 곱한다</summary>
         public float fxScale = 1f;
+        /// <summary>전투 무대 오프셋: 싸우는 두 소환수를 보드 가운데 위로 띄운다 (BoardView.StageBegin/StageEnd)</summary>
+        public Vector3 stage;
+        public float stageScale = 1f;
+        public Vector3 TargetPos => tPos;
 
         Transform visual;
         BoxCollider col;
@@ -326,9 +330,10 @@ namespace StrikerZ
         {
             UpdateFrame();
             float k = 1f - Mathf.Exp(-Time.deltaTime * 11f);
-            Vector3 pos = tPos + lunge;
+            if (card != null && card.zone != Zone.Slot && (stage != Vector3.zero || stageScale != 1f)) { stage = Vector3.zero; stageScale = 1f; }   // 칸을 떠나면 무대에서 내려온다
+            Vector3 pos = tPos + lunge + stage;
             Quaternion rot = tRot;
-            float scale = tScale * fxScale;
+            float scale = tScale * fxScale * stageScale;
             bool lifted = hovered && hoverLift;
             if (lifted)
             {

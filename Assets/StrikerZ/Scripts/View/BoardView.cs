@@ -438,6 +438,38 @@ namespace StrikerZ
             if (c.view != null) c.view.Pulse(new Color(1f, 0.9f, 0.5f, 0f));
         }
 
+        /// <summary>전투 무대 자리: 내 소환수는 왼쪽, 상대 소환수는 오른쪽, 보드 가운데 위 (주사위는 그 앞 바닥에 구른다)</summary>
+        public static Vector3 StagePos(bool human) => CenterPos + new Vector3(human ? -1.45f : 1.45f, 0.95f, 0.75f);
+
+        /// <summary>전투 시작: 싸우는 두 소환수를 가운데 위로 띄워 마주 세운다 (내 쪽 왼쪽 · 상대 오른쪽), 바닥엔 진영 색 마법진</summary>
+        public void StageBegin(CardInstance a, CardInstance d)
+        {
+            foreach (var c in new[] { a, d })
+            {
+                if (c?.view == null) continue;
+                bool human = c.owner != null && c.owner.isHuman;
+                var p = StagePos(human);
+                c.view.stage = p - c.view.TargetPos;
+                c.view.stageScale = 1.3f;
+                if (CardFx.I != null)
+                {
+                    var col = human ? new Color(0.45f, 0.75f, 1f) : new Color(1f, 0.45f, 0.35f);
+                    CardFx.I.Glyph(new Vector3(p.x, 0.03f, p.z), CardFx.Style.Neutral, col, 2.6f, 1.1f);
+                    CardFx.I.Ring(new Vector3(p.x, 0.03f, p.z), col, 2.2f, 0.5f, true);
+                }
+            }
+        }
+
+        public void StageEnd(CardInstance a, CardInstance d)
+        {
+            foreach (var c in new[] { a, d })
+            {
+                if (c?.view == null) continue;
+                c.view.stage = Vector3.zero;
+                c.view.stageScale = 1f;
+            }
+        }
+
         public IEnumerator AttackLunge(CardInstance a, Vector3 target)
         {
             if (a.view == null) yield break;

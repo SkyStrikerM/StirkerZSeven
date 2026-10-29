@@ -92,6 +92,7 @@ namespace StrikerZ
             // ── 배틀 ──
             phase = Phase.Battle;
             RefreshAll();
+            if (fx != null) fx.TurnSignal(lf, lf.opponent);
             yield return hud.Banner("BATTLE", lf == Human ? "내 공격 턴 — 왼쪽 칸부터 차례로 공격 (상대는 반격만)" : "수비 턴 — 상대가 왼쪽 칸부터 공격 (내 소환수는 반격만)");
             busy = true;
             // 배틀 시작: 양쪽 칸의 뒷면 카드를 모두 펼쳐 보여 준다 (보여 주기만 — 소환 효과·마법 발동은 지금처럼 그 칸 차례에)
