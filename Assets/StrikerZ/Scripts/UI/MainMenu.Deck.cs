@@ -830,7 +830,7 @@ namespace StrikerZ
                     detailText.text = (string.IsNullOrWhiteSpace(c.text) ? "" : c.text + "\n\n") + c.DiceText();
                     break;
                 case CardType.Magic:
-                    detailStats.text = $"{dim}종류</color>  마법\n{dim}속도</color>  {(c.speed == MagicSpeed.Set ? "세트" : "일반")}\n{dim}발동</color>  {(c.speed == MagicSpeed.Set ? "배틀 · 놓은 칸 차례에" : "메인 페이즈 · 패에서 바로")}" + own;
+                    detailStats.text = $"{dim}종류</color>  마법\n{dim}속도</color>  세트\n{dim}발동</color>  배틀 · 놓은 칸 차례에" + own;
                     detailText.text = c.text;
                     break;
                 default:

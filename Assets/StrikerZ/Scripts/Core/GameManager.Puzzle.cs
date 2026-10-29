@@ -84,7 +84,7 @@ namespace StrikerZ
         {
             if (c == null || c.zone != Zone.Hand) return;
             if (c.IsMonster) StartCoroutine(Summon(c, true, slot));
-            else if (c.IsMagic) StartCoroutine(c.data.speed == MagicSpeed.Set ? SetMagic(c, slot) : CastMagic(c));   // 일반 마법은 패에서 바로
+            else if (c.IsMagic) StartCoroutine(SetMagic(c, slot));
         }
     }
 }

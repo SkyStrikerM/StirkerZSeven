@@ -480,7 +480,7 @@ namespace StrikerZ
 
         public bool CanActivateInBattle(CardInstance m)
             => phase == Phase.Battle && m != null && m.owner == active && m.zone == Zone.Slot && m.IsMagic
-               && m.data.speed == MagicSpeed.Set && (m.data.canActivate == null || m.data.canActivate(this, m));
+               && (m.data.canActivate == null || m.data.canActivate(this, m));
 
         bool AnyBattleAction(PlayerState p)
             => p.slots.Any(c => c != null && ((CanAttackNow(c) && AttackTargets(c).Count > 0) || CanActivateInBattle(c)));
@@ -564,7 +564,7 @@ namespace StrikerZ
 
                 board.Pulse(next);
                 if (next.IsMonster) yield return MonsterAttacks(next);
-                else if (next.IsMagic && next.data.speed == MagicSpeed.Set) yield return OfferActivation(next);
+                else if (next.IsMagic) yield return OfferActivation(next);
             }
         }
 
@@ -1008,22 +1008,9 @@ namespace StrikerZ
             RefreshAll();
         }
 
-        /// <summary>칸에 뒷면 세트: 세트 마법만 — 배틀 때 그 칸 차례에 공개·발동 (일반 마법은 패에서 바로 발동 — CastMagic)</summary>
+        /// <summary>마법을 칸에 뒷면으로 세트 — 배틀 때 그 칸 차례에 공개·발동 (마법은 패에서 바로 발동할 수 없다)</summary>
         public bool CanSet(CardInstance c)
-            => c.IsMagic && c.data.speed == MagicSpeed.Set && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0 && CanPay(c);
-
-        /// <summary>일반 마법: 메인(배치) 페이즈에 패에서 바로 발동 (비용 지불, 발동 조건 확인)</summary>
-        public bool CanCast(CardInstance c)
-            => c.IsMagic && c.data.speed == MagicSpeed.Normal && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && CanPay(c)
-               && (c.data.canActivate == null || c.data.canActivate(this, c));
-
-        public IEnumerator CastMagic(CardInstance c)
-        {
-            if (!CanCast(c)) yield break;
-            if (!Pay(c)) yield break;
-            if (c.owner.isHuman && !NoStats) Chronicle.CountUse(c.data.id);
-            yield return ActivateMagic(c);
-        }
+            => c.IsMagic && c.zone == Zone.Hand && phase == Phase.Main && active == c.owner && c.owner.FreeSlot() >= 0 && CanPay(c);
 
         public IEnumerator SetMagic(CardInstance c, int slotAt = -1)
         {

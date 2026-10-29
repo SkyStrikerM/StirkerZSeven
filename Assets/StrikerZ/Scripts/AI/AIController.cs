@@ -69,23 +69,16 @@ namespace StrikerZ
             foreach (var c in p.slots.Where(s => s != null && g.CanFlip(s)).ToList())
                 yield return g.Flip(c);
 
-            // 5) 일반 마법은 소환한 뒤 패에서 바로 발동 (아군 강화가 올라탈 수 있게)
-            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.Normal).Take(2).ToList())
-            {
-                if (!g.CanCast(m) || !WantsMagic(m)) continue;
-                yield return g.CastMagic(m);
-                yield return g.Wait(0.25f);
-            }
-            // 6) 세트 마법은 칸에 놓아 둬야 배틀 때 그 칸 차례에 발동한다 — 소환수 자리를 남기고 2장까지
+            // 5) 마법은 칸에 놓아 둬야 배틀 때 그 칸 차례에 발동한다 — 소환수 자리를 남기고 2장까지
             yield return SetMagics(p);
 
             yield return g.Wait(0.4f);
         }
 
-        /// <summary>세트 마법을 칸에 뒷면으로 놓는다 (패에서는 발동할 수 없다). 소환수 칸을 남기려고 1~5번 칸이 비어 있을 때만, 2장까지</summary>
+        /// <summary>마법을 칸에 뒷면으로 놓는다 (패에서는 발동할 수 없다). 소환수 칸을 남기려고 1~5번 칸이 비어 있을 때만, 2장까지</summary>
         IEnumerator SetMagics(PlayerState p)
         {
-            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.Set).Take(2).ToList())
+            foreach (var m in p.hand.Where(c => c.IsMagic).Take(2).ToList())
             {
                 if (p.FreeSlot() < 0 || p.FreeSlot() >= 5 || !g.CanSet(m)) break;
                 if (!WantsMagic(m, true)) continue;
@@ -133,15 +126,7 @@ namespace StrikerZ
                 yield return g.Wait(0.12f);
             }
 
-            // 일반 마법: 소환한 뒤 패에서 바로 발동 (아군 강화가 올라타게). 수비 턴엔 공격 강화 마법을 다음 공격 턴까지 아낀다 (수련은 가리지 않음)
-            foreach (var m in p.hand.Where(c => c.IsMagic && c.data.speed == MagicSpeed.Normal).Take(2).ToList())
-            {
-                if (!g.CanCast(m) || !WantsMagic(m)) continue;
-                if (!attacking && lv != CpuLevel.Trainee && IsAttackBuff(m)) continue;
-                yield return g.CastMagic(m);
-                yield return g.Wait(0.2f);
-            }
-            yield return SetMagics(p);   // 세트 마법은 놓아 둬야 발동
+            yield return SetMagics(p);   // 마법은 놓아 둬야 발동
 
             if (lv == CpuLevel.Trainee) { yield return g.Wait(0.3f); yield break; }   // 수련: 놓은 순서 그대로 (튼튼한 카드를 앞에 두지 않는다)
             List<CardInstance> order;

@@ -743,7 +743,6 @@ namespace StrikerZ
             if (!g.Simul) return false;     // 레이드(교대 룰)는 앞면/뒷면을 골라야 해서 메뉴로
             CloseMenu();
             if (c.IsMonster && g.CanSummon(c, out _) && g.CanSummonFaceDown(c)) { g.HumanAct(g.Summon(c, true)); return true; }
-            if (c.IsMagic && g.CanCast(c)) { g.HumanAct(g.CastMagic(c)); return true; }
             if (c.IsMagic && g.CanSet(c)) { g.HumanAct(g.SetMagic(c)); return true; }
             if (c.data.type == CardType.Field && g.CanPlayField(c)) { g.HumanAct(g.PlayField(c)); return true; }
             return false;
@@ -776,18 +775,9 @@ namespace StrikerZ
                     }
                     else if (c.IsMagic)
                     {
-                        if (c.data.speed == MagicSpeed.Set)
-                        {
-                            items.Add(("칸에 세트", () => g.HumanAct(g.SetMagic(c)), g.CanSet(c)));
-                            note = "세트 마법: 칸에 뒷면으로 놓아 두면 배틀 때 그 칸 차례에 공개·발동 (패에서는 발동 불가)";
-                            if (c.owner.FreeSlot() < 0) note += "\n빈 칸이 없습니다";
-                        }
-                        else
-                        {
-                            items.Add(("발동", () => g.HumanAct(g.CastMagic(c)), g.CanCast(c)));
-                            note = "일반 마법: 지금 바로 발동";
-                            if (c.data.canActivate != null && !c.data.canActivate(g, c)) note += "\n지금은 발동 조건이 맞지 않습니다";
-                        }
+                        items.Add(("칸에 세트", () => g.HumanAct(g.SetMagic(c)), g.CanSet(c)));
+                        note = "세트 마법: 칸에 뒷면으로 놓아 두면 배틀 때 그 칸 차례에 공개·발동 (패에서는 발동 불가)";
+                        if (c.owner.FreeSlot() < 0) note += "\n빈 칸이 없습니다";
                         if (c.data.Cost > 0) note += "\n" + (g.PayProblem(c) ?? $"비용 {c.data.CostText()}");
                     }
                     else if (c.data.type == CardType.Field)

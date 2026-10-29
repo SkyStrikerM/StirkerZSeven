@@ -419,7 +419,7 @@ namespace StrikerZ
             switch (c.data.type)
             {
                 case CardType.Monster: return g.CanSummon(c, out _);
-                case CardType.Magic: return g.CanSet(c) || g.CanCast(c);
+                case CardType.Magic: return g.CanSet(c);
                 case CardType.Field: return g.CanPlayField(c);
                 default: return false;
             }
