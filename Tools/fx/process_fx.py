@@ -10,7 +10,7 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = 'C:/Users/MBC-501-22/Desktop/Card/Assets/StrikerZ/Resources/StrikerZ/Textures/Fx/'
-SMALL = ('mote_', 'star', 'shard')
+SMALL = ('mote_', 'star', 'shard', 'grain')
 
 def process(name):
     raw = os.path.join(HERE, 'raw', f'{name}.png')

@@ -617,8 +617,8 @@ namespace StrikerZ
         {
             var pos = PosOf(c);
             var col = CardData.ElementColor(c.data.element);
-            Sparks(pos, col, Color.white, 16, Vector3.up * 1.8f, 2.2f, 0.1f, 0.8f, 1f, 0.35f, "shard");
-            Sparks(pos, new Color(0.45f, 0.45f, 0.5f), new Color(0.2f, 0.2f, 0.22f), 8, Vector3.up * 0.5f, 0.5f, 0.3f, 1.2f, -0.05f, 0.35f, "dust");
+            Sparks(pos, col, Color.white, 14, Vector3.up * 1.6f, 2.0f, 0.09f, 0.6f, 1.2f, 0.3f, "shard");
+            Burst(pos, StyleOf(c.data.element), 1.6f, 0.35f);
         }
 
         public void AtkChange(CardInstance c, int value)
@@ -772,8 +772,35 @@ namespace StrikerZ
             return ps;
         }
 
+        ParticleSystem.Particle[] steerBuf;
+
+        /// <summary>파티클을 목표 지점으로 빨아들인다: 나이가 들수록 세게 끌리고, 살짝 소용돌이치며, 닿으면 사라진다</summary>
+        void Steer(ParticleSystem ps, Vector3 target, float dt, float pull)
+        {
+            int n = ps.particleCount;
+            if (n == 0) return;
+            if (steerBuf == null || steerBuf.Length < n) steerBuf = new ParticleSystem.Particle[Mathf.Max(n, 512)];
+            n = ps.GetParticles(steerBuf);
+            for (int i = 0; i < n; i++)
+            {
+                var p = steerBuf[i];
+                var d = target - p.position;
+                float dist = d.magnitude;
+                if (dist < 0.2f) { p.remainingLifetime = 0f; steerBuf[i] = p; continue; }
+                float age = 1f - p.remainingLifetime / Mathf.Max(0.01f, p.startLifetime);
+                var dir = d / dist;
+                p.velocity += dir * (pull * (0.6f + 1.8f * age * age)) * dt;          // 처음부터 끌리고, 갈수록 세게 빨려 들어간다
+                p.velocity += Vector3.Cross(Vector3.up, dir) * (1.2f * (1f - age)) * dt;  // 살짝 소용돌이
+                p.velocity *= 1f - 1.6f * dt;                                          // 저항
+                if (dist < 0.9f) p.velocity = Vector3.Lerp(p.velocity, dir * p.velocity.magnitude, 6f * dt);   // 가까우면 곧장 중심으로
+                steerBuf[i] = p;
+            }
+            ps.SetParticles(steerBuf, n);
+        }
+
         /// <summary>
-        /// 파괴: 카드가 가루가 되어 흩어진다 — 카드 면 곳곳에서 재(먼지 그림)와 속성 빛가루(속성 입자 그림)가 피어오르며 카드는 떠오르면서 작아져 사라진다.
+        /// 파괴: 카드가 가루가 되어 묘지로 빨려 들어간다 — 카드 면에서 아래줄부터 모래알(grain)과 속성 빛가루(mote)가 떨어져 나와
+        /// 묘지 위 소용돌이(vortex)로 가속하며 빨려 들고, 카드도 작아지며 묘지 쪽으로 끌려간다.
         /// 끝나면 카드는 보이지 않는 크기(fxScale 0)로 묘지로 날아가고, Reappear 가 묘지에서 다시 보이게 한다
         /// </summary>
         public IEnumerator Dissolve(CardInstance c, float dur = 0.75f)
@@ -782,40 +809,58 @@ namespace StrikerZ
             if (v == null) yield break;
             var s = StyleOf(c.data.element);
             var col = CardData.ElementColor(c.data.element);
-            var ash = new Color(0.3f, 0.28f, 0.3f);
-            var ashDark = new Color(0.1f, 0.1f, 0.12f);
-            var psAsh = AshSystem(v.transform.position, "dust", -0.22f);          // 재가 위로 떠오른다
-            var psSpark = AshSystem(v.transform.position, Tex("mote_" + Suffix(s)) != null ? "mote_" + Suffix(s) : "mote_neutral", -0.35f);
-            StartCoroutine(QuadRoutine("ash", v.transform.position + Vector3.up * 0.1f, Color.Lerp(col, Color.white, 0.3f), 1.2f, 2.2f, dur * 1.3f, true, 20f, 0.5f, null, float.NaN, 1f, 0.8f));
+            var grave = c.owner != null ? GravePos(c.owner) : v.transform.position + Vector3.up;
+            var start = v.transform.position;
+            var sand = new Color(0.85f, 0.78f, 0.65f);
+            var sandDark = new Color(0.45f, 0.4f, 0.35f);
+            // 묘지 위 흡입 소용돌이 (속성 색, 안으로 돈다)
+            StartCoroutine(QuadRoutine("vortex", grave + Vector3.up * 0.06f, Color.Lerp(col, Color.white, 0.35f), 2.6f, 1.1f, dur + 0.9f, true, -720f, 0f,
+                                       t => t < 0.12f ? t / 0.12f : t > 0.72f ? 1f - (t - 0.72f) / 0.28f : 1f, float.NaN, 1f, 0.9f));
+            var psGrain = AshSystem(start, "grain", 0f);
+            var psSpark = AshSystem(start, Tex("mote_" + Suffix(s)) != null ? "mote_" + Suffix(s) : "mote_neutral", 0f);
             var ep = new ParticleSystem.EmitParams();
             float emit = 0;
             for (float t = 0; t < 1f; t += Time.deltaTime / dur)
             {
                 if (c.view != v) break;
-                v.fxScale = Mathf.Lerp(1f, 0.04f, t * t);
-                v.lunge = Vector3.up * 0.3f * t;
+                v.fxScale = Mathf.Lerp(1f, 0.05f, t * t);
+                v.lunge = (grave - start) * (0.45f * t * t) + Vector3.up * 0.2f * t;   // 카드도 묘지 쪽으로 끌려간다
                 // 아래쪽 줄부터 위로 쓸려 올라가며 가루가 된다
-                emit += Time.deltaTime * 200f;
+                emit += Time.deltaTime * 380f;
                 while (emit > 1)
                 {
                     emit--;
                     float sx = Random.Range(-CardView.W, CardView.W) * 0.5f;
-                    float sz0 = Mathf.Lerp(-CardView.H * 0.5f, CardView.H * 0.5f, Mathf.Clamp01(t + Random.Range(-0.25f, 0.25f)));
-                    bool spark = Random.value < 0.4f;
-                    float area = Mathf.Lerp(1f, 0.5f, t);   // 카드가 줄어드는 동안 가루가 나오는 면적도 서서히 좁아진다 (원래 카드 면적 기준)
-                    ep.position = v.transform.position + v.transform.rotation * new Vector3(sx * area, 0.02f, sz0 * area);
-                    ep.velocity = new Vector3(Random.Range(-0.6f, 0.6f), Random.Range(1.0f, 2.2f), Random.Range(-0.45f, 0.45f));
-                    ep.startColor = spark ? Color.Lerp(col, Color.white, Random.value * 0.6f) : Color.Lerp(ash, ashDark, Random.value);
-                    ep.startSize = (spark ? 0.08f : 0.16f) * SizeK * MoteK * Random.Range(0.6f, 1.3f);
-                    ep.startLifetime = Random.Range(0.9f, 1.6f);
+                    float sz0 = Mathf.Lerp(-CardView.H * 0.5f, CardView.H * 0.5f, Mathf.Clamp01(t + Random.Range(-0.2f, 0.2f)));
+                    bool spark = Random.value < 0.35f;
+                    float area = Mathf.Lerp(1f, 0.6f, t);
+                    ep.position = v.transform.position + v.lunge + v.transform.rotation * new Vector3(sx * area, 0.02f, sz0 * area);
+                    ep.velocity = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.2f, 0.7f), Random.Range(-0.5f, 0.5f));
+                    ep.startColor = spark ? Color.Lerp(col, Color.white, Random.value * 0.6f) : Color.Lerp(sand, sandDark, Random.value);
+                    ep.startSize = (spark ? 0.08f : 0.11f) * SizeK * MoteK * Random.Range(0.5f, 1.2f);
+                    ep.startLifetime = Random.Range(1.2f, 1.7f);
                     ep.rotation = Random.Range(0f, 360f);
-                    (spark ? psSpark : psAsh).Emit(ep, 1);
+                    (spark ? psSpark : psGrain).Emit(ep, 1);
                 }
+                Steer(psGrain, grave, Time.deltaTime, 18f);
+                Steer(psSpark, grave, Time.deltaTime, 18f);
                 yield return null;
             }
             if (c.view == v) { v.fxScale = 0.001f; v.lunge = Vector3.zero; }
-            Destroy(psAsh.gameObject, 1.6f);
-            Destroy(psSpark.gameObject, 1.6f);
+            StartCoroutine(SuckTail(psGrain, psSpark, grave, s));   // 남은 가루는 게임 진행을 막지 않고 계속 빨려 들어간다
+        }
+
+        IEnumerator SuckTail(ParticleSystem a, ParticleSystem b, Vector3 grave, Style s)
+        {
+            for (float t = 0; t < 1.8f && (a.particleCount > 0 || b.particleCount > 0); t += Time.deltaTime)
+            {
+                Steer(a, grave, Time.deltaTime, 24f);
+                Steer(b, grave, Time.deltaTime, 24f);
+                yield return null;
+            }
+            Ring(grave, s, 1.3f, 0.35f, true);
+            Destroy(a.gameObject, 0.2f);
+            Destroy(b.gameObject, 0.2f);
         }
 
         /// <summary>소멸한 카드가 묘지에 닿을 때쯤 다시 보이게</summary>
