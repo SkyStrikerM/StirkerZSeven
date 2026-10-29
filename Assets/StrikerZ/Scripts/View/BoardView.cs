@@ -465,18 +465,22 @@ namespace StrikerZ
             Vector3 p = c.zone == Zone.Slot && c.slot >= 0 ? SlotPos(c.owner, c.slot) : c.view.transform.position;
             if (c.zone == Zone.Center) p = CenterPos;
             if (c.zone == Zone.Hero) p = HeroPos(c.owner);
-            Burst(p, CardData.ElementColor(c.data.element), 2.2f);
+            if (CardFx.I != null) { CardFx.I.Burst(p, CardFx.StyleOf(c), 2.2f, 0.5f); CardFx.I.Ring(p, CardFx.StyleOf(c), 2.0f, 0.5f); }
+            else Burst(p, CardData.ElementColor(c.data.element), 2.2f);
         }
 
         public void DestroyFx(CardInstance c)
         {
             if (c.view == null) return;
-            Burst(c.view.transform.position, new Color(1f, 0.25f, 0.2f), 2f);
+            if (CardFx.I != null) CardFx.I.Burst(c.view.transform.position, new Color(1f, 0.35f, 0.25f), 2f, 0.45f);
+            else Burst(c.view.transform.position, new Color(1f, 0.25f, 0.2f), 2f);
         }
 
+        /// <summary>색 폭발: CardFx 가 있으면 VARCO 폭발 그림, 없으면(메뉴 미리보기 등) 빛 원판</summary>
         public void Burst(Vector3 pos, Color c, float size)
         {
-            StartCoroutine(BurstRoutine(pos, c, size));
+            if (CardFx.I != null) CardFx.I.Burst(pos, c, size, 0.5f);
+            else StartCoroutine(BurstRoutine(pos, c, size));
         }
 
         IEnumerator BurstRoutine(Vector3 pos, Color c, float size)

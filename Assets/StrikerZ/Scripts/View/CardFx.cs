@@ -6,7 +6,8 @@ using UnityEngine.UI;
 namespace StrikerZ
 {
     /// <summary>
-    /// 카드 효과 연출. 절차적 파티클 · 링 · 빛기둥 · 번개 · 투사체 · 베기 · 조준선 · 방어막 · 화면 틴트.
+    /// 카드 효과 연출. VARCO 3D 로 만든 이펙트 텍스처(Resources/StrikerZ/Textures/Fx, Tools/fx/process_fx.py)를
+    /// 바닥 평면·빌보드·파티클로 띄운다 — 속성별 폭발(burst)·충격파 고리(ring)·입자(mote)·마법진(glyph) 8종 + 공용 13종.
     /// GameManager 의 기본 처리(데미지/회복/파괴/상태 등)에서 자동으로 호출되고,
     /// 마법·영웅·신화 카드는 발동 순간 Signature() 로 카드 고유 연출을 한 번 더 보여 준다.
     /// </summary>
@@ -18,10 +19,10 @@ namespace StrikerZ
 
         BoardView board;
         Image tint, disk, corona;
-        static Material particleMat;
         /// <summary>보드 카메라 거리에서 잘 보이도록 파티클 크기 배율</summary>
         const float SizeK = 2.4f;
-        static Texture2D ringTex;
+        /// <summary>입자 텍스처는 그림이 프레임 가운데 작게 들어 있어 더 키운다</summary>
+        const float MoteK = 2.1f;
 
         Camera Cam => board != null && board.cam != null ? board.cam : Camera.main;
 
@@ -42,8 +43,8 @@ namespace StrikerZ
             tint = UIKit.Img(root, "Tint", Color.clear);
             tint.rectTransform.Fill();
             tint.raycastTarget = false;
-            corona = UIKit.Img(root, "Corona", Color.clear, GameAssets.Glow);
-            corona.rectTransform.Place(new Vector2(0.5f, 0.5f), new Vector2(0, 120), new Vector2(620, 620));
+            corona = UIKit.Img(root, "Corona", Color.clear, Sprite("eclipse") ?? GameAssets.Glow);
+            corona.rectTransform.Place(new Vector2(0.5f, 0.5f), new Vector2(0, 120), new Vector2(720, 720));
             corona.raycastTarget = false;
             disk = UIKit.Img(root, "Disk", Color.clear, GameAssets.Circle);
             disk.rectTransform.Place(new Vector2(0.5f, 0.5f), new Vector2(0, 120), new Vector2(300, 300));
@@ -63,7 +64,12 @@ namespace StrikerZ
         {
             if (c == null) return Style.Neutral;
             if (c.data.id != null && IdStyle.TryGetValue(c.data.id, out var s)) return s;
-            switch (c.data.element)
+            return StyleOf(c.data.element);
+        }
+
+        public static Style StyleOf(Element e)
+        {
+            switch (e)
             {
                 case Element.Fire: return Style.Fire;
                 case Element.Water: return Style.Water;
@@ -93,6 +99,12 @@ namespace StrikerZ
             }
         }
 
+        /// <summary>텍스처 이름 꼬리 (무지개는 무속성 그림을 무지개 색으로 물들인다)</summary>
+        static string Suffix(Style s) => s == Style.Rainbow ? "neutral" : s.ToString().ToLower();
+
+        /// <summary>속성 텍스처 색: 그림 자체가 속성 색이라 흰색, 무지개만 색을 돌린다</summary>
+        static Color StyleTint(Style s) => s == Style.Rainbow ? ColorOf(s) : Color.white;
+
         // ══════════════════════════ 위치 ══════════════════════════
 
         public Vector3 PosOf(CardInstance c)
@@ -108,46 +120,107 @@ namespace StrikerZ
         public Vector3 DeckPos(PlayerState p) => board.DeckPos(p, p.deck.Count) + Vector3.up * 0.1f;
         public Vector3 GravePos(PlayerState p) => board.GravePos(p, p.grave.Count) + Vector3.up * 0.1f;
 
-        // ══════════════════════════ 기본 재료 ══════════════════════════
+        // ══════════════════════════ 재료 (VARCO 텍스처) ══════════════════════════
 
-        static Material PMat
+        static readonly Dictionary<string, Texture2D> texCache = new Dictionary<string, Texture2D>();
+        static readonly Dictionary<string, Material> matCache = new Dictionary<string, Material>();
+        static readonly Dictionary<string, Sprite> spriteCache = new Dictionary<string, Sprite>();
+
+        /// <summary>Resources/StrikerZ/Textures/Fx/{name}.png — 없으면 null</summary>
+        public static Texture2D Tex(string name)
         {
-            get
-            {
-                if (particleMat == null) particleMat = GameAssets.ParticleMat();
-                return particleMat;
-            }
+            if (string.IsNullOrEmpty(name)) return null;
+            if (texCache.TryGetValue(name, out var t)) return t;
+            t = Resources.Load<Texture2D>(GameAssets.Root + "Textures/Fx/" + name);
+            if (t != null) t.wrapMode = TextureWrapMode.Clamp;
+            texCache[name] = t;
+            return t;
         }
 
-        static Texture2D RingTex
+        /// <summary>속성별 텍스처 (burst·ring·mote·glyph) — 그 속성 그림이 없으면 무속성 그림</summary>
+        public static Texture2D Tex(string kind, Style s) => Tex(kind + "_" + Suffix(s)) ?? Tex(kind + "_neutral");
+
+        /// <summary>파티클·라인용 가산 재질 (텍스처별 공유, 색은 파티클/라인 쪽에서)</summary>
+        static Material Mat(string name)
         {
-            get
+            if (matCache.TryGetValue(name, out var m) && m != null) return m;
+            var t = Tex(name) ?? GameAssets.GlowTexture;
+            m = GameAssets.UnlitMat(Color.white, t, true);
+            GameAssets.MakeTransparent(m, true);
+            matCache[name] = m;
+            return m;
+        }
+
+        static Material Mat(string kind, Style s) => Mat(Tex(kind + "_" + Suffix(s)) != null ? kind + "_" + Suffix(s) : kind + "_neutral");
+
+        static Sprite Sprite(string name)
+        {
+            if (spriteCache.TryGetValue(name, out var s)) return s;
+            var t = Tex(name);
+            s = t == null ? null : UnityEngine.Sprite.Create(t, new Rect(0, 0, t.width, t.height), new Vector2(0.5f, 0.5f), 100f);
+            spriteCache[name] = s;
+            return s;
+        }
+
+        /// <summary>한 번 쓰고 버리는 평면 (재질은 개별 — 색·알파를 프레임마다 바꾼다)</summary>
+        static GameObject Quad(string name, string tex, Color c)
+        {
+            var q = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            Destroy(q.GetComponent<Collider>());
+            q.name = name;
+            var m = GameAssets.UnlitMat(c, Tex(tex) ?? GameAssets.GlowTexture, true);
+            GameAssets.MakeTransparent(m, true);
+            q.GetComponent<Renderer>().sharedMaterial = m;
+            return q;
+        }
+
+        static void SetColor(GameObject q, Color c)
+        {
+            var m = q.GetComponent<Renderer>().sharedMaterial;
+            m.color = c; m.SetColor("_BaseColor", c);
+        }
+
+        static void Kill(GameObject q)
+        {
+            if (q == null) return;
+            Destroy(q.GetComponent<Renderer>().sharedMaterial);
+            Destroy(q);
+        }
+
+        /// <summary>처음 15% 에 켜지고 마지막 45% 에 꺼지는 기본 알파 곡선</summary>
+        static float Fade(float t) => t < 0.15f ? t / 0.15f : t > 0.55f ? 1f - (t - 0.55f) / 0.45f : 1f;
+
+        /// <summary>
+        /// 텍스처 한 장 연출. flat = 바닥에 눕힘(아니면 카메라를 본다), spin = 초당 회전(°), rise = 떠오르는 높이,
+        /// alpha = 알파 곡선(null 이면 Fade), aspect = 가로/세로
+        /// </summary>
+        IEnumerator QuadRoutine(string tex, Vector3 pos, Color c, float size0, float size1, float dur, bool flat,
+                                float spin = 0f, float rise = 0f, System.Func<float, float> alpha = null, float rot0 = float.NaN, float aspect = 1f, float peak = 1f)
+        {
+            var q = Quad("Fx_" + tex, tex, c);
+            float r0 = float.IsNaN(rot0) ? Random.Range(0f, 360f) : rot0;
+            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
             {
-                if (ringTex != null) return ringTex;
-                const int S = 128;
-                ringTex = new Texture2D(S, S, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
-                var px = new Color32[S * S];
-                for (int y = 0; y < S; y++)
-                    for (int x = 0; x < S; x++)
-                    {
-                        float dx = (x + 0.5f) / S * 2 - 1, dy = (y + 0.5f) / S * 2 - 1;
-                        float r = Mathf.Sqrt(dx * dx + dy * dy);
-                        float a = Mathf.Clamp01(1f - Mathf.Abs(r - 0.82f) / 0.14f);
-                        a = a * a * (3 - 2 * a);
-                        px[y * S + x] = new Color32(255, 255, 255, (byte)(a * 255));
-                    }
-                ringTex.SetPixels32(px);
-                ringTex.Apply();
-                return ringTex;
+                float e = 1 - (1 - t) * (1 - t);
+                float s = Mathf.Lerp(size0, size1, e);
+                q.transform.localScale = new Vector3(s * aspect, s, 1);
+                q.transform.position = pos + Vector3.up * rise * t;
+                float rot = r0 + spin * t * dur;
+                if (flat) q.transform.rotation = Quaternion.Euler(90, rot, 0);
+                else if (Cam != null) q.transform.rotation = Cam.transform.rotation * Quaternion.Euler(0, 0, rot);
+                float a = (alpha != null ? alpha(t) : Fade(t)) * peak;
+                SetColor(q, new Color(c.r, c.g, c.b, a));
+                yield return null;
             }
+            Kill(q);
         }
 
         // ══════════════════════════ 파티클 ══════════════════════════
 
         /// <summary>
-        /// 불꽃·물방울·잎 등 범용 파티클. vel = 기본 속도(방향 포함), spread = 무작위 속도, gravity = 낙하(음수면 상승).
+        /// 범용 파티클. tex = 입자 텍스처 이름(null 이면 무속성 입자). vel = 기본 속도(방향 포함), spread = 무작위 속도, gravity = 낙하(음수면 상승).
         /// </summary>
-        public void Sparks(Vector3 pos, Color a, Color b, int n, Vector3 vel, float spread, float size, float life, float gravity = 0f, float radius = 0.15f)
+        public void Sparks(Vector3 pos, Color a, Color b, int n, Vector3 vel, float spread, float size, float life, float gravity = 0f, float radius = 0.15f, string tex = null)
         {
             if (n <= 0) return;
             var go = new GameObject("FxSparks");
@@ -171,8 +244,11 @@ namespace StrikerZ
             var sz = ps.sizeOverLifetime;
             sz.enabled = true;
             sz.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0, 1, 1, 0.2f));
+            var rot = ps.rotationOverLifetime;
+            rot.enabled = true;
+            rot.z = new ParticleSystem.MinMaxCurve(-2.5f, 2.5f);
             var r = go.GetComponent<ParticleSystemRenderer>();
-            r.sharedMaterial = PMat;
+            r.sharedMaterial = Mat(tex ?? "mote_neutral");
             ps.Play();
             var ep = new ParticleSystem.EmitParams();
             for (int i = 0; i < n; i++)
@@ -180,125 +256,132 @@ namespace StrikerZ
                 ep.position = pos + Random.insideUnitSphere * radius;
                 ep.velocity = vel + Random.insideUnitSphere * spread;
                 ep.startColor = Color.Lerp(a, b, Random.value);
-                ep.startSize = size * SizeK * Random.Range(0.6f, 1.3f);
+                ep.startSize = size * SizeK * MoteK * Random.Range(0.6f, 1.3f);
                 ep.startLifetime = life * Random.Range(0.6f, 1.1f);
+                ep.rotation = Random.Range(0f, 360f);
                 ps.Emit(ep, 1);
             }
             Destroy(go, life * 1.2f + 0.3f);
         }
 
-        /// <summary>속성 색 폭발 파티클 (충돌·파괴 지점)</summary>
+        /// <summary>속성 입자 (그 속성 그림 그대로, 흰색~속성색 사이로 살짝 물들인다)</summary>
+        public void Motes(Vector3 pos, Style s, int n, Vector3 vel, float spread, float size, float life, float gravity = 0f, float radius = 0.15f)
+            => Sparks(pos, Color.white, Color.Lerp(Color.white, ColorOf(s), 0.5f), n, vel, spread, size, life, gravity, radius, Tex("mote_" + Suffix(s)) != null ? "mote_" + Suffix(s) : "mote_neutral");
+
+        /// <summary>속성 색 폭발 (충돌·파괴 지점): 폭발 그림 + 충격파 고리 + 속성 입자</summary>
         public void Impact(Vector3 pos, Style s, float scale = 1f)
         {
-            var c = ColorOf(s);
-            board.Burst(pos, c, 2.4f * scale);
+            Burst(pos, s, 2.6f * scale, 0.55f);
+            Ring(pos, s, 2.4f * scale, 0.5f);
             switch (s)
             {
-                case Style.Fire:
-                    Sparks(pos, new Color(1f, 0.85f, 0.3f), new Color(1f, 0.25f, 0.05f), (int)(40 * scale), Vector3.up * 1.2f, 2.4f * scale, 0.16f, 0.8f, -0.15f);
-                    break;
-                case Style.Water:
-                    Sparks(pos, new Color(0.7f, 0.9f, 1f), new Color(0.2f, 0.5f, 1f), (int)(40 * scale), Vector3.up * 2f, 1.8f * scale, 0.12f, 0.9f, 0.6f);
-                    break;
-                case Style.Wind:
-                    Spiral(pos, ColorOf(Style.Wind), 0.9f * scale, 0.8f);
-                    break;
-                case Style.Earth:
-                    Sparks(pos, new Color(0.75f, 0.55f, 0.3f), new Color(0.4f, 0.28f, 0.15f), (int)(30 * scale), Vector3.up * 2.2f, 1.6f * scale, 0.2f, 0.9f, 1.2f);
-                    break;
-                case Style.Thunder:
-                    Sparks(pos, Color.white, new Color(1f, 0.9f, 0.3f), (int)(36 * scale), Vector3.zero, 3.4f * scale, 0.08f, 0.45f);
-                    break;
-                case Style.Light:
-                    Sparks(pos, Color.white, new Color(1f, 0.9f, 0.5f), (int)(34 * scale), Vector3.up * 1.4f, 1.6f * scale, 0.12f, 1f, -0.2f);
-                    break;
-                case Style.Dark:
-                    Sparks(pos, new Color(0.8f, 0.4f, 1f), new Color(0.25f, 0.05f, 0.4f), (int)(36 * scale), Vector3.up * 0.6f, 1.8f * scale, 0.2f, 1f, -0.1f);
-                    break;
+                case Style.Fire: Motes(pos, s, (int)(26 * scale), Vector3.up * 1.2f, 2.2f * scale, 0.16f, 0.8f, -0.15f); break;
+                case Style.Water: Motes(pos, s, (int)(26 * scale), Vector3.up * 2f, 1.8f * scale, 0.12f, 0.9f, 0.6f); break;
+                case Style.Wind: Spiral(pos, ColorOf(s), 0.9f * scale, 0.8f); Motes(pos, s, (int)(14 * scale), Vector3.up * 1.5f, 1.6f * scale, 0.11f, 0.7f); break;
+                case Style.Earth: Motes(pos, s, (int)(20 * scale), Vector3.up * 2.2f, 1.6f * scale, 0.2f, 0.9f, 1.2f); board.Shake(0.08f * scale); break;
+                case Style.Thunder: Motes(pos, s, (int)(22 * scale), Vector3.zero, 3.2f * scale, 0.09f, 0.45f); Flash(new Color(1f, 1f, 0.85f, 0.12f * scale), 0.15f); break;
+                case Style.Light: Motes(pos, s, (int)(20 * scale), Vector3.up * 1.4f, 1.4f * scale, 0.12f, 1f, -0.2f); break;
+                case Style.Dark: Motes(pos, s, (int)(22 * scale), Vector3.up * 0.6f, 1.6f * scale, 0.2f, 1f, -0.1f); break;
                 case Style.Rainbow:
                     for (int i = 0; i < 6; i++)
-                        Sparks(pos, Color.HSVToRGB(i / 6f, 0.75f, 1f), Color.HSVToRGB(i / 6f + 0.08f, 0.5f, 1f), (int)(8 * scale), Vector3.up, 2.2f * scale, 0.13f, 0.9f);
+                        Sparks(pos, Color.HSVToRGB(i / 6f, 0.75f, 1f), Color.HSVToRGB(i / 6f + 0.08f, 0.5f, 1f), (int)(5 * scale), Vector3.up, 2.2f * scale, 0.13f, 0.9f, 0f, 0.15f, "star");
                     break;
-                default:
-                    Sparks(pos, Color.white, new Color(0.7f, 0.75f, 0.9f), (int)(28 * scale), Vector3.up, 2f * scale, 0.12f, 0.7f);
-                    break;
+                default: Motes(pos, s, (int)(18 * scale), Vector3.up, 2f * scale, 0.12f, 0.7f); break;
             }
         }
 
         // ══════════════════════════ 형태 ══════════════════════════
 
-        /// <summary>바닥에 퍼지는 링 (in=true 면 안쪽으로 모인다)</summary>
+        /// <summary>폭발 그림: 바닥에 퍼지는 큰 그림 + 세워진 작은 그림 (부피감)</summary>
+        public void Burst(Vector3 pos, Style s, float size = 2.4f, float dur = 0.5f)
+        {
+            var tex = Tex("burst_" + Suffix(s)) != null ? "burst_" + Suffix(s) : "burst_neutral";
+            var c = StyleTint(s);
+            StartCoroutine(QuadRoutine(tex, pos + Vector3.up * 0.06f, c, size * 0.35f, size, dur, true, Random.Range(-60f, 60f)));
+            StartCoroutine(QuadRoutine(tex, pos + Vector3.up * 0.35f, c, size * 0.25f, size * 0.75f, dur * 0.9f, false, Random.Range(-40f, 40f), 0.35f, null, float.NaN, 1f, 0.85f));
+        }
+
+        /// <summary>색만 주는 폭발 (무속성 그림을 물들인다)</summary>
+        public void Burst(Vector3 pos, Color c, float size = 2.4f, float dur = 0.5f)
+        {
+            StartCoroutine(QuadRoutine("burst_neutral", pos + Vector3.up * 0.06f, c, size * 0.35f, size, dur, true, Random.Range(-60f, 60f)));
+            StartCoroutine(QuadRoutine("burst_neutral", pos + Vector3.up * 0.35f, c, size * 0.25f, size * 0.75f, dur * 0.9f, false, Random.Range(-40f, 40f), 0.35f, null, float.NaN, 1f, 0.85f));
+        }
+
+        /// <summary>바닥에 퍼지는 고리 (in=true 면 안쪽으로 모인다) — 무속성 고리를 색으로 물들인다</summary>
         public void Ring(Vector3 pos, Color c, float size, float dur = 0.7f, bool inward = false)
-            => StartCoroutine(RingRoutine(pos, c, size, dur, inward));
+            => StartCoroutine(RingRoutine("ring_neutral", pos, c, size, dur, inward));
 
-        IEnumerator RingRoutine(Vector3 pos, Color c, float size, float dur, bool inward)
+        /// <summary>속성 고리 (그 속성 그림)</summary>
+        public void Ring(Vector3 pos, Style s, float size, float dur = 0.7f, bool inward = false)
+            => StartCoroutine(RingRoutine(Tex("ring_" + Suffix(s)) != null ? "ring_" + Suffix(s) : "ring_neutral", pos, StyleTint(s), size, dur, inward));
+
+        IEnumerator RingRoutine(string tex, Vector3 pos, Color c, float size, float dur, bool inward)
         {
-            var q = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            Destroy(q.GetComponent<Collider>());
-            q.name = "FxRing";
-            q.transform.position = pos + Vector3.up * 0.06f;
-            q.transform.rotation = Quaternion.Euler(90, 0, 0);
-            var m = GameAssets.UnlitMat(c, RingTex, true);
-            GameAssets.MakeTransparent(m, true);
-            q.GetComponent<Renderer>().sharedMaterial = m;
-            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
-            {
-                float e = 1 - (1 - t) * (1 - t);
-                float s = inward ? Mathf.Lerp(size, 0.2f, e) : Mathf.Lerp(0.2f, size, e);
-                q.transform.localScale = new Vector3(s, s, 1);
-                var col = new Color(c.r, c.g, c.b, (1 - t) * 1.3f);
-                m.color = col; m.SetColor("_BaseColor", col);
-                yield return null;
-            }
-            Destroy(m); Destroy(q);
+            float s0 = inward ? size : size * 0.15f, s1 = inward ? size * 0.15f : size;
+            yield return QuadRoutine(tex, pos + Vector3.up * 0.06f, c, s0, s1, dur, true, inward ? -90f : 50f, 0f,
+                t => (inward ? Mathf.Min(1f, 1.4f - t) : 1f - t) * 1.3f, float.NaN, 1f, 1f);
         }
 
-        LineRenderer Line(string name, Color c, float width)
+        /// <summary>마법진: 바닥에서 돌며 커지는 룬 원</summary>
+        public void Glyph(Vector3 pos, Style s, float size = 2.2f, float dur = 0.9f) => Glyph(pos, s, StyleTint(s), size, dur);
+
+        public void Glyph(Vector3 pos, Style s, Color tint, float size = 2.2f, float dur = 0.9f)
         {
-            var go = new GameObject(name);
-            var lr = go.AddComponent<LineRenderer>();
-            lr.sharedMaterial = PMat;
-            lr.textureMode = LineTextureMode.Stretch;
-            lr.startColor = lr.endColor = c;
-            lr.widthMultiplier = width;
-            lr.numCapVertices = 4;
-            lr.useWorldSpace = true;
-            return lr;
+            var tex = Tex("glyph_" + Suffix(s)) != null ? "glyph_" + Suffix(s) : "glyph_neutral";
+            StartCoroutine(QuadRoutine(tex, pos + Vector3.up * 0.07f, tint, size * 0.55f, size, dur, true, 70f, 0f, t => t < 0.12f ? t / 0.12f : t > 0.6f ? 1f - (t - 0.6f) / 0.4f : 1f));
         }
 
-        /// <summary>빛기둥 (아래에서 위로)</summary>
+        /// <summary>빛기둥 (아래에서 위로 자라는 세로 그림, 카메라를 향해 서 있다)</summary>
         public void Pillar(Vector3 pos, Color c, float height = 4f, float width = 0.9f, float dur = 1f)
             => StartCoroutine(PillarRoutine(pos, c, height, width, dur));
 
         IEnumerator PillarRoutine(Vector3 pos, Color c, float height, float width, float dur)
         {
-            var lr = Line("FxPillar", c, width);
-            lr.positionCount = 2;
+            var q = Quad("FxPillar", "pillar", c);
             for (float t = 0; t < 1f; t += Time.deltaTime / dur)
             {
                 float grow = Mathf.Clamp01(t * 4f);
                 float fade = t < 0.6f ? 1f : 1f - (t - 0.6f) / 0.4f;
-                lr.SetPosition(0, pos - Vector3.up * 0.2f);
-                lr.SetPosition(1, pos + Vector3.up * height * grow);
-                lr.widthMultiplier = width * (0.6f + 0.4f * Mathf.Sin(t * Mathf.PI));
-                var col = new Color(c.r, c.g, c.b, fade);
-                lr.startColor = lr.endColor = col;
+                float h = height * grow;
+                float w = width * 1.6f * (0.7f + 0.3f * Mathf.Sin(t * Mathf.PI));
+                q.transform.localScale = new Vector3(w, h, 1);
+                q.transform.position = pos + Vector3.up * (h * 0.5f - 0.1f);
+                if (Cam != null)
+                {
+                    var f = Cam.transform.position - pos; f.y = 0;
+                    if (f.sqrMagnitude > 0.001f) q.transform.rotation = Quaternion.LookRotation(-f.normalized, Vector3.up);
+                }
+                SetColor(q, new Color(c.r, c.g, c.b, fade));
                 yield return null;
             }
-            Destroy(lr.gameObject);
+            Kill(q);
+            Sparks(pos, c, Color.white, Mathf.RoundToInt(10 * width), Vector3.up * height * 0.8f, 0.6f, 0.08f, 0.9f, -0.1f, width * 0.3f, "star");
         }
 
-        /// <summary>번개 (지그재그, 깜빡임)</summary>
+        LineRenderer Line(string name, string tex, Color c, float width)
+        {
+            var go = new GameObject(name);
+            var lr = go.AddComponent<LineRenderer>();
+            lr.sharedMaterial = Mat(tex);
+            lr.textureMode = LineTextureMode.Stretch;
+            lr.startColor = lr.endColor = c;
+            lr.widthMultiplier = width;
+            lr.numCapVertices = 2;
+            lr.useWorldSpace = true;
+            lr.alignment = LineAlignment.View;
+            return lr;
+        }
+
+        /// <summary>번개 (지그재그 선 위에 번개 그림을 늘여 붙인다, 깜빡임)</summary>
         public void Bolt(Vector3 from, Vector3 to, Color c, float dur = 0.4f, float width = 0.14f)
             => StartCoroutine(BoltRoutine(from, to, c, dur, width));
 
         IEnumerator BoltRoutine(Vector3 from, Vector3 to, Color c, float dur, float width)
         {
-            var lr = Line("FxBolt", c, width);
+            var lr = Line("FxBolt", "bolt", c, width * 2.6f);
             const int N = 12;
             lr.positionCount = N;
-            var core = Line("FxBoltCore", Color.white, width * 0.35f);
-            core.positionCount = N;
             float t = 0, next = 0;
             while (t < dur)
             {
@@ -311,126 +394,53 @@ namespace StrikerZ
                     for (int i = 0; i < N; i++)
                     {
                         float u = i / (float)(N - 1);
-                        float j = (i == 0 || i == N - 1) ? 0 : Random.Range(-1f, 1f) * dir.magnitude * 0.07f;
-                        var p = from + dir * u + side.normalized * j + Vector3.up * Random.Range(-0.05f, 0.05f);
-                        lr.SetPosition(i, p);
-                        core.SetPosition(i, p);
+                        float j = (i == 0 || i == N - 1) ? 0 : Random.Range(-1f, 1f) * dir.magnitude * 0.05f;
+                        lr.SetPosition(i, from + dir * u + side.normalized * j + Vector3.up * Random.Range(-0.04f, 0.04f));
                     }
                 }
-                float a = Random.value < 0.25f ? 0.4f : 1f;
+                float a = Random.value < 0.25f ? 0.45f : 1f;
                 lr.startColor = lr.endColor = new Color(c.r, c.g, c.b, a);
-                core.startColor = core.endColor = new Color(1, 1, 1, a);
                 t += Time.deltaTime;
                 yield return null;
             }
-            Destroy(lr.gameObject); Destroy(core.gameObject);
+            Destroy(lr.gameObject);
         }
 
-        /// <summary>초승달 베기 (카드 위 사선 호)</summary>
+        /// <summary>곧은 빛줄기 (빛 속성 투사체)</summary>
+        IEnumerator BeamRoutine(Vector3 from, Vector3 to, Color c, float dur, float width)
+        {
+            var lr = Line("FxBeam", "bolt", c, width);
+            lr.positionCount = 2;
+            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
+            {
+                lr.SetPosition(0, from);
+                lr.SetPosition(1, Vector3.Lerp(from, to, Mathf.Clamp01(t * 2.5f)));
+                lr.startColor = lr.endColor = new Color(c.r, c.g, c.b, 1 - t * 0.6f);
+                yield return null;
+            }
+            Destroy(lr.gameObject);
+        }
+
+        /// <summary>초승달 베기 (카드 위에 비스듬히 그어지는 그림)</summary>
         public void Slash(Vector3 pos, Color c, float size = 1f, float dur = 0.35f)
-            => StartCoroutine(SlashRoutine(pos, c, size, dur));
+            => StartCoroutine(QuadRoutine("slash", pos + Vector3.up * 0.3f, c, 0.9f * size, 2.0f * size, dur, false, Random.Range(-30f, 30f), 0.15f,
+                                          t => t < 0.1f ? t / 0.1f : 1f - (t - 0.1f) / 0.9f, Random.Range(-50f, 10f)));
 
-        IEnumerator SlashRoutine(Vector3 pos, Color c, float size, float dur)
-        {
-            var lr = Line("FxSlash", c, 0.16f * size);
-            const int N = 16;
-            lr.positionCount = N;
-            var curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.5f, 1), new Keyframe(1, 0));
-            lr.widthCurve = curve;
-            float ang0 = Random.Range(20f, 60f);
-            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
-            {
-                float sweep = Mathf.Lerp(0.2f, 1f, t * 2f);
-                for (int i = 0; i < N; i++)
-                {
-                    float u = i / (float)(N - 1) * sweep;
-                    float a = (ang0 + u * 140f) * Mathf.Deg2Rad;
-                    lr.SetPosition(i, pos + new Vector3(Mathf.Cos(a) * 0.7f * size, 0.25f + u * 0.3f, Mathf.Sin(a) * 0.45f * size - 0.2f * size));
-                }
-                var col = new Color(c.r, c.g, c.b, 1 - t);
-                lr.startColor = lr.endColor = col;
-                yield return null;
-            }
-            Destroy(lr.gameObject);
-        }
-
-        /// <summary>회오리 (바람)</summary>
+        /// <summary>회오리 (바람): 바닥에서 빠르게 돌며 떠오르는 소용돌이 그림 2겹</summary>
         public void Spiral(Vector3 pos, Color c, float size = 1f, float dur = 0.9f)
-            => StartCoroutine(SpiralRoutine(pos, c, size, dur));
-
-        IEnumerator SpiralRoutine(Vector3 pos, Color c, float size, float dur)
         {
-            var lr = Line("FxSpiral", c, 0.08f * size);
-            const int N = 40;
-            lr.positionCount = N;
-            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
-            {
-                for (int i = 0; i < N; i++)
-                {
-                    float u = i / (float)(N - 1);
-                    float a = u * 12f + t * 18f;
-                    float r = (0.15f + u * 0.55f) * size;
-                    lr.SetPosition(i, pos + new Vector3(Mathf.Cos(a) * r, u * 1.6f * size, Mathf.Sin(a) * r));
-                }
-                lr.startColor = new Color(c.r, c.g, c.b, (1 - t) * 0.3f);
-                lr.endColor = new Color(c.r, c.g, c.b, (1 - t));
-                yield return null;
-            }
-            Destroy(lr.gameObject);
+            StartCoroutine(QuadRoutine("swirl", pos + Vector3.up * 0.06f, c, 0.8f * size, 2.1f * size, dur, true, -540f, 0.9f * size));
+            StartCoroutine(QuadRoutine("swirl", pos + Vector3.up * 0.25f, c, 0.5f * size, 1.5f * size, dur * 0.85f, true, 620f, 1.4f * size, null, float.NaN, 1f, 0.7f));
+            Motes(pos, Style.Wind, Mathf.RoundToInt(10 * size), Vector3.up * 1.4f * size, 0.9f, 0.09f, dur * 0.8f, 0f, 0.3f * size);
         }
 
-        /// <summary>조준선 (자유 대상 · 저격)</summary>
-        public void Reticle(Vector3 pos, Color c, float dur = 1.2f) => StartCoroutine(ReticleRoutine(pos, c, dur));
+        /// <summary>조준선 (자유 대상 · 저격): 크게 나타나 카드 위로 조여들며 돈다</summary>
+        public void Reticle(Vector3 pos, Color c, float dur = 1.2f)
+            => StartCoroutine(QuadRoutine("reticle", pos + Vector3.up * 0.08f, c, 2.4f, 1.15f, dur, true, 90f, 0f, t => t < 0.8f ? 1f : (1 - t) / 0.2f, 0f));
 
-        IEnumerator ReticleRoutine(Vector3 pos, Color c, float dur)
-        {
-            var q = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            Destroy(q.GetComponent<Collider>());
-            q.transform.position = pos + Vector3.up * 0.08f;
-            var m = GameAssets.UnlitMat(c, RingTex, true);
-            GameAssets.MakeTransparent(m, true);
-            q.GetComponent<Renderer>().sharedMaterial = m;
-            var cross = Line("FxCross", c, 0.04f);
-            cross.positionCount = 5;
-            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
-            {
-                float s = Mathf.Lerp(2.2f, 0.95f, Mathf.Clamp01(t * 3f));
-                q.transform.localScale = new Vector3(s, s, 1);
-                q.transform.rotation = Quaternion.Euler(90, t * 240f, 0);
-                float a = t < 0.8f ? 1f : (1 - t) / 0.2f;
-                var col = new Color(c.r, c.g, c.b, a);
-                m.color = col; m.SetColor("_BaseColor", col);
-                float h = 0.55f * s / 0.95f;
-                var y = Vector3.up * 0.1f;
-                cross.SetPositions(new[] { pos + y + Vector3.left * h, pos + y + Vector3.right * h, pos + y, pos + y + Vector3.forward * h, pos + y + Vector3.back * h });
-                cross.startColor = cross.endColor = col;
-                yield return null;
-            }
-            Destroy(m); Destroy(q); Destroy(cross.gameObject);
-        }
-
-        /// <summary>반구형 방어막 (파괴 방지 · HP 증가)</summary>
-        public void Bubble(Vector3 pos, Color c, float dur = 0.9f) => StartCoroutine(BubbleRoutine(pos, c, dur));
-
-        IEnumerator BubbleRoutine(Vector3 pos, Color c, float dur)
-        {
-            var s = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            Destroy(s.GetComponent<Collider>());
-            s.name = "FxBubble";
-            s.transform.position = pos;
-            var m = GameAssets.UnlitMat(c, GameAssets.GlowTexture, true);
-            GameAssets.MakeTransparent(m, true);
-            s.GetComponent<Renderer>().sharedMaterial = m;
-            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
-            {
-                float k = Mathf.Lerp(0.4f, 1.15f, 1 - (1 - t) * (1 - t));
-                s.transform.localScale = new Vector3(k, k * 0.75f, k * 1.2f);
-                var col = new Color(c.r, c.g, c.b, (t < 0.3f ? t / 0.3f : 1 - (t - 0.3f) / 0.7f) * 0.55f);
-                m.color = col; m.SetColor("_BaseColor", col);
-                yield return null;
-            }
-            Destroy(m); Destroy(s);
-        }
+        /// <summary>방어막 (파괴 방지 · HP 증가 · 도발): 카드 위에 떠오르는 육각 보호막</summary>
+        public void Bubble(Vector3 pos, Color c, float dur = 0.9f)
+            => StartCoroutine(QuadRoutine("shield", pos + Vector3.up * 0.2f, c, 0.6f, 1.7f, dur, false, 0f, 0.15f, t => (t < 0.3f ? t / 0.3f : 1 - (t - 0.3f) / 0.7f) * 0.9f, 0f));
 
         /// <summary>날아가는 구체 (불덩이·물방울·암흑구 …) — 도착하면 Impact</summary>
         public IEnumerator Projectile(Vector3 from, Vector3 to, Style s, float size = 1f, float time = 0.42f)
@@ -445,46 +455,39 @@ namespace StrikerZ
             }
             if (s == Style.Light)
             {
-                var lr = Line("FxBeam", ColorOf(s), 0.28f * size);
-                lr.positionCount = 2;
-                for (float t = 0; t < 1f; t += Time.deltaTime / 0.35f)
-                {
-                    lr.SetPosition(0, from + Vector3.up * 0.3f);
-                    lr.SetPosition(1, Vector3.Lerp(from, to, Mathf.Clamp01(t * 2.5f)) + Vector3.up * 0.15f);
-                    var c = ColorOf(s);
-                    lr.startColor = lr.endColor = new Color(c.r, c.g, c.b, 1 - t * 0.6f);
-                    yield return null;
-                }
-                Destroy(lr.gameObject);
+                yield return BeamRoutine(from + Vector3.up * 0.3f, to + Vector3.up * 0.15f, ColorOf(s), 0.35f, 0.6f * size);
                 Impact(to, s, size);
                 yield break;
             }
             Sfx.Play("whoosh", 0.45f);
-            var core = new GameObject("FxOrb");
-            var sr = core.AddComponent<SpriteRenderer>();
-            sr.sprite = GameAssets.Glow;
-            float baseScale = 1.1f * size / Mathf.Max(0.01f, sr.sprite.bounds.size.x);
-            core.transform.localScale = Vector3.one * baseScale;
-            var col0 = ColorOf(s);
-            sr.color = new Color(col0.r, col0.g, col0.b, 1f);
+            var q = Quad("FxOrb", "orb", ColorOf(s));
             float arc = Vector3.Distance(from, to) * 0.25f;
             float trailT = 0;
+            Vector3 prev = from;
             for (float t = 0; t < 1f; t += Time.deltaTime / time)
             {
                 var p = Vector3.Lerp(from, to, t) + Vector3.up * (Mathf.Sin(t * Mathf.PI) * arc + 0.35f);
-                core.transform.position = p;
-                if (Cam != null) core.transform.rotation = Cam.transform.rotation;
-                if (s == Style.Rainbow) sr.color = ColorOf(s);
+                q.transform.position = p;
+                q.transform.localScale = Vector3.one * 1.6f * size;
+                if (Cam != null)
+                {
+                    // 꼬리(그림 왼쪽)가 진행 방향 반대를 보도록 화면 기준 각도로 돌린다
+                    var d = Cam.transform.InverseTransformDirection(p - prev);
+                    float ang = d.sqrMagnitude > 1e-6f ? Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg : 0f;
+                    q.transform.rotation = Cam.transform.rotation * Quaternion.Euler(0, 0, ang);
+                }
+                prev = p;
+                var c = ColorOf(s);
+                SetColor(q, new Color(c.r, c.g, c.b, 1f));
                 trailT += Time.deltaTime;
                 if (trailT > 0.03f)
                 {
                     trailT = 0;
-                    var c = ColorOf(s);
-                    Sparks(p, c, Color.Lerp(c, Color.white, 0.4f), s == Style.Earth ? 2 : 4, Vector3.zero, 0.25f, 0.18f * size, 0.35f, s == Style.Water || s == Style.Earth ? 0.4f : -0.1f, 0.05f);
+                    Motes(p, s, s == Style.Earth ? 2 : 3, Vector3.zero, 0.25f, 0.12f * size, 0.35f, s == Style.Water || s == Style.Earth ? 0.4f : -0.1f, 0.05f);
                 }
                 yield return null;
             }
-            Destroy(core);
+            Kill(q);
             Impact(to, s, size);
         }
 
@@ -504,26 +507,42 @@ namespace StrikerZ
             img.color = Color.clear;
         }
 
-        /// <summary>개기일식: 화면이 어두워지고 검은 원판이 빛 고리(코로나)를 가린다</summary>
+        /// <summary>개기일식: 화면이 어두워지고 일식 그림(검은 원판 + 코로나)이 화면 가운데 떠오른다</summary>
         public IEnumerator Eclipse()
         {
             Sfx.Play("charge4", 0.8f);
             StartCoroutine(TintRoutine(tint, new Color(0, 0, 0.02f, 0.9f), 0.45f, 1.0f, 0.9f));
-            StartCoroutine(TintRoutine(corona, new Color(1f, 0.85f, 0.55f, 0.95f), 0.5f, 0.95f, 0.8f));
+            bool pic = Sprite("eclipse") != null;
             for (float t = 0; t < 1f; t += Time.deltaTime / 0.6f)
             {
-                disk.color = new Color(0, 0, 0, Mathf.Min(1, t * 1.5f));
-                disk.rectTransform.anchoredPosition = new Vector2(Mathf.Lerp(-260, 0, 1 - (1 - t) * (1 - t)), 120);
+                float e = 1 - (1 - t) * (1 - t);
+                corona.color = new Color(1f, 1f, 1f, pic ? e : 0f);
+                corona.rectTransform.localScale = Vector3.one * Mathf.Lerp(0.55f, 1f, e);
+                corona.rectTransform.localRotation = Quaternion.Euler(0, 0, -20f * (1 - e));
+                if (!pic)
+                {
+                    disk.color = new Color(0, 0, 0, Mathf.Min(1, t * 1.5f));
+                    disk.rectTransform.anchoredPosition = new Vector2(Mathf.Lerp(-260, 0, e), 120);
+                }
                 yield return null;
             }
-            disk.rectTransform.anchoredPosition = new Vector2(0, 120);
             board.Shake(0.15f);
-            yield return new WaitForSeconds(0.9f);
+            float hold = 0.9f;
+            for (float t = 0; t < hold; t += Time.deltaTime)
+            {
+                corona.rectTransform.localRotation = Quaternion.Euler(0, 0, t * 6f);
+                corona.rectTransform.localScale = Vector3.one * (1f + 0.03f * Mathf.Sin(t * 9f));
+                yield return null;
+            }
             for (float t = 0; t < 1f; t += Time.deltaTime / 0.8f)
             {
-                disk.color = new Color(0, 0, 0, 1 - t);
+                corona.color = new Color(1f, 1f, 1f, pic ? 1 - t : 0f);
+                disk.color = new Color(0, 0, 0, pic ? 0f : 1 - t);
                 yield return null;
             }
+            corona.color = Color.clear;
+            corona.rectTransform.localScale = Vector3.one;
+            corona.rectTransform.localRotation = Quaternion.identity;
             disk.color = Color.clear;
         }
 
@@ -532,14 +551,16 @@ namespace StrikerZ
         public void Heal(PlayerState p)
         {
             var pos = HeroPos(p);
-            Ring(pos, new Color(0.5f, 1f, 0.6f), 2.2f, 0.8f);
-            Sparks(pos, new Color(0.6f, 1f, 0.6f), new Color(1f, 0.95f, 0.55f), 36, Vector3.up * 1.6f, 0.6f, 0.13f, 1.2f, -0.05f, 0.45f);
+            var green = new Color(0.55f, 1f, 0.65f);
+            Ring(pos, green, 2.4f, 0.8f);
+            StartCoroutine(QuadRoutine("heal", pos + Vector3.up * 0.4f, Color.white, 1.4f, 2.4f, 1.1f, false, 0f, 0.9f, null, 0f));
+            Sparks(pos, green, new Color(1f, 0.98f, 0.7f), 18, Vector3.up * 1.6f, 0.6f, 0.08f, 1.2f, -0.05f, 0.45f, "star");
         }
 
         public void Draw(PlayerState p, int n)
         {
             var pos = DeckPos(p);
-            Sparks(pos, new Color(0.55f, 0.8f, 1f), Color.white, 10 + 6 * n, Vector3.up * 1.2f, 0.5f, 0.1f, 0.8f, -0.1f, 0.3f);
+            Sparks(pos, new Color(0.55f, 0.8f, 1f), Color.white, 6 + 4 * n, Vector3.up * 1.2f, 0.5f, 0.07f, 0.8f, -0.1f, 0.3f, "star");
         }
 
         /// <summary>효과로 몬스터를 파괴하는 일격 (속성별)</summary>
@@ -553,32 +574,39 @@ namespace StrikerZ
                     Sfx.Play("boom", 0.5f);
                     Flash(new Color(1f, 1f, 0.9f, 0.35f), 0.25f);
                     Bolt(pos + new Vector3(Random.Range(-0.8f, 0.8f), 6f, 1.5f), pos, c, 0.45f, 0.2f);
+                    Burst(pos, s, 2.4f, 0.45f);
                     break;
                 case Style.Fire:
                     Pillar(pos, new Color(1f, 0.45f, 0.1f), 3f, 1.1f, 0.8f);
-                    Sparks(pos, new Color(1f, 0.85f, 0.3f), new Color(1f, 0.2f, 0.05f), 40, Vector3.up * 3f, 0.8f, 0.18f, 0.9f, -0.2f, 0.35f);
+                    Burst(pos, s, 2.2f, 0.5f);
+                    Motes(pos, s, 26, Vector3.up * 3f, 0.8f, 0.16f, 0.9f, -0.2f, 0.35f);
                     break;
                 case Style.Water:
                     Pillar(pos, new Color(0.3f, 0.65f, 1f), 2.5f, 1.1f, 0.8f);
-                    Sparks(pos, Color.white, new Color(0.3f, 0.6f, 1f), 40, Vector3.up * 3.2f, 1.2f, 0.12f, 1f, 1.2f, 0.3f);
+                    Burst(pos, s, 2.2f, 0.5f);
+                    Motes(pos, s, 26, Vector3.up * 3.2f, 1.2f, 0.12f, 1f, 1.2f, 0.3f);
                     break;
                 case Style.Wind:
                     Spiral(pos, c, 1.1f, 0.8f);
-                    Sparks(pos, c, Color.white, 30, Vector3.up * 2f, 1.5f, 0.1f, 0.8f, 0, 0.4f);
+                    Ring(pos, s, 2.4f, 0.5f);
                     break;
                 case Style.Earth:
-                    Sparks(pos + Vector3.up * 3f, new Color(0.6f, 0.45f, 0.3f), new Color(0.35f, 0.25f, 0.15f), 24, Vector3.down * 3f, 0.6f, 0.28f, 0.8f, 1.5f, 0.6f);
+                    Motes(pos + Vector3.up * 3f, s, 18, Vector3.down * 3f, 0.6f, 0.28f, 0.8f, 1.5f, 0.6f);
+                    Burst(pos, s, 2.4f, 0.55f);
                     board.Shake(0.2f);
                     break;
                 case Style.Light:
                     Pillar(pos, new Color(1f, 0.95f, 0.7f), 6f, 1.2f, 0.9f);
+                    Ring(pos, s, 2.6f, 0.6f);
                     break;
                 case Style.Dark:
                     Slash(pos, c, 1.1f);
-                    Sparks(pos, new Color(0.6f, 0.2f, 0.9f), new Color(0.15f, 0.02f, 0.25f), 30, Vector3.up * 0.4f, 0.8f, 0.25f, 1.2f, -0.05f, 0.5f);
+                    Burst(pos, s, 2.2f, 0.55f);
+                    Motes(pos, s, 20, Vector3.up * 0.4f, 0.8f, 0.25f, 1.2f, -0.05f, 0.5f);
                     break;
                 default:
                     Slash(pos, s == Style.Rainbow ? Color.HSVToRGB(Random.value, 0.6f, 1f) : Color.white, 1.1f);
+                    Burst(pos, s, 2f, 0.45f);
                     break;
             }
             yield return new WaitForSeconds(0.28f);
@@ -589,16 +617,16 @@ namespace StrikerZ
         {
             var pos = PosOf(c);
             var col = CardData.ElementColor(c.data.element);
-            Sparks(pos, col, Color.white, 26, Vector3.up * 1.8f, 2.2f, 0.12f, 0.8f, 1f, 0.35f);
-            Sparks(pos, new Color(0.3f, 0.3f, 0.32f), new Color(0.1f, 0.1f, 0.1f), 14, Vector3.up * 0.5f, 0.5f, 0.45f, 1.2f, -0.05f, 0.35f);
+            Sparks(pos, col, Color.white, 16, Vector3.up * 1.8f, 2.2f, 0.1f, 0.8f, 1f, 0.35f, "shard");
+            Sparks(pos, new Color(0.45f, 0.45f, 0.5f), new Color(0.2f, 0.2f, 0.22f), 8, Vector3.up * 0.5f, 0.5f, 0.3f, 1.2f, -0.05f, 0.35f, "dust");
         }
 
         public void AtkChange(CardInstance c, int value)
         {
             if (c == null || value == 0) return;
             var pos = PosOf(c);
-            if (value > 0) Sparks(pos, new Color(1f, 0.6f, 0.2f), new Color(1f, 0.95f, 0.4f), 16, Vector3.up * 1.6f, 0.2f, 0.12f, 0.8f, 0, 0.35f);
-            else Sparks(pos + Vector3.up * 1.2f, new Color(0.6f, 0.3f, 0.9f), new Color(0.3f, 0.1f, 0.5f), 16, Vector3.down * 1.4f, 0.2f, 0.14f, 0.8f, 0, 0.35f);
+            if (value > 0) Sparks(pos, new Color(1f, 0.6f, 0.2f), new Color(1f, 0.95f, 0.4f), 12, Vector3.up * 1.6f, 0.2f, 0.09f, 0.8f, 0, 0.35f, "star");
+            else Sparks(pos + Vector3.up * 1.2f, new Color(0.6f, 0.3f, 0.9f), new Color(0.3f, 0.1f, 0.5f), 12, Vector3.down * 1.4f, 0.2f, 0.12f, 0.8f, 0, 0.35f, "mote_dark");
         }
 
         public void HpUp(CardInstance c) => Bubble(PosOf(c) + Vector3.up * 0.1f, new Color(0.4f, 1f, 0.6f), 0.8f);
@@ -611,7 +639,7 @@ namespace StrikerZ
         {
             var pos = PosOf(c);
             Ring(pos, new Color(0.7f, 0.5f, 1f), 1.6f, 0.6f, true);
-            Sparks(pos + Vector3.up * 0.6f, new Color(1f, 0.95f, 0.5f), new Color(0.8f, 0.6f, 1f), 14, Vector3.zero, 0.9f, 0.12f, 1f, -0.05f, 0.4f);
+            Sparks(pos + Vector3.up * 0.6f, new Color(1f, 0.95f, 0.5f), new Color(0.8f, 0.6f, 1f), 10, Vector3.zero, 0.9f, 0.1f, 1f, -0.05f, 0.4f, "star");
         }
 
         public void Taunt(CardInstance c)
@@ -634,17 +662,18 @@ namespace StrikerZ
         public void SpecialSummon(CardInstance c)
         {
             var pos = PosOf(c);
-            var col = CardData.ElementColor(c.data.element);
-            Pillar(pos, col, 4f, 1f, 0.9f);
-            Ring(pos, col, 2.4f, 0.7f);
+            var s = StyleOf(c);
+            Glyph(pos, s, 2.4f, 1f);
+            Pillar(pos, CardData.ElementColor(c.data.element), 4f, 1f, 0.9f);
+            Ring(pos, s, 2.6f, 0.7f);
         }
 
-        public void GraveRise(PlayerState p) => Sparks(GravePos(p), new Color(0.8f, 0.7f, 1f), Color.white, 22, Vector3.up * 1.8f, 0.4f, 0.12f, 1f, -0.1f, 0.3f);
+        public void GraveRise(PlayerState p) => Sparks(GravePos(p), new Color(0.8f, 0.7f, 1f), Color.white, 16, Vector3.up * 1.8f, 0.4f, 0.1f, 1f, -0.1f, 0.3f, "mote_light");
 
-        // ══════════════════════════ 카드 놓기 · 공개 · 소멸 (2026-10-29) ══════════════════════════
+        // ══════════════════════════ 카드 놓기 · 공개 · 소멸 ══════════════════════════
 
         /// <summary>
-        /// 카드를 칸에 놓았을 때: 카드가 날아오는 동안 바닥 고리가 안쪽으로 모이고, 내려앉는 순간 먼지와 금빛 반짝임이 퍼진다.
+        /// 카드를 칸에 놓았을 때: 카드가 날아오는 동안 금빛 마법진이 안쪽으로 모이고, 내려앉는 순간 먼지와 반짝임이 퍼진다.
         /// 뒷면 배치라 속성 색은 쓰지 않는다 (상대에게 속성이 새지 않게)
         /// </summary>
         public void Place(CardInstance c) => StartCoroutine(PlaceRoutine(c));
@@ -654,17 +683,17 @@ namespace StrikerZ
             if (c == null || c.owner == null || c.slot < 0) yield break;
             var pos = board.SlotPos(c.owner, c.slot) + Vector3.up * 0.05f;
             var gold = new Color(1f, 0.85f, 0.45f);
-            Ring(pos, gold, 2.0f, 0.3f, true);
+            StartCoroutine(QuadRoutine("glyph_neutral", pos + Vector3.up * 0.07f, gold, 2.4f, 1.2f, 0.55f, true, -120f, 0f, t => t < 0.1f ? t / 0.1f : 1f - (t - 0.1f) / 0.9f));
             yield return new WaitForSeconds(0.22f);
             if (c.view == null || c.zone != Zone.Slot) yield break;
-            Ring(pos, gold, 1.7f, 0.45f);
-            Sparks(pos, new Color(0.85f, 0.8f, 0.7f), new Color(0.5f, 0.45f, 0.4f), 18, Vector3.up * 0.35f, 0.9f, 0.14f, 0.55f, 0.35f, 0.3f);   // 먼지
-            Sparks(pos, gold, Color.white, 10, Vector3.up * 1.2f, 0.4f, 0.08f, 0.5f, 0.2f, 0.25f);                                        // 반짝임
+            Ring(pos, gold, 1.8f, 0.45f);
+            Sparks(pos, new Color(0.85f, 0.8f, 0.7f), new Color(0.5f, 0.45f, 0.4f), 10, Vector3.up * 0.35f, 0.9f, 0.16f, 0.55f, 0.35f, 0.3f, "dust");   // 먼지
+            Sparks(pos, gold, Color.white, 8, Vector3.up * 1.2f, 0.4f, 0.07f, 0.5f, 0.2f, 0.25f, "star");                                              // 반짝임
             board.Shake(0.04f);
         }
 
         /// <summary>
-        /// 배틀 시작 공개: 카드가 뒤집히며 속성 연출 — 화염 불기둥·물보라·바람 회오리·대지 바위·번개 낙뢰·빛기둥·어둠 안개·무지개.
+        /// 배틀 시작 공개: 카드가 뒤집히며 속성 연출 — 속성 폭발 그림·충격파 고리·마법진 + 화염 불기둥·물보라·바람 회오리·대지 바위·번개 낙뢰·빛기둥·어둠 안개.
         /// Rare 는 조금, Unique 는 크게 + 섬광
         /// </summary>
         public void RevealFlip(CardInstance c)
@@ -674,68 +703,59 @@ namespace StrikerZ
             var col = ColorOf(s);
             var pos = PosOf(c);
             float k = c.data.rarity == Rarity.Unique ? 1.8f : c.data.rarity == Rarity.Rare ? 1.4f : 1.15f;
-            Ring(pos, col, 3.2f * k, 0.6f);
-            Ring(pos, Color.Lerp(col, Color.white, 0.5f), 1.8f * k, 0.45f, true);
+            Burst(pos, s, 2.4f * k, 0.5f);
+            Ring(pos, s, 3.2f * k, 0.6f);
+            Glyph(pos, s, 2.0f * k, 0.7f);
             switch (s)
             {
                 case Style.Fire:
                     Pillar(pos, col, 2.2f * k, 0.7f * k, 0.5f);
-                    Sparks(pos, new Color(1f, 0.85f, 0.3f), new Color(1f, 0.3f, 0.05f), (int)(26 * k), Vector3.up * 1.6f, 1.2f, 0.14f, 0.7f, -0.2f, 0.3f);
+                    Motes(pos, s, (int)(16 * k), Vector3.up * 1.6f, 1.2f, 0.14f, 0.7f, -0.2f, 0.3f);
                     break;
                 case Style.Water:
-                    Sparks(pos, new Color(0.75f, 0.92f, 1f), new Color(0.25f, 0.55f, 1f), (int)(30 * k), Vector3.up * 2.2f, 1.2f, 0.11f, 0.9f, 0.9f, 0.3f);
+                    Motes(pos, s, (int)(18 * k), Vector3.up * 2.2f, 1.2f, 0.11f, 0.9f, 0.9f, 0.3f);
                     Ring(pos, Color.white, 1.4f * k, 0.4f, true);
                     break;
                 case Style.Wind:
                     Spiral(pos, col, 0.9f * k, 0.7f);
-                    Sparks(pos, col, Color.white, (int)(18 * k), Vector3.up * 1.2f, 1.4f, 0.09f, 0.6f, 0f, 0.4f);
                     break;
                 case Style.Earth:
-                    Sparks(pos, new Color(0.75f, 0.55f, 0.3f), new Color(0.4f, 0.28f, 0.15f), (int)(22 * k), Vector3.up * 1.8f, 1.2f, 0.18f, 0.8f, 1.3f, 0.35f);
+                    Motes(pos, s, (int)(14 * k), Vector3.up * 1.8f, 1.2f, 0.18f, 0.8f, 1.3f, 0.35f);
                     board.Shake(0.06f * k);
                     break;
                 case Style.Thunder:
                     Bolt(pos + new Vector3(Random.Range(-0.5f, 0.5f), 3.5f, 0.8f), pos, col, 0.25f, 0.12f);
-                    Sparks(pos, Color.white, col, (int)(24 * k), Vector3.zero, 2.6f, 0.07f, 0.4f);
+                    Motes(pos, s, (int)(14 * k), Vector3.zero, 2.6f, 0.07f, 0.4f);
                     break;
                 case Style.Light:
                     Pillar(pos, new Color(1f, 0.96f, 0.75f), 3.5f * k, 0.9f * k, 0.6f);
-                    Sparks(pos, Color.white, col, (int)(20 * k), Vector3.up * 1.2f, 0.8f, 0.1f, 0.8f, -0.15f, 0.3f);
+                    Motes(pos, s, (int)(12 * k), Vector3.up * 1.2f, 0.8f, 0.1f, 0.8f, -0.15f, 0.3f);
                     break;
                 case Style.Dark:
-                    Sparks(pos, new Color(0.75f, 0.35f, 1f), new Color(0.2f, 0.03f, 0.35f), (int)(28 * k), Vector3.up * 0.5f, 1.3f, 0.2f, 0.9f, -0.08f, 0.35f);
+                    Motes(pos, s, (int)(18 * k), Vector3.up * 0.5f, 1.3f, 0.2f, 0.9f, -0.08f, 0.35f);
                     Ring(pos, new Color(0.3f, 0.05f, 0.5f), 1.8f * k, 0.5f, true);
                     break;
                 case Style.Rainbow:
                     for (int i = 0; i < 6; i++)
-                        Sparks(pos, Color.HSVToRGB(i / 6f, 0.75f, 1f), Color.HSVToRGB(i / 6f + 0.08f, 0.5f, 1f), (int)(7 * k), Vector3.up * 1.2f, 1.6f, 0.12f, 0.8f);
+                        Sparks(pos, Color.HSVToRGB(i / 6f, 0.75f, 1f), Color.HSVToRGB(i / 6f + 0.08f, 0.5f, 1f), (int)(4 * k), Vector3.up * 1.2f, 1.6f, 0.1f, 0.8f, 0f, 0.15f, "star");
                     break;
                 default:
-                    Sparks(pos, Color.white, new Color(0.75f, 0.8f, 0.95f), (int)(20 * k), Vector3.up * 1.2f, 1.4f, 0.11f, 0.6f);
+                    Motes(pos, s, (int)(12 * k), Vector3.up * 1.2f, 1.4f, 0.11f, 0.6f);
                     break;
             }
             if (c.data.rarity == Rarity.Unique) Flash(new Color(col.r, col.g, col.b, 0.22f), 0.4f);
         }
 
-        /// <summary>
-        /// 파괴: 카드가 가루가 되어 흩어진다 — 카드 면 곳곳에서 재와 속성 빛가루가 피어오르며 카드는 떠오르면서 작아져 사라진다.
-        /// 끝나면 카드는 보이지 않는 크기(fxScale 0)로 묘지로 날아가고, Reappear 가 묘지에서 다시 보이게 한다
-        /// </summary>
-        public IEnumerator Dissolve(CardInstance c, float dur = 0.75f)
+        ParticleSystem AshSystem(Vector3 pos, string tex, float gravity)
         {
-            var v = c?.view;
-            if (v == null) yield break;
-            var col = CardData.ElementColor(c.data.element);
-            var ash = new Color(0.22f, 0.2f, 0.22f);
-            var ashDark = new Color(0.07f, 0.07f, 0.09f);
-            var go = new GameObject("FxDissolve");
-            go.transform.position = v.transform.position;
+            var go = new GameObject("FxDissolve_" + tex);
+            go.transform.position = pos;
             var ps = go.AddComponent<ParticleSystem>();
             ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             var main = ps.main;
             main.loop = false; main.playOnAwake = false; main.maxParticles = 400;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.gravityModifier = -0.22f;      // 재가 위로 떠오른다
+            main.gravityModifier = gravity;
             var em = ps.emission; em.enabled = false;
             var sh = ps.shape; sh.enabled = false;
             var colL = ps.colorOverLifetime; colL.enabled = true;
@@ -745,8 +765,28 @@ namespace StrikerZ
             colL.color = g;
             var sz = ps.sizeOverLifetime; sz.enabled = true;
             sz.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0, 1, 1, 0.15f));
-            go.GetComponent<ParticleSystemRenderer>().sharedMaterial = PMat;
+            var rot = ps.rotationOverLifetime; rot.enabled = true;
+            rot.z = new ParticleSystem.MinMaxCurve(-3f, 3f);
+            go.GetComponent<ParticleSystemRenderer>().sharedMaterial = Mat(tex);
             ps.Play();
+            return ps;
+        }
+
+        /// <summary>
+        /// 파괴: 카드가 가루가 되어 흩어진다 — 카드 면 곳곳에서 재(먼지 그림)와 속성 빛가루(속성 입자 그림)가 피어오르며 카드는 떠오르면서 작아져 사라진다.
+        /// 끝나면 카드는 보이지 않는 크기(fxScale 0)로 묘지로 날아가고, Reappear 가 묘지에서 다시 보이게 한다
+        /// </summary>
+        public IEnumerator Dissolve(CardInstance c, float dur = 0.75f)
+        {
+            var v = c?.view;
+            if (v == null) yield break;
+            var s = StyleOf(c.data.element);
+            var col = CardData.ElementColor(c.data.element);
+            var ash = new Color(0.3f, 0.28f, 0.3f);
+            var ashDark = new Color(0.1f, 0.1f, 0.12f);
+            var psAsh = AshSystem(v.transform.position, "dust", -0.22f);          // 재가 위로 떠오른다
+            var psSpark = AshSystem(v.transform.position, Tex("mote_" + Suffix(s)) != null ? "mote_" + Suffix(s) : "mote_neutral", -0.35f);
+            StartCoroutine(QuadRoutine("ash", v.transform.position + Vector3.up * 0.1f, Color.Lerp(col, Color.white, 0.3f), 1.2f, 2.2f, dur * 1.3f, true, 20f, 0.5f, null, float.NaN, 1f, 0.8f));
             var ep = new ParticleSystem.EmitParams();
             float emit = 0;
             for (float t = 0; t < 1f; t += Time.deltaTime / dur)
@@ -755,25 +795,27 @@ namespace StrikerZ
                 v.fxScale = Mathf.Lerp(1f, 0.04f, t * t);
                 v.lunge = Vector3.up * 0.3f * t;
                 // 아래쪽 줄부터 위로 쓸려 올라가며 가루가 된다
-                emit += Time.deltaTime * 280f;
+                emit += Time.deltaTime * 200f;
                 while (emit > 1)
                 {
                     emit--;
                     float sx = Random.Range(-CardView.W, CardView.W) * 0.5f;
                     float sz0 = Mathf.Lerp(-CardView.H * 0.5f, CardView.H * 0.5f, Mathf.Clamp01(t + Random.Range(-0.25f, 0.25f)));
                     bool spark = Random.value < 0.4f;
-                    float area = Mathf.Lerp(1f, 0.5f, t);   // 카드가 줄어드는 동안 가루가 나오는 면적도 서서히 좁아진다 (카드 스케일과 무관하게 원래 카드 면적 기준)
+                    float area = Mathf.Lerp(1f, 0.5f, t);   // 카드가 줄어드는 동안 가루가 나오는 면적도 서서히 좁아진다 (원래 카드 면적 기준)
                     ep.position = v.transform.position + v.transform.rotation * new Vector3(sx * area, 0.02f, sz0 * area);
                     ep.velocity = new Vector3(Random.Range(-0.6f, 0.6f), Random.Range(1.0f, 2.2f), Random.Range(-0.45f, 0.45f));
-                    ep.startColor = spark ? Color.Lerp(col, Color.white, Random.value * 0.5f) : Color.Lerp(ash, ashDark, Random.value);
-                    ep.startSize = (spark ? 0.1f : 0.17f) * SizeK * Random.Range(0.6f, 1.3f);
+                    ep.startColor = spark ? Color.Lerp(col, Color.white, Random.value * 0.6f) : Color.Lerp(ash, ashDark, Random.value);
+                    ep.startSize = (spark ? 0.08f : 0.16f) * SizeK * MoteK * Random.Range(0.6f, 1.3f);
                     ep.startLifetime = Random.Range(0.9f, 1.6f);
-                    ps.Emit(ep, 1);
+                    ep.rotation = Random.Range(0f, 360f);
+                    (spark ? psSpark : psAsh).Emit(ep, 1);
                 }
                 yield return null;
             }
             if (c.view == v) { v.fxScale = 0.001f; v.lunge = Vector3.zero; }
-            Destroy(go, 1.6f);
+            Destroy(psAsh.gameObject, 1.6f);
+            Destroy(psSpark.gameObject, 1.6f);
         }
 
         /// <summary>소멸한 카드가 묘지에 닿을 때쯤 다시 보이게</summary>
@@ -787,10 +829,12 @@ namespace StrikerZ
 
         public void FieldChange(CardData field)
         {
+            var s = StyleOf(field.element);
             var c = CardData.ElementColor(field.element);
             Flash(new Color(c.r, c.g, c.b, 0.35f), 0.5f);
-            Ring(BoardView.CenterPos, c, 9f, 1.1f);
+            Ring(BoardView.CenterPos, s, 9f, 1.1f);
             Ring(BoardView.CenterPos, Color.white, 6f, 0.8f);
+            Glyph(BoardView.CenterPos, s, 5f, 1.2f);
         }
 
         /// <summary>상태 효과 시각화</summary>
@@ -815,11 +859,11 @@ namespace StrikerZ
                             if (c != null && c.faceDown) Pillar(PosOf(c), new Color(1f, 0.6f, 0.2f), 2.5f, 0.7f, 1f);
                     break;
                 case StatusKind.AllowFaceDown:
-                    if (mine != null) Sparks(RowCenter(mine), new Color(0.35f, 0.15f, 0.5f), new Color(0.1f, 0.05f, 0.15f), 50, Vector3.up * 0.4f, 0.4f, 0.4f, 1.6f, -0.02f, 2.5f);
+                    if (mine != null) Motes(RowCenter(mine), Style.Dark, 30, Vector3.up * 0.4f, 0.4f, 0.3f, 1.6f, -0.02f, 2.5f);
                     break;
                 case StatusKind.FreeTarget:
                     if (mine != null)
-                        foreach (var m in mine.opponent.Monsters()) Reticle(PosOf(m), new Color(1f, 0.25f, 0.2f), 1.3f);
+                        foreach (var m in mine.opponent.Monsters()) Reticle(PosOf(m), new Color(1f, 0.35f, 0.3f), 1.3f);
                     break;
             }
         }
@@ -838,13 +882,14 @@ namespace StrikerZ
             {
                 case "S001":   // 봉화: 내 쪽에서 불기둥, 상대 쪽 뒷면 카드가 드러난다
                     Pillar(HeroPos(me), new Color(1f, 0.55f, 0.15f), 6f, 1.3f, 1.4f);
-                    Sparks(HeroPos(me), new Color(1f, 0.8f, 0.3f), new Color(1f, 0.3f, 0.05f), 60, Vector3.up * 4f, 0.8f, 0.14f, 1.4f, -0.1f, 0.4f);
+                    Motes(HeroPos(me), Style.Fire, 40, Vector3.up * 4f, 0.8f, 0.14f, 1.4f, -0.1f, 0.4f);
                     Flash(new Color(1f, 0.55f, 0.2f, 0.2f), 0.5f);
                     yield return new WaitForSeconds(0.5f);
                     break;
                 case "S002":   // 포기란없다: 묘지에서 황금 불꽃
                     Pillar(GravePos(me), new Color(1f, 0.85f, 0.4f), 4f, 1f, 1f);
                     Ring(GravePos(me), new Color(1f, 0.85f, 0.4f), 2.6f, 0.8f);
+                    Glyph(GravePos(me), Style.Light, 2.2f, 0.9f);
                     yield return new WaitForSeconds(0.4f);
                     break;
                 case "S003":   // 개기일식
@@ -857,26 +902,27 @@ namespace StrikerZ
                     break;
                 case "S005":   // 전투의 함성: 충격파
                     Sfx.Play("boom", 0.4f);
-                    for (int i = 0; i < 3; i++) { Ring(RowCenter(me), new Color(1f, 0.35f, 0.2f), 4f + i * 2f, 0.7f); yield return new WaitForSeconds(0.12f); }
+                    for (int i = 0; i < 3; i++) { Ring(RowCenter(me), Style.Fire, 4f + i * 2f, 0.7f); yield return new WaitForSeconds(0.12f); }
                     board.Shake(0.25f);
                     break;
                 case "S006":   // 화염구: 손에 불꽃을 모은다
-                    Sparks(HeroPos(me), new Color(1f, 0.85f, 0.3f), new Color(1f, 0.3f, 0.05f), 40, Vector3.zero, 1.2f, 0.16f, 0.5f, 0, 1.2f);
-                    Ring(HeroPos(me), new Color(1f, 0.4f, 0.1f), 2.2f, 0.4f, true);
+                    Motes(HeroPos(me), Style.Fire, 28, Vector3.zero, 1.2f, 0.16f, 0.5f, 0, 1.2f);
+                    Ring(HeroPos(me), Style.Fire, 2.2f, 0.4f, true);
                     yield return new WaitForSeconds(0.35f);
                     break;
                 case "S007":   // 지혜의 샘: 덱에서 솟는 물
-                    Sparks(DeckPos(me), new Color(0.6f, 0.85f, 1f), new Color(0.2f, 0.5f, 1f), 60, Vector3.up * 3.5f, 0.8f, 0.12f, 1.2f, 1.1f, 0.3f);
-                    Ring(DeckPos(me), new Color(0.4f, 0.75f, 1f), 2.2f, 0.8f);
+                    Motes(DeckPos(me), Style.Water, 40, Vector3.up * 3.5f, 0.8f, 0.12f, 1.2f, 1.1f, 0.3f);
+                    Ring(DeckPos(me), Style.Water, 2.2f, 0.8f);
                     yield return new WaitForSeconds(0.35f);
                     break;
                 case "S008":   // 질풍 가속: 바람이 휩쓴다
                     Sfx.Play("whoosh");
-                    Sparks(RowCenter(me) + Vector3.left * 4f, ColorOf(Style.Wind), Color.white, 70, Vector3.right * 9f, 0.8f, 0.1f, 0.9f, 0, 0.6f);
+                    Motes(RowCenter(me) + Vector3.left * 4f, Style.Wind, 50, Vector3.right * 9f, 0.8f, 0.1f, 0.9f, 0, 0.6f);
                     yield return new WaitForSeconds(0.3f);
                     break;
                 case "S009":   // 치유의 빛
                     Pillar(HeroPos(me), new Color(1f, 0.95f, 0.65f), 7f, 1.4f, 1.2f);
+                    Glyph(HeroPos(me), Style.Light, 2.6f, 1.1f);
                     yield return new WaitForSeconds(0.3f);
                     break;
                 case "S010":   // 반격의 결의
@@ -910,7 +956,7 @@ namespace StrikerZ
                     break;
                 case "S103":   // 게헨나 플레임: 지옥불
                     Tint(new Color(0.35f, 0.02f, 0f, 0.5f), 0.2f, 0.5f, 0.6f);
-                    if (op != null) { int k = 0; foreach (var t in op.Monsters()) { if (k++ >= 2) break; Pillar(PosOf(t), new Color(0.9f, 0.15f, 0.05f), 3.5f, 1.2f, 1.2f); } }
+                    if (op != null) { int k = 0; foreach (var t in op.Monsters()) { if (k++ >= 2) break; Pillar(PosOf(t), new Color(0.9f, 0.15f, 0.05f), 3.5f, 1.2f, 1.2f); Burst(PosOf(t), Style.Fire, 2.4f, 0.6f); } }
                     yield return new WaitForSeconds(0.6f);
                     break;
                 case "S104":   // 데스 사이즈: 낫 베기
@@ -921,11 +967,13 @@ namespace StrikerZ
                 case "S105":   // 세인트 리벤저: 성검
                     Flash(new Color(1f, 0.95f, 0.75f, 0.4f), 0.5f);
                     Pillar(BoardView.CenterPos, new Color(1f, 0.95f, 0.7f), 8f, 1.6f, 1f);
+                    Glyph(BoardView.CenterPos, Style.Light, 4f, 1f);
                     yield return new WaitForSeconds(0.4f);
                     break;
                 case "S106":   // 영광의 최후
                     Sfx.Play("boom", 0.6f);
                     for (int i = 0; i < 3; i++) Ring(BoardView.CenterPos, new Color(1f, 0.8f, 0.3f), 5f + i * 3f, 0.8f + i * 0.15f);
+                    Burst(BoardView.CenterPos, Style.Light, 5f, 0.7f);
                     board.Shake(0.35f);
                     yield return new WaitForSeconds(0.4f);
                     break;
@@ -940,12 +988,13 @@ namespace StrikerZ
                     break;
                 case "S108":   // 세이렌의 눈물: 물결
                     Tint(new Color(0f, 0.15f, 0.4f, 0.45f), 0.25f, 0.5f, 0.6f);
-                    if (op != null) { Ring(RowCenter(op), new Color(0.4f, 0.75f, 1f), 7f, 1f); foreach (var t in op.Monsters()) Sparks(PosOf(t) + Vector3.up * 2f, Color.white, new Color(0.4f, 0.7f, 1f), 14, Vector3.down * 2f, 0.3f, 0.1f, 0.8f, 1f, 0.3f); }
+                    if (op != null) { Ring(RowCenter(op), Style.Water, 7f, 1f); foreach (var t in op.Monsters()) Motes(PosOf(t) + Vector3.up * 2f, Style.Water, 10, Vector3.down * 2f, 0.3f, 0.1f, 0.8f, 1f, 0.3f); }
                     yield return new WaitForSeconds(0.5f);
                     break;
                 case "S109":   // 루미너스 보이드: 화이트 홀
                     Flash(new Color(1f, 1f, 1f, 0.75f), 0.9f);
                     Ring(BoardView.CenterPos, Color.white, 10f, 1f, true);
+                    Glyph(BoardView.CenterPos, Style.Light, 6f, 1.1f);
                     yield return new WaitForSeconds(0.6f);
                     break;
                 case "S110":   // 테라 사이클론: 왼쪽부터 휩쓰는 회오리
@@ -966,27 +1015,27 @@ namespace StrikerZ
                     yield return new WaitForSeconds(0.6f);
                     break;
                 case "S112":   // 소울 레스큐: 영혼이 떠오른다
-                    foreach (var p in g.players) if (p != null) Sparks(GravePos(p), new Color(0.7f, 0.9f, 1f), Color.white, 26, Vector3.up * 1.6f, 0.4f, 0.16f, 1.6f, -0.08f, 0.3f);
+                    foreach (var p in g.players) if (p != null) Motes(GravePos(p), Style.Light, 18, Vector3.up * 1.6f, 0.4f, 0.14f, 1.6f, -0.08f, 0.3f);
                     yield return new WaitForSeconds(0.5f);
                     break;
                 case "S201":   // 신비의 심해: 물 속
                     Tint(new Color(0f, 0.18f, 0.45f, 0.55f), 0.4f, 0.7f, 0.8f);
-                    Sparks(RowCenter(me), new Color(0.8f, 0.95f, 1f), new Color(0.3f, 0.6f, 1f), 70, Vector3.up * 1.5f, 0.5f, 0.12f, 2f, -0.15f, 3f);
+                    Motes(RowCenter(me), Style.Water, 50, Vector3.up * 1.5f, 0.5f, 0.12f, 2f, -0.15f, 3f);
                     yield return new WaitForSeconds(0.6f);
                     break;
                 case "S202":   // 깊은 암야: 어둠이 내려앉는다
                     Tint(new Color(0.06f, 0f, 0.12f, 0.8f), 0.4f, 0.8f, 0.9f);
-                    if (op != null) foreach (var t in op.Monsters()) Sparks(PosOf(t), new Color(0.35f, 0.1f, 0.5f), Color.black, 20, Vector3.up * 0.3f, 0.4f, 0.4f, 1.6f, -0.02f, 0.5f);
+                    if (op != null) foreach (var t in op.Monsters()) Motes(PosOf(t), Style.Dark, 14, Vector3.up * 0.3f, 0.4f, 0.3f, 1.6f, -0.02f, 0.5f);
                     yield return new WaitForSeconds(0.7f);
                     break;
                 case "S203":   // 들풀의 군세: 잎사귀 폭풍
-                    Sparks(new Vector3(0, 1.2f, -3f), new Color(0.4f, 1f, 0.4f), new Color(0.15f, 0.6f, 0.2f), 90, Vector3.forward * 4f + Vector3.up, 2f, 0.14f, 1.4f, 0.3f, 1.5f);
+                    Motes(new Vector3(0, 1.2f, -3f), Style.Wind, 60, Vector3.forward * 4f + Vector3.up, 2f, 0.14f, 1.4f, 0.3f, 1.5f);
                     yield return new WaitForSeconds(0.5f);
                     break;
                 case "S204":   // 대지의 분노: 지진
                     Sfx.Play("boom", 0.7f);
                     board.Shake(0.6f);
-                    if (op != null) for (int i = 0; i < PlayerState.SlotCount; i++) Sparks(board.SlotPos(op, i), new Color(0.6f, 0.45f, 0.3f), new Color(0.3f, 0.2f, 0.1f), 12, Vector3.up * 3f, 1f, 0.22f, 0.9f, 1.5f, 0.3f);
+                    if (op != null) for (int i = 0; i < PlayerState.SlotCount; i++) Motes(board.SlotPos(op, i), Style.Earth, 9, Vector3.up * 3f, 1f, 0.22f, 0.9f, 1.5f, 0.3f);
                     yield return new WaitForSeconds(0.6f);
                     break;
                 case "S205":   // 인간의 긍지: 묘지에서 영웅들이 일어선다
@@ -999,18 +1048,22 @@ namespace StrikerZ
                     if (op != null)
                         for (int i = 0; i < PlayerState.SlotCount; i++)
                         {
-                            Sparks(board.SlotPos(op, i), new Color(1f, 0.8f, 0.3f), new Color(1f, 0.2f, 0.05f), 16, Vector3.up * 2.5f, 0.6f, 0.2f, 0.8f, -0.2f, 0.4f);
+                            Burst(board.SlotPos(op, i), Style.Fire, 1.8f, 0.45f);
+                            Motes(board.SlotPos(op, i), Style.Fire, 10, Vector3.up * 2.5f, 0.6f, 0.2f, 0.8f, -0.2f, 0.4f);
                             yield return new WaitForSeconds(0.05f);
                         }
                     break;
                 case "S207":   // 균형의 저울: 빛과 어둠
                     Flash(new Color(1f, 1f, 1f, 0.5f), 0.3f);
+                    Glyph(BoardView.CenterPos, Style.Light, 5f, 0.6f);
                     yield return new WaitForSeconds(0.25f);
                     Flash(new Color(0f, 0f, 0f, 0.6f), 0.4f);
+                    Glyph(BoardView.CenterPos, Style.Dark, 5f, 0.6f);
                     yield return new WaitForSeconds(0.3f);
                     break;
                 case "S208":   // 앱솔루트 스펠: 무지개 고리
                     for (int i = 0; i < 6; i++) Ring(BoardView.CenterPos, Color.HSVToRGB(i / 6f, 0.7f, 1f), 3f + i * 1.3f, 0.7f + i * 0.08f);
+                    Glyph(BoardView.CenterPos, Style.Rainbow, 6f, 1.2f);
                     Flash(new Color(1f, 1f, 1f, 0.35f), 0.4f);
                     yield return new WaitForSeconds(0.5f);
                     break;
@@ -1018,9 +1071,10 @@ namespace StrikerZ
                 default:
                     if (c.data.type == CardType.Hero)
                     {
-                        // 영웅 능력: 영웅 위로 속성 빛기둥 + 고리
+                        // 영웅 능력: 영웅 위로 속성 빛기둥 + 고리 + 마법진
                         Pillar(src, col, 6f, 1.3f, 1.1f);
-                        Ring(src, col, 3.2f, 0.8f);
+                        Ring(src, s, 3.2f, 0.8f);
+                        Glyph(src, s, 2.6f, 1f);
                         Flash(new Color(col.r, col.g, col.b, 0.25f), 0.5f);
                         yield return new WaitForSeconds(0.35f);
                     }
@@ -1029,7 +1083,8 @@ namespace StrikerZ
                         // 신화 몬스터 강림
                         Sfx.Play("charge5", 0.6f);
                         Pillar(src, col, 7f, 1.5f, 1.3f);
-                        Ring(src, col, 4f, 0.9f);
+                        Glyph(src, s, 3.4f, 1.3f);
+                        Ring(src, s, 4f, 0.9f);
                         Ring(src, Color.white, 2.5f, 0.7f);
                         Flash(new Color(col.r, col.g, col.b, 0.3f), 0.6f);
                         yield return new WaitForSeconds(0.45f);
@@ -1037,7 +1092,8 @@ namespace StrikerZ
                     else if (c.IsMagic)
                     {
                         // 그 밖의 마법: 속성 색 섬광 + 마법진
-                        Ring(src, col, 3f, 0.7f);
+                        Glyph(src, s, 2.4f, 0.8f);
+                        Ring(src, s, 3f, 0.7f);
                         Ring(src, Color.white, 2f, 0.5f, true);
                         Flash(new Color(col.r, col.g, col.b, 0.18f), 0.35f);
                         yield return new WaitForSeconds(0.2f);

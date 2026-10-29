@@ -1,0 +1,182 @@
+{
+ "burst_fire": {
+  "text": "a05ee6bb-aea7-4aaf-80f1-0362e830d0bd",
+  "gen": "850f6445-4bce-499e-8a98-1c72104b23df"
+ },
+ "ring_fire": {
+  "text": "65250682-e239-45dd-99db-730a22f3f516",
+  "gen": "af334cdb-da2b-41eb-86fb-dd3409a5cc38"
+ },
+ "mote_fire": {
+  "text": "94732595-64af-4179-8bbc-36d3371c4a85",
+  "gen": "7f0372e8-3801-4d9a-a208-b29365fffdd2"
+ },
+ "glyph_fire": {
+  "text": "d8832b5d-8412-4855-a39a-0da24e345b7f",
+  "gen": "0e54d6e9-5b83-4cac-8b1f-06705946563d"
+ },
+ "burst_water": {
+  "text": "c586e833-c5ed-4fd9-8c96-3ed5a7f94a08",
+  "gen": "6c4aad24-57c8-4fc9-9504-7a5a7e73d078"
+ },
+ "ring_water": {
+  "text": "00f52981-3aaa-456d-ab9d-25bd217dda56",
+  "gen": "607a5562-3f28-4ece-9094-a8cb3c178549"
+ },
+ "mote_water": {
+  "text": "dcc74e8d-d18e-4ee4-b65f-af77e5e1cd2b",
+  "gen": "3f1845db-fe99-4e36-90f7-ea84541844b3"
+ },
+ "glyph_water": {
+  "text": "c8b0560a-dc64-43c1-a2cd-88c3d4496f3e",
+  "gen": "eb632154-693f-495f-9063-f1d084e53643"
+ },
+ "burst_wind": {
+  "text": "6365a98a-06d2-4248-b97a-0fbbcbdb7c61",
+  "gen": "9ba087c8-2d2d-4d82-9a7d-8820b0fc3a3e"
+ },
+ "ring_wind": {
+  "text": "31ffdf2c-9f77-4a49-901d-7afde2b1de27",
+  "gen": "5c4facd2-5dc4-4e73-b47a-551fc9ff525a"
+ },
+ "mote_wind": {
+  "text": "9b76b599-b014-4954-86b3-18436c6ac5c4",
+  "gen": "bbdea582-100e-413a-b84e-31f977a5e6ae"
+ },
+ "glyph_wind": {
+  "text": "510e7858-db46-4718-a74e-6ff76e80143b",
+  "gen": "ba692f46-0feb-4451-aca5-ea7ff3a562c3"
+ },
+ "burst_earth": {
+  "text": "d674b671-48da-494b-a901-e869b1b0d94f",
+  "gen": "de8033ae-e0f5-448c-8a97-e08ecc733e36"
+ },
+ "ring_earth": {
+  "text": "c2e5f3f3-7e7e-4e00-bc06-fb301a9b6e50",
+  "gen": "d18a8b87-c302-4f53-9145-939aff21a6fe"
+ },
+ "mote_earth": {
+  "text": "53769548-8aba-45b1-9e20-b95b89574fa8",
+  "gen": "8d213c59-a7e7-4ca2-85f7-cc11e0e21f14"
+ },
+ "glyph_earth": {
+  "text": "6da610d6-6120-421f-9b23-83ccd94fcc7f",
+  "gen": "2868bff2-cd4c-46d5-91e0-871734da1923"
+ },
+ "burst_thunder": {
+  "text": "70240a6c-b7ac-4f2f-8018-e59842f4cf44",
+  "gen": "1421eaff-ede1-4da5-88b0-b86eca646f34"
+ },
+ "ring_thunder": {
+  "text": "4c49009b-de7e-466c-abcf-c64eb323eb5c",
+  "gen": "c67c549d-bde9-44f6-acc6-e9db6f23ee8e"
+ },
+ "mote_thunder": {
+  "text": "9ee353ff-45f8-4633-99a9-eefc1a8ce70a",
+  "gen": "04f516cc-cc06-4e5b-9814-41bd2fb6290d"
+ },
+ "glyph_thunder": {
+  "text": "e1457879-ec55-4a06-add9-5351f2d0b15f",
+  "gen": "97fa1613-aa9d-4402-9104-9824fe127326"
+ },
+ "burst_light": {
+  "text": "92cd8c21-7f6b-42d3-b25d-4e76c3608d26",
+  "gen": "0767fa2b-90ec-4e16-865f-a6fac54c6627"
+ },
+ "ring_light": {
+  "text": "a979a01f-50ef-4bf0-9f53-4310159158dd",
+  "gen": "0a6c9f7a-eac7-441c-a686-4b809f9b640e"
+ },
+ "mote_light": {
+  "text": "edab2be5-4bde-4d24-b529-bef3ed246b36",
+  "gen": "9732d883-ec4c-44b3-849b-2bb0cfa918f4"
+ },
+ "glyph_light": {
+  "text": "c8e52faf-0a1e-43d8-9eca-cc772b8ac56b",
+  "gen": "a7434ab8-77d1-4d0c-9af6-c9642e09f022"
+ },
+ "burst_dark": {
+  "text": "a693c0d2-acb2-403d-a42f-ca40fcc2a411",
+  "gen": "ad6cd5f1-8a1a-4e45-97a6-1912b69d2c4f"
+ },
+ "ring_dark": {
+  "text": "f62b2c40-8858-475b-a775-4f206d74a63f",
+  "gen": "f2f9a063-e48d-406c-a39f-fd098ec170c3"
+ },
+ "mote_dark": {
+  "text": "1f232aa6-ee9d-4f11-9f1b-74e6ffd8ada2",
+  "gen": "ff0eaef8-3940-4d05-abfe-4e9a964580b0"
+ },
+ "glyph_dark": {
+  "text": "c31fcb7b-575e-43b4-9706-4b03c181b019",
+  "gen": "08c3def8-4f85-4c36-a319-5d91945c2067"
+ },
+ "burst_neutral": {
+  "text": "d4145f03-d378-4161-a827-eb64896d140a",
+  "gen": "4ec85583-1b4e-40dc-aec4-f9daf7ba3dd9"
+ },
+ "ring_neutral": {
+  "text": "b9ab441e-19a6-49ae-b904-ce2820a6a8bc",
+  "gen": "786e7747-aeb2-47b5-8b89-344c78b0a1f6"
+ },
+ "mote_neutral": {
+  "text": "1046d9dd-ded9-4ffb-b1fe-4356594a93d8",
+  "gen": "ad08d20d-0a94-4bee-b4d7-5c82ab6f5c83"
+ },
+ "glyph_neutral": {
+  "text": "b8a69ec8-7774-4b86-a2d1-ecacf8d520a6",
+  "gen": "26101729-f09e-454d-8d98-210e89db444e"
+ },
+ "slash": {
+  "text": "b332aa21-ccf0-4f1e-a9f9-20a53e4fb80e",
+  "gen": "11573232-3240-4502-812f-3d2262433159"
+ },
+ "bolt": {
+  "text": "5dfdf551-4f44-429c-a299-f35c57634557",
+  "gen": "62178035-760f-4e7c-b0e9-31293146c903"
+ },
+ "swirl": {
+  "text": "c39c4d1f-1719-4f8c-af2c-3f4ebbf149b9",
+  "gen": "a7cf2eeb-0405-430b-b5a6-272d78e6f333"
+ },
+ "reticle": {
+  "text": "b7447981-df86-4571-83fd-6594e9828355",
+  "gen": "92c4ae12-b156-4c8d-983e-4808c1fbd7c8"
+ },
+ "shield": {
+  "text": "471016fa-9f6d-4a82-958d-bb2da8eaf09b",
+  "gen": "a007b72e-2431-4268-ade7-ecd674130e46"
+ },
+ "heal": {
+  "text": "fc643960-30a4-4b29-b9b6-b31de6307e40",
+  "gen": "24a04d95-07b0-499a-9c5b-d33393f60ab5"
+ },
+ "dust": {
+  "text": "5d6d7b95-22a4-4569-890b-f37da70b7eec",
+  "gen": "01f0bdb7-adf7-47af-b605-f2ff89ef3fb4"
+ },
+ "shard": {
+  "text": "f2b9d5e9-7df3-4ee9-bcc5-496a7dbd2474",
+  "gen": "4e931178-de5d-4857-89b7-6ed949f3c601"
+ },
+ "orb": {
+  "text": "415666ad-5cb4-4162-b546-ae74e4c47594",
+  "gen": "f2b85542-c44f-4acf-a319-4c8c672813fe"
+ },
+ "star": {
+  "text": "d42a4e5a-ba68-4d6c-bf51-0a4c2dcabae7",
+  "gen": "42d65e8d-ffac-4667-aca4-ce4c3cdb25fc"
+ },
+ "ash": {
+  "text": "cdcb29f9-06b7-441c-8e88-7b441e71dd99",
+  "gen": "14e4d9fd-7269-4650-9083-e41d6306f641"
+ },
+ "eclipse": {
+  "text": "b4391f18-6518-4042-b855-1beb9899a739",
+  "gen": "637b31cd-376e-4798-bec4-f325fc22224b"
+ },
+ "pillar": {
+  "text": "6d4d923e-f557-4f9c-aa25-1f468f7f1e59",
+  "gen": "1ecb8cc1-a697-4138-97e1-4ddaa5f77fbf"
+ }
+}
