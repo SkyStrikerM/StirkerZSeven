@@ -201,5 +201,15 @@
   "flow": "81334d79-0627-44db-a317-ac3974ac13eb",
   "text": "a7ab2017-b245-4bb6-905f-99966a4004a2",
   "gen": "f809f0d0-b787-446c-a050-bb6844cfd65c"
+ },
+ "turn_attack": {
+  "flow": "30e1f00f-ffc1-4058-a173-6d028daa3bfb (\uc0ac\uc6a9\uc790 \ub2e4\ub978 \ud50c\ub85c\uc6b0, \ub178\ub4dc \uc0ad\uc81c\ud568)",
+  "text": "4688803f-2a83-473e-9099-9a6c437540eb",
+  "gen": "2f7f93fb-fa23-46b4-bb96-d49a4c3a1f9d"
+ },
+ "turn_defense": {
+  "flow": "30e1f00f-ffc1-4058-a173-6d028daa3bfb (\uc0ac\uc6a9\uc790 \ub2e4\ub978 \ud50c\ub85c\uc6b0, \ub178\ub4dc \uc0ad\uc81c\ud568)",
+  "text": "3e1885de-43d5-4b83-8c5d-2627a39655c8",
+  "gen": "49189425-cf13-4881-9dc2-4f6a268c23ff"
  }
 }

@@ -158,6 +158,10 @@ def main(sample_only=False):
         if rec.nameID == 6: rec.string = 'StrikerZBlend-Regular'
         elif rec.nameID == 3: rec.string = 'StrikerZBlend;blend-of-installed-fonts'
         elif rec.nameID in (1, 4, 16): rec.string = FAMILY
+    # Unity 는 TTF 에셋의 줄 높이를 hhea ascent-descent 로 잡는다 (맑은 고딕 원본은 2229+495 = 1.33em 이라 54px 'TIME' 이 64px 칸에서 잘림).
+    # OS 폰트 경로(1em)와 같게 typo 메트릭으로 맞춘다
+    base['hhea'].ascent, base['hhea'].descent, base['hhea'].lineGap = 1638, -410, 0
+    base['OS/2'].usWinAscent, base['OS/2'].usWinDescent = 1638, 410
     base['OS/2'].fsType = 0
     if 'DSIG' in base: del base['DSIG']
     out = os.path.join(BUILD, 'sample.ttf') if sample_only else OUT

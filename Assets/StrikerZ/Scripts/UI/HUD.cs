@@ -19,6 +19,8 @@ namespace StrikerZ
 
         // 상단
         Text timeText, phaseText, turnText;
+        /// <summary>동시 룰 턴 아이콘: 내 공격 턴 = 쌍검, 수비 턴 = 방패 (VARCO Textures/Fx/turn_attack · turn_defense)</summary>
+        Image turnIcon;
         Image timePanel;
         // 영웅 패널
         class HeroPanel
@@ -102,6 +104,11 @@ namespace StrikerZ
             timeText.Shadow();
             phaseText = UIKit.Txt(timePanel.transform, "Phase", "", 24, UIKit.Ink);
             phaseText.rectTransform.Anchor(0, 0.06f, 1, 0.45f);
+            turnIcon = UIKit.Img(timePanel.transform, "TurnIcon", Color.white);
+            turnIcon.preserveAspect = true;
+            turnIcon.raycastTarget = false;
+            turnIcon.rectTransform.Anchor(0.04f, 0.03f, 0.2f, 0.5f);
+            turnIcon.enabled = false;
             turnText = UIKit.Txt(root, "Turn", "", 22, UIKit.Muted);
             turnText.rectTransform.Place(new Vector2(0.5f, 1), new Vector2(0, -136), new Vector2(600, 30));
             turnText.Shadow();
@@ -376,8 +383,27 @@ namespace StrikerZ
             if (g == null || g.players[0] == null) return;
             timeText.text = g.time > 0 ? $"TIME {g.time}" : "READY";
             string phaseName = PhaseName(g.phase);
-            string who = g.Simul ? "동시 진행" : g.active == null ? "" : (g.active == g.Human ? (g.raid != null ? "파티 타임" : "나의 타임") : (g.raid != null ? "보스 타임" : "상대 타임"));
-            phaseText.text = g.time > 0 ? $"{who} · {phaseName}" + (laneSlot >= 0 ? $" · <color=#ffd77a>▶ {laneSlot + 1}번 칸</color>" : "") : "매치 준비";
+            string lane = laneSlot >= 0 ? $" · <color=#ffd77a>▶ {laneSlot + 1}번 칸</color>" : "";
+            if (SimulTurnShown)
+            {
+                // 동시 룰: "동시 진행 · 타임 시작" 같은 문구 대신 아이콘(쌍검 = 내 공격 턴 · 방패 = 수비 턴) + 짧은 라벨
+                bool atk = g.LaneFirst == g.Human;
+                var sp = GameAssets.TexSprite(atk ? "Fx/turn_attack" : "Fx/turn_defense");
+                turnIcon.sprite = sp;
+                turnIcon.enabled = sp != null;
+                string ph = g.phase == Phase.Main ? " · 배치" : g.phase == Phase.Battle ? " · 배틀" : g.phase == Phase.BattleEnd ? " · 배틀 엔드" : "";
+                phaseText.text = TurnLabel() + ph + lane;
+                phaseText.alignment = TextAnchor.MiddleLeft;
+                phaseText.rectTransform.Anchor(0.22f, 0.06f, 0.98f, 0.45f);
+            }
+            else
+            {
+                turnIcon.enabled = false;
+                phaseText.alignment = TextAnchor.MiddleCenter;
+                phaseText.rectTransform.Anchor(0, 0.06f, 1, 0.45f);
+                string who = g.Simul ? "" : g.active == null ? "" : (g.active == g.Human ? (g.raid != null ? "파티 타임" : "나의 타임") : (g.raid != null ? "보스 타임" : "상대 타임"));
+                phaseText.text = g.time > 0 ? (who.Length > 0 ? $"{who} · " : "") + phaseName + lane : "매치 준비";
+            }
             timeText.color = g.Simul || g.active == g.Human ? UIKit.Gold : new Color(1f, 0.55f, 0.5f);
             turnText.text = "";
 
@@ -435,6 +461,12 @@ namespace StrikerZ
             }
             hp.rt.GetComponent<Image>().color = g.active == p ? new Color(0.14f, 0.09f, 0.02f, 0.92f) : UIKit.Panel;
         }
+
+        /// <summary>동시 룰 대전(레이드 제외)에서 턴 아이콘·라벨을 쓰는가</summary>
+        bool SimulTurnShown => g != null && g.Simul && g.raid == null && g.time > 0 && g.first != null;
+
+        /// <summary>"내 공격 턴" / "수비 턴" 색 라벨</summary>
+        string TurnLabel() => g.LaneFirst == g.Human ? "<color=#ff9a7a><b>내 공격 턴</b></color>" : "<color=#9cf><b>수비 턴</b></color>";
 
         string PhaseName(Phase p)
         {
@@ -1055,7 +1087,7 @@ namespace StrikerZ
             if (battleMode) { UpdateBattleMode(); return; }
             UpdatePlanDrag();
             float left = g.PlanSecondsLeft;
-            if (left >= 0) phaseText.text = $"배치 (뒷면) · <color={(left <= 5 ? "#ff6655" : "#ffd77a")}>남은 시간 {Mathf.CeilToInt(left)}초</color>";
+            if (left >= 0) phaseText.text = (SimulTurnShown ? TurnLabel() + " · 배치" : "배치 (뒷면)") + $" · <color={(left <= 5 ? "#ff6655" : "#ffd77a")}>남은 시간 {Mathf.CeilToInt(left)}초</color>";
             if (!g.IsHumanMain) return;
             if (GameSettings.Pressed(GameAction.BattlePhase)) { CloseMenu(); g.RequestBattle(); }
             else if (GameSettings.Pressed(GameAction.EndTime)) { CloseMenu(); g.RequestEndTime(); }
