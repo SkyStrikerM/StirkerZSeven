@@ -186,5 +186,15 @@
  "vortex": {
   "text": "c0602464-9a30-47ca-bbfe-e97d35ca318e",
   "gen": "04e8a22b-163c-43ab-8707-54161c2b64ba"
+ },
+ "aura_buff": {
+  "flow": "81334d79-0627-44db-a317-ac3974ac13eb",
+  "text": "648faaaa-1da1-4a7b-a3f9-0626daa48fae",
+  "gen": "6559fcc7-80cb-46dc-9ae0-68a2234790dd"
+ },
+ "aura_debuff": {
+  "flow": "81334d79-0627-44db-a317-ac3974ac13eb",
+  "text": "8bdc26eb-889d-4625-b7c7-d18088abeec9",
+  "gen": "12a17c81-ffe6-4431-93a2-08476a81920c"
  }
 }
