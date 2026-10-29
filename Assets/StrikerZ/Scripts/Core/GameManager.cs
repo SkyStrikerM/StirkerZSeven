@@ -1045,7 +1045,8 @@ namespace StrikerZ
             if (p.isHuman && !NoStats) Chronicle.CountUse(c.data.id);
             Log(faceDown ? $"{p.name}: 몬스터를 뒷면 세로 표시로 소환 ({slot + 1}번 칸)" : $"{p.name}: {c.Name} 소환 ({slot + 1}번 칸)");
             RefreshAll();
-            board.SummonFx(c);
+            if (!faceDown) board.SummonFx(c);   // 뒷면 배치는 속성 색이 새지 않게 놓기 연출만
+            if (fx != null) fx.Place(c);
             yield return Wait(0.45f);
             if (!faceDown) yield return RunEffect(c);
             StoryCountSummon(p);
@@ -1085,6 +1086,7 @@ namespace StrikerZ
             if (p.isHuman && !NoStats) Chronicle.CountUse(c.data.id);
             Log($"{p.name}: 마법 카드를 세트 ({slot + 1}번 칸)");
             RefreshAll();
+            if (fx != null) fx.Place(c);
             yield return Wait(0.35f);
         }
 
@@ -1296,7 +1298,9 @@ namespace StrikerZ
             {
                 // 효과에 의한 파괴: 속성별 일격 (번개·불기둥·베기 …)
                 if (fxSource != null && c != fxSource && c.zone == Zone.Slot) yield return fx.Strike(c, CardFx.StyleOf(fxSource));
-                fx.Shatter(c);
+                // 필드의 카드는 가루가 되어 사라진 뒤 묘지로 (보이지 않게 날아가 묘지에서 다시 나타난다), 그 밖은 파편만
+                if (c.zone == Zone.Slot && c.view != null) { fx.Shatter(c); yield return fx.Dissolve(c); fx.Reappear(c, 0.5f); }
+                else fx.Shatter(c);
             }
             if (c.zone == Zone.Slot && c.slot >= 0) p.slots[c.slot] = null;
             else if (c.zone == Zone.Hand) p.hand.Remove(c);

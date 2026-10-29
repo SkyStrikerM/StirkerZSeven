@@ -304,6 +304,7 @@ namespace StrikerZ
             Log($"{c.owner.name}: {c.slot + 1}번 칸 공개 — {c.Name}");
             RefreshAll();
             board.SummonFx(c);
+            if (fx != null) fx.RevealFlip(c);   // 뒤집히며 속성 연출
             yield return Wait(0.45f);
             if (!c.summonFxDone) { c.summonFxDone = true; yield return RunEffect(c); }   // 다시 공개될 때는 소환 효과 없음
             RefreshAll();

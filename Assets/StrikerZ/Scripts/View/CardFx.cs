@@ -641,6 +641,150 @@ namespace StrikerZ
 
         public void GraveRise(PlayerState p) => Sparks(GravePos(p), new Color(0.8f, 0.7f, 1f), Color.white, 22, Vector3.up * 1.8f, 0.4f, 0.12f, 1f, -0.1f, 0.3f);
 
+        // ══════════════════════════ 카드 놓기 · 공개 · 소멸 (2026-10-29) ══════════════════════════
+
+        /// <summary>
+        /// 카드를 칸에 놓았을 때: 카드가 날아오는 동안 바닥 고리가 안쪽으로 모이고, 내려앉는 순간 먼지와 금빛 반짝임이 퍼진다.
+        /// 뒷면 배치라 속성 색은 쓰지 않는다 (상대에게 속성이 새지 않게)
+        /// </summary>
+        public void Place(CardInstance c) => StartCoroutine(PlaceRoutine(c));
+
+        IEnumerator PlaceRoutine(CardInstance c)
+        {
+            if (c == null || c.owner == null || c.slot < 0) yield break;
+            var pos = board.SlotPos(c.owner, c.slot) + Vector3.up * 0.05f;
+            var gold = new Color(1f, 0.85f, 0.45f);
+            Ring(pos, gold, 2.0f, 0.3f, true);
+            yield return new WaitForSeconds(0.22f);
+            if (c.view == null || c.zone != Zone.Slot) yield break;
+            Ring(pos, gold, 1.7f, 0.45f);
+            Sparks(pos, new Color(0.85f, 0.8f, 0.7f), new Color(0.5f, 0.45f, 0.4f), 18, Vector3.up * 0.35f, 0.9f, 0.14f, 0.55f, 0.35f, 0.3f);   // 먼지
+            Sparks(pos, gold, Color.white, 10, Vector3.up * 1.2f, 0.4f, 0.08f, 0.5f, 0.2f, 0.25f);                                        // 반짝임
+            board.Shake(0.04f);
+        }
+
+        /// <summary>
+        /// 배틀 시작 공개: 카드가 뒤집히며 속성 연출 — 화염 불기둥·물보라·바람 회오리·대지 바위·번개 낙뢰·빛기둥·어둠 안개·무지개.
+        /// Rare 는 조금, Unique 는 크게 + 섬광
+        /// </summary>
+        public void RevealFlip(CardInstance c)
+        {
+            if (c == null) return;
+            var s = StyleOf(c);
+            var col = ColorOf(s);
+            var pos = PosOf(c);
+            float k = c.data.rarity == Rarity.Unique ? 1.8f : c.data.rarity == Rarity.Rare ? 1.4f : 1.15f;
+            Ring(pos, col, 3.2f * k, 0.6f);
+            Ring(pos, Color.Lerp(col, Color.white, 0.5f), 1.8f * k, 0.45f, true);
+            switch (s)
+            {
+                case Style.Fire:
+                    Pillar(pos, col, 2.2f * k, 0.7f * k, 0.5f);
+                    Sparks(pos, new Color(1f, 0.85f, 0.3f), new Color(1f, 0.3f, 0.05f), (int)(26 * k), Vector3.up * 1.6f, 1.2f, 0.14f, 0.7f, -0.2f, 0.3f);
+                    break;
+                case Style.Water:
+                    Sparks(pos, new Color(0.75f, 0.92f, 1f), new Color(0.25f, 0.55f, 1f), (int)(30 * k), Vector3.up * 2.2f, 1.2f, 0.11f, 0.9f, 0.9f, 0.3f);
+                    Ring(pos, Color.white, 1.4f * k, 0.4f, true);
+                    break;
+                case Style.Wind:
+                    Spiral(pos, col, 0.9f * k, 0.7f);
+                    Sparks(pos, col, Color.white, (int)(18 * k), Vector3.up * 1.2f, 1.4f, 0.09f, 0.6f, 0f, 0.4f);
+                    break;
+                case Style.Earth:
+                    Sparks(pos, new Color(0.75f, 0.55f, 0.3f), new Color(0.4f, 0.28f, 0.15f), (int)(22 * k), Vector3.up * 1.8f, 1.2f, 0.18f, 0.8f, 1.3f, 0.35f);
+                    board.Shake(0.06f * k);
+                    break;
+                case Style.Thunder:
+                    Bolt(pos + new Vector3(Random.Range(-0.5f, 0.5f), 3.5f, 0.8f), pos, col, 0.25f, 0.12f);
+                    Sparks(pos, Color.white, col, (int)(24 * k), Vector3.zero, 2.6f, 0.07f, 0.4f);
+                    break;
+                case Style.Light:
+                    Pillar(pos, new Color(1f, 0.96f, 0.75f), 3.5f * k, 0.9f * k, 0.6f);
+                    Sparks(pos, Color.white, col, (int)(20 * k), Vector3.up * 1.2f, 0.8f, 0.1f, 0.8f, -0.15f, 0.3f);
+                    break;
+                case Style.Dark:
+                    Sparks(pos, new Color(0.75f, 0.35f, 1f), new Color(0.2f, 0.03f, 0.35f), (int)(28 * k), Vector3.up * 0.5f, 1.3f, 0.2f, 0.9f, -0.08f, 0.35f);
+                    Ring(pos, new Color(0.3f, 0.05f, 0.5f), 1.8f * k, 0.5f, true);
+                    break;
+                case Style.Rainbow:
+                    for (int i = 0; i < 6; i++)
+                        Sparks(pos, Color.HSVToRGB(i / 6f, 0.75f, 1f), Color.HSVToRGB(i / 6f + 0.08f, 0.5f, 1f), (int)(7 * k), Vector3.up * 1.2f, 1.6f, 0.12f, 0.8f);
+                    break;
+                default:
+                    Sparks(pos, Color.white, new Color(0.75f, 0.8f, 0.95f), (int)(20 * k), Vector3.up * 1.2f, 1.4f, 0.11f, 0.6f);
+                    break;
+            }
+            if (c.data.rarity == Rarity.Unique) Flash(new Color(col.r, col.g, col.b, 0.22f), 0.4f);
+        }
+
+        /// <summary>
+        /// 파괴: 카드가 가루가 되어 흩어진다 — 카드 면 곳곳에서 재와 속성 빛가루가 피어오르며 카드는 떠오르면서 작아져 사라진다.
+        /// 끝나면 카드는 보이지 않는 크기(fxScale 0)로 묘지로 날아가고, Reappear 가 묘지에서 다시 보이게 한다
+        /// </summary>
+        public IEnumerator Dissolve(CardInstance c, float dur = 0.75f)
+        {
+            var v = c?.view;
+            if (v == null) yield break;
+            var col = CardData.ElementColor(c.data.element);
+            var ash = new Color(0.22f, 0.2f, 0.22f);
+            var ashDark = new Color(0.07f, 0.07f, 0.09f);
+            var go = new GameObject("FxDissolve");
+            go.transform.position = v.transform.position;
+            var ps = go.AddComponent<ParticleSystem>();
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            var main = ps.main;
+            main.loop = false; main.playOnAwake = false; main.maxParticles = 400;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.gravityModifier = -0.22f;      // 재가 위로 떠오른다
+            var em = ps.emission; em.enabled = false;
+            var sh = ps.shape; sh.enabled = false;
+            var colL = ps.colorOverLifetime; colL.enabled = true;
+            var g = new Gradient();
+            g.SetKeys(new[] { new GradientColorKey(Color.white, 0), new GradientColorKey(Color.white, 1) },
+                      new[] { new GradientAlphaKey(1, 0), new GradientAlphaKey(0.7f, 0.4f), new GradientAlphaKey(0, 1) });
+            colL.color = g;
+            var sz = ps.sizeOverLifetime; sz.enabled = true;
+            sz.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0, 1, 1, 0.15f));
+            go.GetComponent<ParticleSystemRenderer>().sharedMaterial = PMat;
+            ps.Play();
+            var ep = new ParticleSystem.EmitParams();
+            float emit = 0;
+            for (float t = 0; t < 1f; t += Time.deltaTime / dur)
+            {
+                if (c.view != v) break;
+                v.fxScale = Mathf.Lerp(1f, 0.04f, t * t);
+                v.lunge = Vector3.up * 0.3f * t;
+                // 아래쪽 줄부터 위로 쓸려 올라가며 가루가 된다
+                emit += Time.deltaTime * 280f;
+                while (emit > 1)
+                {
+                    emit--;
+                    float sx = Random.Range(-CardView.W, CardView.W) * 0.5f;
+                    float sz0 = Mathf.Lerp(-CardView.H * 0.5f, CardView.H * 0.5f, Mathf.Clamp01(t + Random.Range(-0.25f, 0.25f)));
+                    bool spark = Random.value < 0.4f;
+                    float area = Mathf.Lerp(1f, 0.5f, t);   // 카드가 줄어드는 동안 가루가 나오는 면적도 서서히 좁아진다 (카드 스케일과 무관하게 원래 카드 면적 기준)
+                    ep.position = v.transform.position + v.transform.rotation * new Vector3(sx * area, 0.02f, sz0 * area);
+                    ep.velocity = new Vector3(Random.Range(-0.6f, 0.6f), Random.Range(1.0f, 2.2f), Random.Range(-0.45f, 0.45f));
+                    ep.startColor = spark ? Color.Lerp(col, Color.white, Random.value * 0.5f) : Color.Lerp(ash, ashDark, Random.value);
+                    ep.startSize = (spark ? 0.1f : 0.17f) * SizeK * Random.Range(0.6f, 1.3f);
+                    ep.startLifetime = Random.Range(0.9f, 1.6f);
+                    ps.Emit(ep, 1);
+                }
+                yield return null;
+            }
+            if (c.view == v) { v.fxScale = 0.001f; v.lunge = Vector3.zero; }
+            Destroy(go, 1.6f);
+        }
+
+        /// <summary>소멸한 카드가 묘지에 닿을 때쯤 다시 보이게</summary>
+        public void Reappear(CardInstance c, float delay) => StartCoroutine(ReappearRoutine(c, delay));
+
+        IEnumerator ReappearRoutine(CardInstance c, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (c?.view != null) c.view.fxScale = 1f;
+        }
+
         public void FieldChange(CardData field)
         {
             var c = CardData.ElementColor(field.element);

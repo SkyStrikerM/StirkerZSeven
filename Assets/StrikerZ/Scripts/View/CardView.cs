@@ -16,6 +16,8 @@ namespace StrikerZ
         Quaternion tRot = Quaternion.identity;
         float tScale = 1f;
         public Vector3 lunge;       // 공격 연출 오프셋
+        /// <summary>연출용 크기 배율 (파괴 소멸: 1 → 0, 묘지에 닿으면 다시 1). 목표 크기에 곱한다</summary>
+        public float fxScale = 1f;
 
         Transform visual;
         BoxCollider col;
@@ -155,7 +157,7 @@ namespace StrikerZ
         {
             transform.position = tPos;
             transform.rotation = tRot;
-            transform.localScale = Vector3.one * tScale;
+            transform.localScale = Vector3.one * tScale * fxScale;
         }
 
         public void RefreshStats(GameManager g)
@@ -326,7 +328,7 @@ namespace StrikerZ
             float k = 1f - Mathf.Exp(-Time.deltaTime * 11f);
             Vector3 pos = tPos + lunge;
             Quaternion rot = tRot;
-            float scale = tScale;
+            float scale = tScale * fxScale;
             bool lifted = hovered && hoverLift;
             if (lifted)
             {
