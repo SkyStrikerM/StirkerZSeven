@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b663e5c77cfa7d84ea42577f2651cd4b
+guid: 010e18ce354c3014a8b9a67fc36e7b3e
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - StrikerZ Mix
+  - StrikerZ Blend
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

@@ -17,8 +17,8 @@ namespace StrikerZ
             {
                 if (font == null)
                 {
-                    // 믹스 폰트 (Tools/fonts/mix_font.py: 맑은 고딕 바탕에 한글 음절을 초성별로 Noto Sans KR·돋움·굴림과 섞은 것). 없으면 OS 폰트
-                    font = Resources.Load<Font>(Root + "Fonts/StrikerZMix");
+                    // 합성 폰트 (Tools/fonts/blend_font.py: 맑은 고딕·Noto Sans KR·돋움·굴림의 글자 모양을 평균 내어 한 폰트로 — 숫자는 Segoe UI·Calibri·Verdana 까지). 없으면 OS 폰트
+                    font = Resources.Load<Font>(Root + "Fonts/StrikerZBlend");
                     if (font == null) font = Font.CreateDynamicFontFromOSFont(new[] { "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Noto Sans CJK KR", "Arial" }, 32);
                     if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
                 }
