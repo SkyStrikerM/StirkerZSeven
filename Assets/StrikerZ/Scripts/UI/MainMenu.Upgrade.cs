@@ -152,7 +152,8 @@ namespace StrikerZ
             Quests.Add(Stat.Crafted);
             RefreshTop();
             RefreshUpgrade();
-            StartCoroutine(ShowUpgradeResult(result));
+            // 결과 카드는 출석·세븐 패스 카드 보상과 같은 "뒤집어 공개" 연출 (2026-10-29)
+            RevealCards("카드 업그레이드 결과", result.Select(r => (r.card, r.isNew, CardFinish.Normal)).ToList());
         }
 
         /// <summary>결과: 카드가 한 장씩 빛과 함께 나타난다. 클릭하면 확대</summary>

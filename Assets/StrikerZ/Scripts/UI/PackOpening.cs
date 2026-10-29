@@ -221,6 +221,75 @@ namespace StrikerZ
             Stage = "";
         }
 
+        /// <summary>
+        /// 보상 카드 공개 (출석 7일째 · 세븐 패스 카드 보상 · 업그레이드 결과 등 단일 카드 획득 공용, 2026-10-29):
+        /// 팩 찢기 없이 카드가 뒤집힌 채 가운데에 떠오르고, 터치하면 뒤집혀 등급·가공대로 빛난다 (팩 개봉과 같은 Charge/Flip/Impact).
+        /// 여러 장이면 뭉치로 놓고 한 장씩.
+        /// </summary>
+        public IEnumerator PlayCards(string titleText, List<(CardData card, bool isNew, CardFinish finish)> cards)
+        {
+            if (cards == null || cards.Count == 0) yield break;
+            IsPlaying = true;
+            root.gameObject.SetActive(true);
+            root.SetAsLastSibling();
+            skipAll = false; skipPack = false;
+            title.text = titleText;
+            ShowButtons(false, false, false);
+            skipPackBtn.bg.gameObject.SetActive(false);
+            ResetFx();
+            packRt.gameObject.SetActive(false);
+            Sfx.PlayBgm("bgm_pack", 0.8f);
+
+            var list = cards.OrderBy(x => Hype(x.card.rarity, x.finish)).ThenBy(x => x.card.rarity).ThenBy(x => x.finish).ToList();
+            for (int i = list.Count - 1; i >= 0; i--) views.Insert(0, MakeCard(list[i].card, list[i].isNew, list[i].finish));
+            cardsLayer.gameObject.SetActive(true);
+            underLayer.gameObject.SetActive(true);
+            bool single = views.Count == 1;
+
+            // 뒤집힌 채 아래에서 떠오른다 (한 장이면 가운데, 여러 장이면 왼쪽 뭉치)
+            Stage = "emerge";
+            Sfx.Play("whoosh");
+            yield return Tween(0.5f, k =>
+            {
+                float e = OutCubic(k);
+                for (int i = 0; i < views.Count; i++)
+                {
+                    var to = single ? CenterPos : StackSlot(i);
+                    views[i].rt.anchoredPosition = Vector2.Lerp(to + new Vector2(0, -760), to, e);
+                    views[i].rt.localScale = Vector3.one * StackScale;
+                    views[i].rt.localRotation = Quaternion.Euler(0, 0, single ? 0 : StackRot(i));
+                }
+            });
+
+            // 터치해야 뒤집힌다
+            hint.text = single ? "터치하여 카드 공개" : "터치하여 한 장씩 공개";
+            tapped = false;
+            float w = 0;
+            while (!tapped && !(auto && w > 0.6f))
+            {
+                w += Time.unscaledDeltaTime;
+                float pulse = 0.5f + 0.5f * Mathf.Sin(w * 6f);
+                SetA(hint, 0.6f + 0.4f * pulse);
+                if (single) views[0].rt.anchoredPosition = CenterPos + new Vector2(0, Mathf.Sin(w * 2f) * 6f);
+                yield return null;
+            }
+            tapped = false;
+            hint.text = "";
+            SetA(hint, 1);
+
+            yield return RevealAll();
+            yield return Summary(false);
+            nextPressed = false;
+            ShowButtons(false, false, true);
+            while (!nextPressed) yield return null;
+
+            ResetFx();
+            root.gameObject.SetActive(false);
+            Sfx.PlayBgm(Sfx.MenuBgm, 1.2f);
+            IsPlaying = false;
+            Stage = "";
+        }
+
         void ShowButtons(bool next, bool skip, bool close)
         {
             nextBtn.bg.gameObject.SetActive(next);

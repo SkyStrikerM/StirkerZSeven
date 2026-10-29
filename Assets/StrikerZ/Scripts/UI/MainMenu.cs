@@ -679,6 +679,29 @@ namespace StrikerZ
             yield return opening.Play(pack, packs);
             RefreshTop();
             RefreshShop();
+            // 같은 보상에 팩과 카드가 함께 있으면 (세븐 패스 모두 받기) 팩 다음에 카드 공개
+            if (pendingReveal != null) { var c = pendingReveal; pendingReveal = null; yield return opening.PlayCards(pendingRevealTitle, c); RefreshTop(); RefreshShop(); }
+        }
+
+        List<(CardData card, bool isNew, CardFinish finish)> pendingReveal;
+        string pendingRevealTitle;
+
+        /// <summary>
+        /// 보상으로 받은 카드 공개 연출 (출석 7일째 · 세븐 패스 카드 보상 · 업그레이드 결과 등 단일 카드 획득 공용).
+        /// 팩 개봉이 진행 중이면 그 뒤에 이어서 보여 준다
+        /// </summary>
+        public void RevealCards(string title, List<(CardData card, bool isNew, CardFinish finish)> cards)
+        {
+            if (cards == null || cards.Count == 0) return;
+            if (opening != null && opening.IsPlaying) { pendingReveal = cards.ToList(); pendingRevealTitle = title; return; }
+            StartCoroutine(PlayReveal(title, cards.ToList()));
+        }
+
+        IEnumerator PlayReveal(string title, List<(CardData card, bool isNew, CardFinish finish)> cards)
+        {
+            yield return opening.PlayCards(title, cards);
+            RefreshTop();
+            RefreshShop();
         }
 
         // ══════════════════════════ 프로필 ══════════════════════════

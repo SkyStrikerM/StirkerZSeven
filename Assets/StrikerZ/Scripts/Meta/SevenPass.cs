@@ -107,7 +107,24 @@ namespace StrikerZ
             return got;
         }
 
-        /// <summary>보상 하나 지급 (출석 보상과 공용)</summary>
+        /// <summary>Grant 가 지급한 카드 (호출 측이 TakeGranted 로 가져가 공개 연출에 쓴다)</summary>
+        static readonly List<(CardData card, bool isNew, CardFinish finish)> granted = new List<(CardData, bool, CardFinish)>();
+        public static List<(CardData card, bool isNew, CardFinish finish)> TakeGranted()
+        {
+            var l = granted.ToList();
+            granted.Clear();
+            return l;
+        }
+
+        static string GrantCard(CardData c, CardFinish fin)
+        {
+            bool isNew = Profile.Owned(c.id) == 0;
+            Profile.AddCard(c.id, 1, true, fin);
+            granted.Add((c, isNew, fin));
+            return c.name;
+        }
+
+        /// <summary>보상 하나 지급 (출석 보상과 공용). 카드 보상은 granted 에도 남긴다</summary>
         public static string Grant((PassReward kind, int amount) r, out int packs)
         {
             packs = 0;
@@ -122,23 +139,17 @@ namespace StrikerZ
                 case PassReward.SevenCard:
                 {
                     var pool = CardDB.All.Where(c => (c.rarity == Rarity.Uncommon || c.rarity == Rarity.Rare) && c.type != CardType.Hero).ToList();
-                    var c = pool[rng.Next(pool.Count)];
-                    Profile.AddCard(c.id, 1, true, CardFinish.Seven);
-                    return $"[{c.name}] Seven 가공";
+                    return $"[{GrantCard(pool[rng.Next(pool.Count)], CardFinish.Seven)}] Seven 가공";
                 }
                 case PassReward.RareCard:
                 {
                     var pool = CardDB.All.Where(c => c.rarity == Rarity.Rare && c.type != CardType.Hero).ToList();
-                    var c = pool[rng.Next(pool.Count)];
-                    Profile.AddCard(c.id, 1, true);
-                    return $"Rare [{c.name}]";
+                    return $"Rare [{GrantCard(pool[rng.Next(pool.Count)], CardFinish.Normal)}]";
                 }
                 case PassReward.UniqueCard:
                 {
                     var pool = CardDB.All.Where(c => c.rarity == Rarity.Unique && c.type != CardType.Hero).ToList();
-                    var c = pool[rng.Next(pool.Count)];
-                    Profile.AddCard(c.id, 1, true);
-                    return $"유니크 [{c.name}]";
+                    return $"유니크 [{GrantCard(pool[rng.Next(pool.Count)], CardFinish.Normal)}]";
                 }
             }
             return "";

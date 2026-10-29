@@ -181,6 +181,7 @@ namespace StrikerZ
             RefreshPass();
             RefreshTop();
             if (packs > 0) OpenPacks(BoosterPack.Latest, packs);
+            RevealCards($"세븐 패스 Lv {lv} 보상", SevenPass.TakeGranted());   // 카드 보상은 뒤집어 공개
         }
 
         void ClaimAllPass()
@@ -195,6 +196,7 @@ namespace StrikerZ
             RefreshPass();
             RefreshTop();
             if (packs > 0) OpenPacks(BoosterPack.Latest, packs);
+            RevealCards("세븐 패스 카드 보상", SevenPass.TakeGranted());   // 팩이 있으면 팩 개봉 뒤에 이어서
         }
 
         // ══════════════════════════ 출석체크 ══════════════════════════
@@ -259,6 +261,7 @@ namespace StrikerZ
 
         void ClaimAttend()
         {
+            int day = Attendance.NextDay;
             string got = Attendance.Claim(out int packs);
             if (got == null) return;
             Sfx.Play("reveal2");
@@ -266,6 +269,7 @@ namespace StrikerZ
             RefreshAttend();
             RefreshTop();
             if (packs > 0) OpenPacks(BoosterPack.Latest, packs);
+            RevealCards($"출석체크 {day}일째 보상", SevenPass.TakeGranted());   // 7일째 Rare 카드: 뒤집어 공개
         }
 
         /// <summary>홈에 들어올 때 오늘 출석을 아직 안 받았으면 출석 탭을 띄운다 (하루 한 번)</summary>
