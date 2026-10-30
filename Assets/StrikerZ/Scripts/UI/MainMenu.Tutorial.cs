@@ -168,7 +168,8 @@ namespace StrikerZ
             yield return null;
 
             // 5) 자동 구성
-            yield return Do("자동 구성", "메인 덱은 <b>정확히 40장</b> (추천: 소환수 28 · 마법 12). 하나하나 넣어도 되지만, <b>[자동 구성]</b> 이 보유 카드로 영웅 속성에 맞춰 40장을 짜 줍니다.\n깜빡이는 [자동 구성] 을 누르세요.", $"6 / {N}", deckAutoBtn?.rt, () => editing.cards.Count >= DeckRules.MinSize);
+            int cntAuto = editing.cards.Count;
+            yield return Do("자동 구성", "메인 덱은 <b>정확히 40장</b> (추천: 소환수 28 · 마법 12). 하나하나 넣어도 되지만, <b>[자동 구성]</b> 이 보유 카드로 영웅 속성에 맞춰 40장을 짜 줍니다.\n깜빡이는 [자동 구성] 을 누르세요.", $"6 / {N}", deckAutoBtn?.rt, () => editing.cards.Count != cntAuto);
             yield return null;
 
             // 6) 엑스트라 덱 · 분석 설명

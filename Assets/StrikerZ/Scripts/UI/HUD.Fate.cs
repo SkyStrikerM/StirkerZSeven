@@ -175,6 +175,9 @@ namespace StrikerZ
 
         // ── 튜토리얼이 짚는 참조 ──
         public RectTransform FateOkRt => fateOk?.rt;
+        /// <summary>열린 고르기 화면의 제목 ("운명 재배치" · "패 정리" · "T1 엑스트라 타임 — 원소 생성")</summary>
+        public string FateTitleText => fateTitle != null ? fateTitle.text : "";
+        public bool FateIsDiscard => FateOpen && FateTitleText == "패 정리";
         /// <summary>고르기 화면의 카드 셀 (운명 재배치: 카드 id · 원소: "ELEM_속성")</summary>
         public RectTransform FateCellRt(string cardId) => fateRow != null ? fateRow.Find("F_" + cardId) as RectTransform : null;
         public RectTransform FirstFateCell => fateRow != null && fateRow.childCount > 0 ? (RectTransform)fateRow.GetChild(0) : null;

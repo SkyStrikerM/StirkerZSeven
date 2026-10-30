@@ -27,6 +27,7 @@ namespace StrikerZ
         Rect hole;
         bool hasHole;
         float shownAt;
+        bool zoomPrev;
 
         /// <summary>배치 드래그 게이트: 집을 수 있는 카드 · 놓을 수 있는 칸 (null = 모두 허용)</summary>
         public Func<CardInstance, bool> allowCard;
@@ -164,11 +165,13 @@ namespace StrikerZ
             // 언제나 맨 위 (운명 재배치 창 등이 SetAsLastSibling 을 하므로)
             if (overlay.GetSiblingIndex() != root.childCount - 1) overlay.SetAsLastSibling();
             var kb = Keyboard.current;
-            if (kb != null && kb.escapeKey.wasPressedThisFrame && Time.unscaledTime - shownAt > 0.2f)
+            bool zoom = CardZoom.IsOpen;
+            if (kb != null && kb.escapeKey.wasPressedThisFrame && Time.unscaledTime - shownAt > 0.2f && !zoom && !zoomPrev)   // 확대 닫는 Esc 는 나가기로 치지 않는다
             {
                 if (confirm.gameObject.activeSelf) confirm.gameObject.SetActive(false);
                 else AskExit();
             }
+            zoomPrev = zoom;
             Layout();
             // 깜빡임
             float a = 0.55f + 0.45f * Mathf.Sin(Time.unscaledTime * 7f);

@@ -60,19 +60,24 @@ namespace StrikerZ
         {
             string st = Step();
             guide.Show(title, body, null, null, null, "", true, st);
-            bool choice = false;
+            int mode = 0;   // 0 지켜보기 · 1 선택창 · 2 대상 지정(3D 클릭) · 3 패 정리
             while (!until() && !Over)
             {
-                bool now = hud.ChoiceOpen && hud.FirstChoiceButton != null;
-                if (now != choice)
+                int now = hud.ChoiceOpen && hud.FirstChoiceButton != null ? 1 : hud.TargetModeOpen ? 2 : hud.FateIsDiscard ? 3 : 0;
+                if (now != mode)
                 {
-                    choice = now;
-                    if (choice) guide.Show("선택하세요", ChoiceHint(), hud.FirstChoiceButton, null, null, "", true, st);
+                    mode = now;
+                    if (mode == 1) guide.Show("선택하세요", ChoiceHint(), hud.FirstChoiceButton, null, null, "", true, st);
+                    else if (mode == 2) guide.Show("대상을 고르세요", "공격할 대상을 <b>클릭</b>하거나 공격 몬스터를 대상에게 끌어다 놓으세요 (칸 번호 키 1~7, Space = 공격 안 함).", null, null, null, "", false, st);
+                    else if (mode == 3) guide.Show("엔드 · 패 정리", "엔드 타임엔 패를 <b>7장까지</b>만 남길 수 있어요. 버릴 카드를 눌러 고른 뒤 <b>[버림]</b> 을 누르세요 (시간이 지나면 자동).", null, null, null, "", false, st);
                     else guide.Show(title, body, null, null, null, "", true, st);
                 }
                 yield return null;
             }
         }
+
+        /// <summary>효과 처리(busy)가 끝날 때까지 — 그동안 선택창이 열리면 짚어 준다</summary>
+        IEnumerator WaitBusy(string title, string body) => Watch(title, body, () => !g.busy);
 
         /// <summary>지금 열린 선택창에 맞는 설명</summary>
         string ChoiceHint()
@@ -142,7 +147,7 @@ namespace StrikerZ
             yield return DoUi("배치 완료", "다 놓았으면 <b>[배치 완료]</b>. 양쪽이 동시에 뒷면으로 놓고, 배틀에서 한꺼번에 공개됩니다. 배치 시간은 보통 30초 (튜토리얼은 무제한).", hud.BattleBtnRt, () => PlacementDone);
 
             // 4) T1 배틀 지켜보기
-            yield return WatchBattle(() => hud.FateOpen && g.time >= 2);
+            yield return WatchBattle(NextTime(2));
 
             // 5) T2 원소 · 필드 · 마법
             yield return ElementStep("T2 · 원소", "원소를 하나 더. 속성별 상한(영웅 속성 10 · 이기는 속성 5 · 보통 3 · 약점 1)까지 쌓을 수 있어요. 깜빡이는 원소를 누르세요.");
@@ -151,7 +156,7 @@ namespace StrikerZ
             {
                 yield return DoUi("필드 전개", "내 필드 차례(짝수 또는 홀수 T — 코인 토스 결과)에는 엑스트라 덱의 필드를 펼쳐 전장 효과를 바꿉니다.\n깜빡이는 <b>[필드 전개]</b> 를 누르세요.", hud.FieldBtnRt, () => hud.ChoiceOpen || g.Human.fieldPlayedThisTime);
                 yield return DoUi("필드 고르기", "엑스트라 덱의 필드 중 하나를 고릅니다. 깜빡이는 필드를 누르세요.", hud.FirstChoiceButton, () => !hud.ChoiceOpen);
-                while (g.busy && !Over) yield return null;
+                yield return WaitBusy("필드 전개 중", "필드가 바뀌고 있어요. 잠시 지켜보세요.");
             }
             else yield return Tell("필드 전개", "이번 T 는 상대의 필드 차례예요. 내 차례 T 에는 왼쪽 아래 <b>[필드 전개]</b> 로 엑스트라 덱의 필드를 펼칠 수 있습니다.");
             var mag = Playable(c => c.IsMagic && g.CanSet(c));
@@ -173,7 +178,7 @@ namespace StrikerZ
             yield return DoUi("배치 완료", "<b>[배치 완료]</b> 를 누르세요.", hud.BattleBtnRt, () => PlacementDone);
 
             // 6) T2 배틀
-            yield return WatchBattle(() => hud.FateOpen && g.time >= 3);
+            yield return WatchBattle(NextTime(3));
 
             // 7) T3 원소 · 영웅 능력 · 원소 더미
             yield return ElementStep("T3 · 원소", "깜빡이는 원소를 누르세요. 영웅 아래 원소는 매 T 다시 쓸 수 있으니 쌓일수록 큰 카드를 낼 수 있어요.");
@@ -181,7 +186,7 @@ namespace StrikerZ
             if (g.CanUseHero(g.Human))
                 yield return DoUi("영웅 능력", "영웅 능력은 매치에 <b>1회</b> 쓸 수 있는 강력한 한 수 (왼쪽 아래 버튼 또는 H 키). 아껴 두었다가 큰 몬스터가 나올 때 쓰는 게 보통이지만, 지금 한번 써 볼게요.\n깜빡이는 <b>[영웅 능력]</b> 을 누르세요.", hud.HeroBtnRt, () => g.Human.heroUsed || g.busy);
             else yield return Tell("영웅 능력", "영웅 능력은 매치에 1회, 왼쪽 아래 <b>[영웅 능력]</b> 버튼이나 H 키로 씁니다. 지금은 조건이 안 돼 넘어갑니다.");
-            while (g.busy && !Over) yield return null;
+            yield return WaitBusy("영웅 능력 발동 중", "영웅 능력이 발동됩니다. 대상을 고르는 능력이면 선택창이 뜹니다 — 깜빡이는 버튼을 누르세요.");
             var elems = g.ElementCards(g.Human);
             if (elems != null && elems.Count > 0)
             {
@@ -194,7 +199,7 @@ namespace StrikerZ
             while (!PlacementDone && !Over) yield return null;
 
             // 8) T3 배틀 · 마무리
-            yield return WatchBattle(() => g.time >= 4 && (hud.FateOpen || g.phase == Phase.Main));
+            yield return WatchBattle(NextTime(4));
             bool done = false;
             guide.Show("튜토리얼 끝!", "모든 순서를 익혔어요. 남은 대전은 자유롭게 진행하세요 (수련 CPU, 기록·보상 없음).\n그 밖에: 오른쪽 <b>[AUTO]</b> 는 자동 진행(1분 동안 입력이 없으면 저절로 켜짐), <b>[▶▶ x2]</b> 는 2배속, 상대 영웅 HP 를 0 으로 만들면 승리, 덱이 바닥나면 영웅끼리 결투합니다.",
                 null, null, () => done = true, "자유 진행 ▶", true, "마지막");
@@ -204,11 +209,16 @@ namespace StrikerZ
 
         IEnumerator ElementStep(string title, string body)
         {
-            while (!hud.FateOpen && !Over) yield return null;
+            // 원소 고르기 창이 열리거나(보통), 선택지가 1종이라 창 없이 바로 배치로 들어가면 넘어간다
+            while (!(hud.FateOpen && !hud.FateIsDiscard) && !g.IsHumanMain && !Over) yield return null;
+            if (!hud.FateOpen) yield break;
             var heroEl = g.Human.hero != null ? g.Human.hero.data.element : Element.None;
             var cell = hud.FateCellRt("ELEM_" + heroEl) ?? hud.FirstFateCell;
             yield return DoUi(title, body, cell, () => !hud.FateOpen);
         }
+
+        /// <summary>다음 T 의 원소 고르기(또는 배치)까지 — 원소 창이 안 뜨는 경우도 포함</summary>
+        Func<bool> NextTime(int t) => () => g.time >= t && ((hud.FateOpen && !hud.FateIsDiscard) || g.IsHumanMain);
 
         CardInstance Playable(Func<CardInstance, bool> pred)
             => g.Human.hand.Where(c => pred(c) && c.view != null && (c.IsMagic ? g.CanSet(c) : g.CanSummon(c, out _)))

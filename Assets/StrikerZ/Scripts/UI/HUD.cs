@@ -235,7 +235,8 @@ namespace StrikerZ
         /// </summary>
         void UpdateAutoMode()
         {
-            bool inMatch = g != null && g.players[0] != null && !g.gameOver;
+            bool inMatch = g != null && g.players[0] != null && !g.gameOver
+                           && !(TutorialGuide.Active != null && TutorialGuide.Active.Visible);   // 튜토리얼 안내 중엔 오토 버튼 숨김
             if (autoBtn != null && autoShown != inMatch)
             {
                 autoShown = inMatch;
@@ -432,6 +433,8 @@ namespace StrikerZ
             HidePileTip();
             CloseGrave();
             ClosePause();
+            CancelPick();        // 이전 대전을 고르기 화면(운명 재배치·원소·패 정리)이 열린 채 나갔으면 그 창이 남아 다음 대전이 막힌다
+            ChoiceTimer(-1);
             EndRaidHud();
             EndStoryHud();
             Show(true);
@@ -528,6 +531,8 @@ namespace StrikerZ
         public RectTransform AutoBtnRt => autoBtn?.rt;
         public RectTransform SpeedBtnRt => speedBtn?.rt;
         public bool ChoiceOpen => choicePanel != null && choicePanel.gameObject.activeSelf;
+        /// <summary>공격 대상 지정 모드(3D 카드 클릭/드래그로 고르는 중)인가</summary>
+        public bool TargetModeOpen => targetPick != null;
         /// <summary>열려 있는 선택창의 첫 번째 누를 수 있는 버튼 (없으면 null)</summary>
         public RectTransform FirstChoiceButton
         {

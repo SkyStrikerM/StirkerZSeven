@@ -158,6 +158,7 @@ namespace StrikerZ
             gm.humanDeck = DeckRules.ToCards(deck);
             chronicleDeck = deck.name;
             gm.cpuLevel = CpuLevel.Trainee;
+            gm.SetAuto(false);   // 이전 대전의 오토/AFK 상태가 남아 있으면 AI 가 다 해 버려 튜토리얼이 멈춘다
             var field = CardList.Fields[Random.Range(0, CardList.Fields.Count)];
             menu.Hide();
             nextMode = MatchMode.Tutorial;
