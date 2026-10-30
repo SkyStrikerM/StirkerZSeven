@@ -173,6 +173,12 @@ namespace StrikerZ
             cb?.Invoke(fatePicked.ToList());
         }
 
+        // ── 튜토리얼이 짚는 참조 ──
+        public RectTransform FateOkRt => fateOk?.rt;
+        /// <summary>고르기 화면의 카드 셀 (운명 재배치: 카드 id · 원소: "ELEM_속성")</summary>
+        public RectTransform FateCellRt(string cardId) => fateRow != null ? fateRow.Find("F_" + cardId) as RectTransform : null;
+        public RectTransform FirstFateCell => fateRow != null && fateRow.childCount > 0 ? (RectTransform)fateRow.GetChild(0) : null;
+
         /// <summary>오토 전환: 고르기 화면을 결과 없이 닫는다 (호출 쪽이 AI 기준으로 대신 고른다)</summary>
         public void CancelPick()
         {

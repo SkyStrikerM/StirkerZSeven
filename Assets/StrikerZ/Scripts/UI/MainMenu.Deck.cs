@@ -17,8 +17,59 @@ namespace StrikerZ
         DeckData editing;
         string filter = "전체";
         RectTransform deckTabs, deckGrid, collectionGrid, filterRow, heroSlot, elemBar, extraRow;
-        /// <summary>튜토리얼(MainMenu.Tutorial.cs)이 테두리로 짚는 영역: 카드 상세 · 도구 버튼 줄 · 카드 리스트</summary>
+        /// <summary>튜토리얼(MainMenu.Tutorial.cs)이 깜빡이게 짚는 것들: 새 덱 · 사용 덱으로 · 자동 구성 버튼, 카드 상세 · 도구 줄 · 카드 리스트 영역</summary>
+        UIKit.Btn deckNewBtn, deckUseBtn, deckAutoBtn;
         RectTransform deckDetailRt, deckToolsRt, deckCollectionRt;
+
+        /// <summary>카드 리스트에서 조건에 맞는 첫 셀 (목록 순서, 보이는 것만)</summary>
+        RectTransform CollectionCell(Func<CardData, bool> pred)
+        {
+            if (collectionGrid == null) return null;
+            for (int i = 0; i < collectionGrid.childCount; i++)
+            {
+                var rt = (RectTransform)collectionGrid.GetChild(i);
+                if (!rt.gameObject.activeInHierarchy) continue;
+                var id = CellCardId(rt);
+                var c = id != null ? CardDB.Get(id) : null;
+                if (c != null && pred(c)) { ScrollIntoView(rt); return rt; }
+            }
+            return null;
+        }
+
+        /// <summary>스크롤 그리드의 셀이 보이도록 스크롤 (튜토리얼이 짚을 때)</summary>
+        static void ScrollIntoView(RectTransform cell)
+        {
+            var scroll = cell.GetComponentInParent<UnityEngine.UI.ScrollRect>();
+            if (scroll == null || scroll.content == null) return;
+            Canvas.ForceUpdateCanvases();
+            float contentH = scroll.content.rect.height, viewH = ((RectTransform)scroll.transform).rect.height;
+            if (contentH <= viewH) return;
+            float cellTop = -cell.anchoredPosition.y - cell.rect.height * (1 - cell.pivot.y);   // 내용 위에서부터의 거리
+            float target = Mathf.Clamp(cellTop - viewH * 0.3f, 0, contentH - viewH);
+            scroll.verticalNormalizedPosition = 1f - target / (contentH - viewH);
+            Canvas.ForceUpdateCanvases();
+        }
+
+        /// <summary>카드 리스트 셀 → 카드 id</summary>
+        string CellCardId(RectTransform rt)
+        {
+            foreach (var kv in collCells) if (kv.Value.rt == rt) return kv.Key;
+            return null;
+        }
+
+        /// <summary>덱 그리드의 셀 (id 가 null 이면 첫 셀)</summary>
+        RectTransform DeckCell(string id)
+        {
+            if (id != null && deckCells.TryGetValue(id, out var copies))
+                foreach (var pc in copies) if (pc.rt != null && pc.rt.gameObject.activeInHierarchy) return pc.rt;
+            if (deckGrid == null) return null;
+            for (int i = 0; i < deckGrid.childCount; i++)
+            {
+                var rt = (RectTransform)deckGrid.GetChild(i);
+                if (rt.gameObject.activeInHierarchy) return rt;
+            }
+            return null;
+        }
         Text extraHead;
         InputField deckName, searchInput;
         Text deckCount, deckValid, deckStats, elemLegend, listCount, cpText;
@@ -68,7 +119,9 @@ namespace StrikerZ
             deckName.onEndEdit.AddListener(v => { if (editing == null) return; editing.name = string.IsNullOrWhiteSpace(v) ? "새 덱" : v.Trim(); SaveDeck(); RefreshDeckPage(); });
             var act = UIKit.Button(top, "사용 덱으로", () => { Profile.Data.activeDeck = editIndex; Profile.Save(); Toast($"[{editing.name}] 을(를) 사용 덱으로 설정했습니다"); RefreshDeckPage(); }, Red, 21, Color.white);
             act.rt.Anchor(0.63f, 0.08f, 0.74f, 0.92f);
-            UIKit.Button(top, "+ 새 덱", NewDeck, Dark, 21).rt.Anchor(0.75f, 0.08f, 0.83f, 0.92f);
+            deckUseBtn = act;
+            deckNewBtn = UIKit.Button(top, "+ 새 덱", NewDeck, Dark, 21);
+            deckNewBtn.rt.Anchor(0.75f, 0.08f, 0.83f, 0.92f);
             UIKit.Button(top, "복제", CopyDeck, Dark, 21).rt.Anchor(0.84f, 0.08f, 0.91f, 0.92f);
             UIKit.Button(top, "삭제", DeleteDeck, Dark, 21, UIKit.Muted).rt.Anchor(0.92f, 0.08f, 1f, 0.92f);
 
@@ -169,10 +222,11 @@ namespace StrikerZ
             var th = tools.gameObject.AddComponent<HorizontalLayoutGroup>();
             th.spacing = 8;
             th.childControlWidth = th.childControlHeight = true;
-            UIKit.Button(tools, "자동 구성", () =>
+            deckAutoBtn = UIKit.Button(tools, "자동 구성", () =>
             {
                 var built = DeckRules.AutoBuild(editing.name, editing.heroId);
                 editing.cards = built.cards;
+                if (editing.extra == null || editing.extra.Count == 0) editing.extra = built.extra;   // 엑스트라 덱이 비어 있으면 필드도 채운다
                 SaveDeck();
                 RefreshDeckPage();
             }, Dark, 19);

@@ -13,7 +13,8 @@ namespace StrikerZ
     {
         RectTransform graveRoot, graveGrid;
         Text graveTitle;
-        UIKit.Btn graveMine, graveOpp;
+        UIKit.Btn graveMine, graveOpp, graveClose;
+        public RectTransform GraveCloseRt => graveClose?.rt;
         /// <summary>창이 원소 보기 모드인가 (아니면 묘지)</summary>
         bool pileElements;
 
@@ -40,8 +41,8 @@ namespace StrikerZ
             graveMine.rt.Place(new Vector2(1, 1), new Vector2(-418, -16), new Vector2(150, 46), new Vector2(1, 1));
             graveOpp = UIKit.Button(panel.transform, "상대 묘지", () => ShowPile(false), null, 20);
             graveOpp.rt.Place(new Vector2(1, 1), new Vector2(-260, -16), new Vector2(150, 46), new Vector2(1, 1));
-            UIKit.Button(panel.transform, "닫기", CloseGrave, null, 20).rt
-                .Place(new Vector2(1, 1), new Vector2(-18, -16), new Vector2(120, 46), new Vector2(1, 1));
+            graveClose = UIKit.Button(panel.transform, "닫기", CloseGrave, null, 20);
+            graveClose.rt.Place(new Vector2(1, 1), new Vector2(-18, -16), new Vector2(120, 46), new Vector2(1, 1));
 
             var view = UIKit.Rect("View", panel.transform).Anchor(0, 0, 1, 1, 16, 16, 16, 80);
             graveGrid = UIKit.ScrollGrid(view, "Scroll", new Vector2(150, 210), new Vector2(10, 12), out _);

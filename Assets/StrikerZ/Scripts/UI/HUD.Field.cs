@@ -8,6 +8,7 @@ namespace StrikerZ
     public partial class HUD
     {
         UIKit.Btn fieldBtn;
+        public RectTransform FieldBtnRt => fieldBtn?.rt;
         RectTransform coinRoot;
         Text coinTitle, coinResult;
 

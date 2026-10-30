@@ -98,7 +98,7 @@ namespace StrikerZ
         }
 
         /// <summary>코치 팁 목록: 스토리 스테이지의 팁, 튜토리얼 대전이면 TutorialData.MatchTips, 그 외 없음</summary>
-        List<StoryTip> CoachTips => story != null ? story.battle.tips : mode == MatchMode.Tutorial ? TutorialData.MatchTips : null;
+        List<StoryTip> CoachTips => story != null ? story.battle.tips : null;
 
         /// <summary>튜토리얼 코치 팁: 그 key 의 팁이 있으면 한 번만 띄운다 (튜토리얼 대전은 클릭할 때까지 남는다)</summary>
         void StoryCoach(string key)

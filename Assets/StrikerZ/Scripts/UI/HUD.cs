@@ -521,6 +521,28 @@ namespace StrikerZ
             hp.rt.GetComponent<Image>().color = g.active == p ? new Color(0.14f, 0.09f, 0.02f, 0.92f) : UIKit.Panel;
         }
 
+        // ── 튜토리얼(TutorialMatch)이 깜빡이게 짚는 UI 참조 ──
+        public RectTransform Root => root;
+        public RectTransform BattleBtnRt => battleBtn?.rt;
+        public RectTransform HeroBtnRt => heroBtn?.rt;
+        public RectTransform AutoBtnRt => autoBtn?.rt;
+        public RectTransform SpeedBtnRt => speedBtn?.rt;
+        public bool ChoiceOpen => choicePanel != null && choicePanel.gameObject.activeSelf;
+        /// <summary>열려 있는 선택창의 첫 번째 누를 수 있는 버튼 (없으면 null)</summary>
+        public RectTransform FirstChoiceButton
+        {
+            get
+            {
+                if (!ChoiceOpen) return null;
+                for (int i = 0; i < choiceList.childCount; i++)
+                {
+                    var b = choiceList.GetChild(i).GetComponent<Button>();
+                    if (b != null && b.interactable) return (RectTransform)b.transform;
+                }
+                return null;
+            }
+        }
+
         /// <summary>동시 룰 대전(레이드 제외)에서 턴 아이콘·라벨을 쓰는가</summary>
         bool SimulTurnShown => g != null && g.Simul && g.raid == null && g.time > 0 && g.first != null;
 
@@ -729,6 +751,7 @@ namespace StrikerZ
         bool HandleEscape()
         {
             if (g == null || g.players[0] == null) return false;
+            if (TutorialGuide.Active != null && TutorialGuide.Active.Visible) return false;   // 튜토리얼 중 Esc 는 가이드의 나가기 확인창
             if (Paused)
             {
                 Time.timeScale = 0f;     // 설정 변경(GameSettings.Apply)이 속도를 되돌리지 않게
@@ -1150,6 +1173,7 @@ namespace StrikerZ
             float left = g.PlanSecondsLeft;
             if (left >= 0) phaseText.text = (SimulTurnShown ? TurnLabel() + " · 배치" : "배치 (뒷면)") + $" · <color={(left <= 5 ? "#ff6655" : "#ffd77a")}>남은 시간 {Mathf.CeilToInt(left)}초</color>";
             if (!g.IsHumanMain) return;
+            if (TutorialGuide.Active != null && TutorialGuide.Active.Blocking) return;   // 튜토리얼 강제 단계: 단축키로 건너뛰지 않게
             if (GameSettings.Pressed(GameAction.BattlePhase)) { CloseMenu(); g.RequestBattle(); }
             else if (GameSettings.Pressed(GameAction.EndTime)) { CloseMenu(); g.RequestEndTime(); }
             else if (GameSettings.Pressed(GameAction.HeroSkill) && g.CanUseHero(g.Human)) { CloseMenu(); g.HumanAct(g.UseHero(g.Human)); }
@@ -1171,6 +1195,7 @@ namespace StrikerZ
             {
                 var c = RaycastCard(mp);
                 planPress = c != null && c.owner == g.Human && (c.zone == Zone.Hand || c.zone == Zone.Slot) ? c : null;
+                if (planPress != null && TutorialGuide.Active != null && !TutorialGuide.Active.AllowsCard(planPress)) planPress = null;   // 튜토리얼: 짚어 준 카드만
                 planPressPos = mp;
             }
             if (planPress != null && planDrag == null && mouse.leftButton.isPressed && (mp - planPressPos).magnitude > 14f)
@@ -1191,7 +1216,8 @@ namespace StrikerZ
             Vector3 wp = hitPlane ? ray.GetPoint(dist) : Vector3.zero;
             planHoverSlot = hitPlane ? NearestHumanSlot(wp) : -1;
             bool fromHand = planDrag.zone == Zone.Hand;
-            bool valid = planHoverSlot >= 0 && (fromHand ? g.CanPlaceAt(planDrag, planHoverSlot) : g.CanMoveSlotTo(planDrag, planHoverSlot));
+            bool valid = planHoverSlot >= 0 && (fromHand ? g.CanPlaceAt(planDrag, planHoverSlot) : g.CanMoveSlotTo(planDrag, planHoverSlot))
+                         && (TutorialGuide.Active == null || TutorialGuide.Active.AllowsSlot(planHoverSlot));   // 튜토리얼: 짚어 준 칸만
 
             // 카드는 포인터를 따라 보드 위에 떠 있다
             var v = planDrag.view;

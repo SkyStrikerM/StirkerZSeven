@@ -1,24 +1,25 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace StrikerZ
 {
     /// <summary>
-    /// 튜토리얼: 홈 › 대전 설정의 [튜토리얼] 칸(수련 옆) → 안내 창 → ① 덱 구성 배우기 (덱 화면 위에 단계별 설명 + 해당 부분 테두리)
-    /// ② 대전 배우기 (수련 CPU 와 튜토리얼 대전, 코치 팁은 GameManager.StoryCoach). 처음 홈에 들어오면 안내 창이 한 번 열린다.
+    /// 튜토리얼 (홈 › 대전 설정의 [튜토리얼] 칸, 수련 옆): 안내 창 → ① 덱 구성 배우기 ② 대전 배우기.
+    /// 덱 구성은 "강제 진행": 화면을 막고 눌러야 하는 것 하나만 깜빡이게 보여 주며(TutorialGuide), 그걸 실제로 해야 다음 단계로 간다.
+    /// Esc / [나가기] 로만 빠져나갈 수 있다. 대전 배우기는 TutorialMatch (GameRoot.StartTutorial).
     /// </summary>
     public partial class MainMenu
     {
         /// <summary>대전 배우기: 수련 CPU 와 튜토리얼 대전 시작 (GameRoot.StartTutorial)</summary>
         public Action onTutorialDuel;
 
-        RectTransform tutRoot, tutPanel, guideRoot, guideBox, guideHi;
-        Text tutDeckState, tutDuelState, guideTitle, guideText, guideStepText;
-        UIKit.Btn guidePrev, guideNext;
-        int guideStep = -1;
-        Coroutine guidePlace;
+        RectTransform tutRoot;
+        Text tutDeckState, tutDuelState;
+        TutorialGuide deckGuide;
+        Coroutine deckGuideRun;
 
         // ── 안내 창 ──
 
@@ -53,22 +54,21 @@ namespace StrikerZ
             dimBtn.onClick.AddListener(CloseTutorial);
 
             var panel = UIKit.Frame(tutRoot, "Panel", new Color(0.04f, 0.03f, 0.08f, 0.97f));
-            tutPanel = panel.rectTransform;
-            tutPanel.Place(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900, 520));
+            panel.rectTransform.Place(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900, 520));
             panel.raycastTarget = true;
             var title = UIKit.Txt(panel.transform, "Title", "튜토리얼", 34, UIKit.Gold, TextAnchor.MiddleLeft, FontStyle.Bold);
             title.rectTransform.Anchor(0, 1, 1, 1, 34, -74, 160, 22);
             title.Section(UIKit.SecMe, 34);
-            var sub = UIKit.Txt(panel.transform, "Sub", "처음이라면 두 가지만 익히면 됩니다. 순서대로 해도, 하나만 골라도 좋아요.", 19, UIKit.Ink, TextAnchor.MiddleLeft);
+            var sub = UIKit.Txt(panel.transform, "Sub", "화면이 알려 주는 깜빡이는 곳만 누르면 됩니다. 그만두려면 언제든 Esc 또는 [나가기].", 19, UIKit.Ink, TextAnchor.MiddleLeft);
             sub.rectTransform.Anchor(0, 1, 1, 1, 36, -112, 30, 80);
             UIKit.Button(panel.transform, "닫기", CloseTutorial, null, 20).rt
                 .Place(new Vector2(1, 1), new Vector2(-18, -16), new Vector2(120, 46), new Vector2(1, 1));
 
             tutDeckState = BuildTutorialCard(panel.transform, 0, "1", "덱 구성 배우기",
-                "덱 화면에서 영웅 · 메인 덱 40장 · 엑스트라 덱(필드) · 원소 비용을 단계별로 짚어 줍니다.\n설명을 보면서 그대로 덱을 만져 볼 수 있어요.",
+                "덱 화면에서 새 덱 만들기 → 영웅 바꾸기 → 카드 넣고 빼기 → 자동 구성 → 사용 덱 지정까지,\n눌러야 할 곳을 하나씩 짚어 주며 직접 해 봅니다.",
                 "덱 구성 배우기 ▶", new Color(0.08f, 0.16f, 0.3f, 0.97f), StartDeckGuide);
             tutDuelState = BuildTutorialCard(panel.transform, 1, "2", "대전 배우기",
-                "수련 CPU 와 실제로 한 판 — 운명 재배치 → 원소 → 배치 → 배틀 → 엔드 순서를 코치 팁이 차례로 안내합니다.\n기록·보상 없음, 배치 시간 제한 없음.",
+                "수련 CPU 와 실제로 한 판 — 운명 재배치 · 원소 · 배치 · 배치 완료 · 배틀 · 주사위 · 필드 · 마법 · 영웅 능력 · 원소 더미까지\n순서대로 눌러 보며 익힙니다. 기록·보상 없음.",
                 "대전 배우기 ▶", new Color(0.45f, 0.08f, 0.05f, 0.97f), () => { CloseTutorial(); onTutorialDuel?.Invoke(); });
             tutRoot.gameObject.SetActive(false);
         }
@@ -94,141 +94,107 @@ namespace StrikerZ
 
         void RefreshTutorial()
         {
-            if (tutDeckState != null) tutDeckState.text = Profile.Data.tutorialDeckDone ? "✓ 완료 — 다시 볼 수 있어요" : "";
+            if (tutDeckState != null) tutDeckState.text = Profile.Data.tutorialDeckDone ? "✓ 완료 — 다시 할 수 있어요" : "";
             if (tutDuelState != null) tutDuelState.text = Profile.Data.tutorialDuelDone ? "✓ 완료 — 다시 할 수 있어요" : "";
         }
 
-        // ── 덱 구성 가이드 (덱 화면 위 단계별 상자 + 테두리) ──
+        // ══════════════════════════ 덱 구성 강제 튜토리얼 ══════════════════════════
 
         void StartDeckGuide()
         {
             CloseTutorial();
             Show(Tab.Deck);
-            if (guideRoot == null) BuildDeckGuide();
-            guideRoot.gameObject.SetActive(true);
-            guideRoot.SetAsLastSibling();
-            SetGuideStep(0);
+            if (deckGuide == null) deckGuide = TutorialGuide.Create(root, CloseDeckGuide);
+            if (deckGuideRun != null) StopCoroutine(deckGuideRun);
+            deckGuideRun = StartCoroutine(DeckGuideRoutine());
         }
 
         public void CloseDeckGuide()
         {
-            if (guideRoot == null) return;
-            if (guidePlace != null) { StopCoroutine(guidePlace); guidePlace = null; }
-            guideRoot.gameObject.SetActive(false);
-            guideStep = -1;
+            if (deckGuideRun != null) { StopCoroutine(deckGuideRun); deckGuideRun = null; }
+            if (deckGuide != null) deckGuide.Hide();
         }
 
-        void BuildDeckGuide()
+        /// <summary>[다음 ▶] 을 누를 때까지 전체를 막고 설명</summary>
+        IEnumerator Tell(string title, string body, string step, RectTransform focus = null)
         {
-            guideRoot = UIKit.Rect("DeckGuide", root);
-            guideRoot.Fill();
-            // 짚어 주는 테두리 (금색, 설명 상자 뒤)
-            var hi = UIKit.Img(guideRoot, "Hi", new Color(1f, 0.82f, 0.35f, 0.95f), GameAssets.RoundedOutline, true);
-            guideHi = hi.rectTransform;
-            guideHi.anchorMin = guideHi.anchorMax = new Vector2(0.5f, 0.5f);
-            hi.raycastTarget = false;
-            var glow = UIKit.Img(guideHi, "Glow", new Color(1f, 0.82f, 0.35f, 0.12f), GameAssets.Rounded, true);
-            glow.rectTransform.Fill();
-            glow.raycastTarget = false;
-
-            var box = UIKit.Frame(guideRoot, "Box", new Color(0.04f, 0.03f, 0.08f, 0.97f));
-            guideBox = box.rectTransform;
-            guideBox.Place(new Vector2(0.5f, 0), new Vector2(0, 40), new Vector2(760, 230), new Vector2(0.5f, 0));
-            box.raycastTarget = true;
-            box.transform.Find("Border").GetComponent<Image>().color = new Color(1f, 0.82f, 0.35f, 0.6f);
-            var tag = UIKit.Img(box.transform, "Tag", UIKit.Gold, GameAssets.Rounded, true);
-            tag.rectTransform.Place(new Vector2(0, 1), new Vector2(18, -16), new Vector2(92, 30), new Vector2(0, 1));
-            UIKit.Txt(tag.transform, "T", "튜토리얼", 16, new Color(0.1f, 0.06f, 0.02f), TextAnchor.MiddleCenter, FontStyle.Bold).rectTransform.Fill();
-            guideTitle = UIKit.Txt(box.transform, "Title", "", 25, UIKit.Gold, TextAnchor.MiddleLeft, FontStyle.Bold);
-            guideTitle.rectTransform.Anchor(0, 1, 1, 1, 122, -50, 120, 12);
-            guideStepText = UIKit.Txt(box.transform, "Step", "", 16, UIKit.Muted, TextAnchor.MiddleRight);
-            guideStepText.rectTransform.Anchor(0.5f, 1, 1, 1, 0, -50, 118, 12);
-            guideText = UIKit.Txt(box.transform, "Text", "", 18, UIKit.Ink, TextAnchor.UpperLeft);
-            guideText.rectTransform.Anchor(0, 0, 1, 1, 20, 66, 20, 56);
-            guideText.lineSpacing = 1.15f;
-            UIKit.Button(box.transform, "✕", CloseDeckGuide, null, 18, UIKit.Muted).rt
-                .Place(new Vector2(1, 1), new Vector2(-12, -10), new Vector2(44, 36), new Vector2(1, 1));
-            guidePrev = UIKit.Button(box.transform, "◀ 이전", () => SetGuideStep(guideStep - 1), null, 19);
-            guidePrev.rt.Place(new Vector2(0, 0), new Vector2(18, 14), new Vector2(130, 44), new Vector2(0, 0));
-            guideNext = UIKit.Button(box.transform, "다음 ▶", () => SetGuideStep(guideStep + 1), new Color(0.45f, 0.08f, 0.05f, 0.97f), 20, Color.white);
-            guideNext.rt.Place(new Vector2(1, 0), new Vector2(-18, 14), new Vector2(200, 44), new Vector2(1, 0));
+            bool next = false;
+            deckGuide.Show(title, body, focus, null, () => next = true, "다음 ▶", true, step);
+            while (!next) yield return null;
         }
 
-        void SetGuideStep(int i)
+        /// <summary>대상 하나만 열어 두고, done 이 참이 될 때까지 기다린다 (대상이 없으면 바로 넘어간다)</summary>
+        IEnumerator Do(string title, string body, string step, RectTransform target, Func<bool> done, float timeout = 0)
         {
-            var steps = TutorialData.DeckSteps;
-            if (i < 0) i = 0;
-            if (i >= steps.Count)
-            {
-                // 마지막 [대전 배우기 ▶]
-                Profile.Data.tutorialDeckDone = true;
-                Profile.Save();
-                CloseDeckGuide();
-                onTutorialDuel?.Invoke();
-                return;
-            }
-            guideStep = i;
-            var s = steps[i];
-            guideTitle.text = s.title;
-            guideText.text = s.text;
-            guideStepText.text = $"{i + 1} / {steps.Count}";
-            guidePrev.Interactable = i > 0;
-            bool last = i == steps.Count - 1;
-            guideNext.label.text = last ? "대전 배우기 ▶" : "다음 ▶";
-            if (last && !Profile.Data.tutorialDeckDone) { Profile.Data.tutorialDeckDone = true; Profile.Save(); }
-            if (guidePlace != null) StopCoroutine(guidePlace);
-            guidePlace = StartCoroutine(PlaceGuide(s.target));
+            if (target == null) yield break;
+            deckGuide.Show(title, body, target, null, null, "", true, step);
+            float t0 = Time.unscaledTime;
+            while (!done() && (timeout <= 0 || Time.unscaledTime - t0 < timeout)) yield return null;
         }
 
-        /// <summary>레이아웃이 끝난 다음 프레임에 대상 영역 위로 테두리를 맞추고, 설명 상자는 대상과 겹치지 않는 쪽(위/아래)에 둔다</summary>
-        IEnumerator PlaceGuide(string key)
+        IEnumerator DeckGuideRoutine()
         {
             yield return null;
             Canvas.ForceUpdateCanvases();
-            var target = DeckRegion(key);
-            if (target == null || !target.gameObject.activeInHierarchy)
-            {
-                guideHi.gameObject.SetActive(false);
-                guideBox.anchorMin = guideBox.anchorMax = new Vector2(0.5f, 0.5f);
-                guideBox.pivot = new Vector2(0.5f, 0.5f);
-                guideBox.anchoredPosition = Vector2.zero;
-                yield break;
-            }
-            var corners = new Vector3[4];
-            target.GetWorldCorners(corners);
-            Vector2 min = root.InverseTransformPoint(corners[0]), max = root.InverseTransformPoint(corners[2]);
-            var center = (min + max) * 0.5f;
-            guideHi.gameObject.SetActive(true);
-            guideHi.pivot = new Vector2(0.5f, 0.5f);
-            guideHi.anchoredPosition = center;
-            guideHi.sizeDelta = (max - min) + new Vector2(16, 16);
-            // 대상이 화면 아래쪽이면 상자를 위에, 위쪽이면 아래에
-            bool boxTop = center.y < 0;
-            guideBox.anchorMin = guideBox.anchorMax = new Vector2(0.5f, boxTop ? 1 : 0);
-            guideBox.pivot = new Vector2(0.5f, boxTop ? 1 : 0);
-            guideBox.anchoredPosition = new Vector2(0, boxTop ? -120 : 40);
-        }
+            const int N = 10;
+            yield return Tell("덱 화면", "왼쪽은 <b>카드 상세</b>, 가운데는 <b>지금 편집 중인 덱</b>, 오른쪽은 <b>보유 카드 리스트</b>입니다.\n이제부터 깜빡이는 곳을 눌러 가며 덱을 하나 만들어 봅니다. 그 외의 곳은 눌리지 않아요.", $"1 / {N}");
 
-        /// <summary>덱 화면의 영역 (튜토리얼이 짚어 주는 곳)</summary>
-        RectTransform DeckRegion(string key)
-        {
-            switch (key)
+            // 1) 새 덱
+            int before = Profile.Data.decks.Count;
+            if (before < MaxDecks)
             {
-                case "tabs": return deckTabs != null ? (RectTransform)deckTabs.parent : null;
-                case "hero": return heroSlot;
-                case "collection": return deckCollectionRt;
-                case "deck": return deckGrid != null ? (RectTransform)deckGrid.parent : null;
-                case "extra": return extraRow;
-                case "stats": return deckStats != null ? deckStats.rectTransform : null;
-                case "tools": return deckToolsRt;
-                case "detail": return deckDetailRt;
-                default: return null;
+                yield return Do("새 덱 만들기", "덱은 최대 8개. 깜빡이는 <b>[+ 새 덱]</b> 을 눌러 새 덱을 만드세요.", $"2 / {N}", deckNewBtn?.rt, () => Profile.Data.decks.Count > before);
+                yield return null;
             }
+            else yield return Tell("새 덱 만들기", "덱이 이미 8개(최대)라 지금 덱으로 이어서 해 볼게요. 새 덱은 <b>[+ 새 덱]</b> 으로 만듭니다.", $"2 / {N}", deckNewBtn?.rt);
+
+            // 2) 영웅 교체
+            string heroBefore = editing.heroId;
+            var heroCell = CollectionCell(c => c.type == CardType.Hero && c.id != heroBefore);
+            yield return Do("영웅 (리더) 바꾸기", "덱에는 <b>영웅 1장</b>. 영웅의 속성이 영웅 아래에 쌓을 수 있는 원소 수를 정합니다 (같은 속성 10 · 이기는 속성 5 · 상관없는 3 · 약점 1).\n깜빡이는 영웅 카드를 <b>더블클릭</b>해 영웅을 바꿔 보세요.", $"3 / {N}", heroCell, () => editing.heroId != heroBefore);
+            yield return null;
+
+            // 3) 카드 넣기
+            int cnt = editing.cards.Count;
+            var addCell = CollectionCell(c => c.type != CardType.Hero && c.type != CardType.Field && DeckRules.CanAdd(editing, c, out _));
+            string addedId = addCell != null ? CellCardId(addCell) : null;
+            yield return Do("카드 넣기", "오른쪽 리스트의 카드를 <b>더블클릭</b>하면 덱에 들어갑니다. 한 번 클릭하면 왼쪽에 상세가 보여요.\n깜빡이는 카드를 더블클릭해 넣어 보세요.", $"4 / {N}", addCell, () => editing.cards.Count > cnt);
+            yield return null;
+
+            // 4) 카드 빼기
+            cnt = editing.cards.Count;
+            var deckCell = addedId != null ? DeckCell(addedId) : DeckCell(null);
+            yield return Do("카드 빼기", "덱 안의 카드를 <b>더블클릭</b>하면 빠집니다. 같은 카드는 커먼·언커먼 3장, 레어 2장, 유니크 1장까지.\n방금 넣은 카드를 더블클릭해 빼 보세요.", $"5 / {N}", deckCell, () => editing.cards.Count < cnt);
+            yield return null;
+
+            // 5) 자동 구성
+            yield return Do("자동 구성", "메인 덱은 <b>정확히 40장</b> (추천: 소환수 28 · 마법 12). 하나하나 넣어도 되지만, <b>[자동 구성]</b> 이 보유 카드로 영웅 속성에 맞춰 40장을 짜 줍니다.\n깜빡이는 [자동 구성] 을 누르세요.", $"6 / {N}", deckAutoBtn?.rt, () => editing.cards.Count >= DeckRules.MinSize);
+            yield return null;
+
+            // 6) 엑스트라 덱 · 분석 설명
+            yield return Tell("엑스트라 덱 (필드)", "<b>필드 카드</b>는 메인 덱이 아니라 <b>엑스트라 덱</b>에 들어갑니다 (최대 10장, 같은 필드 1장). 자동 구성이 채워 두었어요.\n대전 중 내 필드 차례(짝수 또는 홀수 T)에 펼쳐 전장 효과를 바꿉니다.", $"7 / {N}", extraRow);
+            yield return Tell("원소 비용과 덱 분석", "카드마다 <b>원소 비용</b>이 있고, 매 T 원소 1장을 영웅 아래에 쌓아 같은 속성 카드의 비용으로 씁니다.\n그래서 덱은 영웅 속성 위주로, 약점 속성은 피하는 게 좋아요. 여기서 속성 비율과 유니크 수를 확인하세요.", $"8 / {N}", deckStats != null ? deckStats.rectTransform : null);
+
+            // 7) 사용 덱으로
+            if (Profile.Data.activeDeck != editIndex)
+                yield return Do("사용 덱으로", "대전에 나가는 덱은 <b>[사용 덱으로]</b> 를 누른 덱입니다. 머리말이 '사용 가능'이어야 해요.\n깜빡이는 [사용 덱으로] 를 누르세요.", $"9 / {N}", deckUseBtn?.rt, () => Profile.Data.activeDeck == editIndex);
+            else yield return Tell("사용 덱으로", "이 덱은 이미 <b>사용 덱</b>입니다. 다른 덱으로 나가고 싶을 땐 그 덱에서 <b>[사용 덱으로]</b> 를 누르면 돼요.", $"9 / {N}", deckUseBtn?.rt);
+
+            Profile.Data.tutorialDeckDone = true;
+            Profile.Save();
+            bool go = false;
+            deckGuide.Show("덱 준비 완료", "덱 구성은 여기까지! 그 밖의 도구: <b>[스타터 덱]</b> 기본 덱 받기 · <b>[훈련장]</b> 수련 골렘과 기록 없이 연습 · <b>[덱 코드]</b> 복사/입력.\n이제 실제 대전 순서를 배워 봅시다.", null, null, () => go = true, "대전 배우기 ▶", true, $"{N} / {N}");
+            while (!go) yield return null;
+            deckGuideRun = null;
+            deckGuide.Hide();
+            onTutorialDuel?.Invoke();
         }
 
         // ── 테스트 ──
         public void TestOpenTutorial() => OpenTutorial();
-        public void TestDeckGuide(int step) { StartDeckGuide(); SetGuideStep(step); }
-        public bool TestGuideOpen => guideRoot != null && guideRoot.gameObject.activeSelf;
+        public void TestDeckGuide() => StartDeckGuide();
+        public bool TestGuideOpen => deckGuide != null && deckGuide.Visible;
+        public TutorialGuide TestGuide => deckGuide;
+        public DeckData TestEditingDeck => editing;
     }
 }

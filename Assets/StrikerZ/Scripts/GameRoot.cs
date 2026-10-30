@@ -162,6 +162,14 @@ namespace StrikerZ
             menu.Hide();
             nextMode = MatchMode.Tutorial;
             StartGame(hero, field);
+            TutorialMatch.Begin(gm, hud, QuitTutorial);
+        }
+
+        /// <summary>튜토리얼 [나가기] / Esc: 대전을 접고 홈으로</summary>
+        void QuitTutorial()
+        {
+            if (gm.mode != MatchMode.Tutorial) return;
+            BackToHome();
         }
 
         /// <summary>도전 › 원소 이변전: 사용 덱 · CPU 정예 · 이번 주 규칙</summary>
