@@ -48,7 +48,7 @@ namespace StrikerZ
         public static void Add(GameManager g, string deckName)
         {
             if (g == null || g.players[0] == null) return;
-            if (g.mode == MatchMode.Practice || g.mode == MatchMode.Puzzle) return;
+            if (g.mode == MatchMode.Practice || g.mode == MatchMode.Puzzle || g.mode == MatchMode.Tutorial) return;
             Records.Insert(0, new MatchRecord
             {
                 date = DateTime.Now.ToString("MM-dd HH:mm"),

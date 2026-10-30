@@ -7,7 +7,7 @@ namespace StrikerZ
     public enum CpuLevel { Trainee, Elite, Legend }
 
     /// <summary>대전 종류 (보상·기록·규칙이 갈린다)</summary>
-    public enum MatchMode { Duel, Story, Raid, Practice, Puzzle, Event, Arena }
+    public enum MatchMode { Duel, Story, Raid, Practice, Puzzle, Event, Arena, Tutorial }
 
     /// <summary>
     /// 대전 종류 · CPU 난이도.
@@ -18,6 +18,8 @@ namespace StrikerZ
     public partial class GameManager
     {
         public CpuLevel cpuLevel = CpuLevel.Elite;
+        /// <summary>튜토리얼 대전: 운명 재배치·원소 고르기 제한 시간 (팁을 읽는 동안 넘어가지 않게 넉넉히)</summary>
+        public const float TutorialSeconds = 180f;
         public MatchMode mode;
         MatchMode pendingMode = MatchMode.Duel;
 
@@ -58,6 +60,6 @@ namespace StrikerZ
         }
 
         /// <summary>이 대전은 퀘스트·업적 통계를 올리지 않는다 (훈련장 · 마법진 퍼즐)</summary>
-        public bool NoStats => players[0] != null && !MatchFinished && (mode == MatchMode.Practice || mode == MatchMode.Puzzle);
+        public bool NoStats => players[0] != null && !MatchFinished && (mode == MatchMode.Practice || mode == MatchMode.Puzzle || mode == MatchMode.Tutorial);
     }
 }

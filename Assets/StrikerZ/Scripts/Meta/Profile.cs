@@ -71,6 +71,8 @@ namespace StrikerZ
         public bool lukonMet;
         /// <summary>마력부여실(로한·벨라) 첫 방문 인사를 봤는지</summary>
         public bool parentsMet;
+        /// <summary>튜토리얼: 안내 창을 봤는가 · 덱 구성 단계 완료 · 대전 튜토리얼 완료</summary>
+        public bool tutorialSeen, tutorialDeckDone, tutorialDuelDone;
         /// <summary>CPU 대전 난이도 (0 수련 · 1 정예 · 2 전설)</summary>
         public int cpuLevel = 1;
         /// <summary>받은 원소 스타터 덱 (속성 이름)</summary>

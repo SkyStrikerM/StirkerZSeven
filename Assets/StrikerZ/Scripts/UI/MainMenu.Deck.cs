@@ -17,6 +17,8 @@ namespace StrikerZ
         DeckData editing;
         string filter = "전체";
         RectTransform deckTabs, deckGrid, collectionGrid, filterRow, heroSlot, elemBar, extraRow;
+        /// <summary>튜토리얼(MainMenu.Tutorial.cs)이 테두리로 짚는 영역: 카드 상세 · 도구 버튼 줄 · 카드 리스트</summary>
+        RectTransform deckDetailRt, deckToolsRt, deckCollectionRt;
         Text extraHead;
         InputField deckName, searchInput;
         Text deckCount, deckValid, deckStats, elemLegend, listCount, cpText;
@@ -73,6 +75,7 @@ namespace StrikerZ
             // ── 좌: 카드 상세 (이름 띠 · 카드 · 수치 · 효과 · 가공별 분해/잠금 · 생성 · CP) ──
             var left = UIKit.Frame(page, "Detail", Dark);
             left.rectTransform.Anchor(0, 0, 0.235f, 1, 0, 0, 6, 78);
+            deckDetailRt = left.rectTransform;
             var nameBar = SectionHeader(left.transform, "NameBar", 10);
             detailName = UIKit.Txt(nameBar, "Name", "카드 상세", 22, HeadInk, TextAnchor.MiddleLeft, FontStyle.Bold);
             detailName.rectTransform.Anchor(0, 0, 1, 1, 14, 0, 104, 0);
@@ -162,6 +165,7 @@ namespace StrikerZ
             elemLegend.lineSpacing = 1.25f;
 
             var tools = UIKit.Rect("Tools", mid.transform).Anchor(0, 0, 1, 0, 12, 12, 12, -60);
+            deckToolsRt = tools;
             var th = tools.gameObject.AddComponent<HorizontalLayoutGroup>();
             th.spacing = 8;
             th.childControlWidth = th.childControlHeight = true;
@@ -192,6 +196,7 @@ namespace StrikerZ
             // ── 우: 카드 리스트 (검색 · 종류 · 정렬/필터 · 3열 그리드) ──
             var right = UIKit.Frame(page, "Collection", Dark);
             right.rectTransform.Anchor(0.765f, 0, 1, 1, 6, 0, 0, 78);
+            deckCollectionRt = right.rectTransform;
             var listHead = SectionHeader(right.transform, "ListHead", 8);
             UIKit.Txt(listHead, "T", "카드 리스트", 20, HeadInk, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.Anchor(0, 0, 0.6f, 1, 14, 0, 0, 0);
             listCount = UIKit.Txt(listHead, "N", "", 16, UIKit.Muted, TextAnchor.MiddleRight);

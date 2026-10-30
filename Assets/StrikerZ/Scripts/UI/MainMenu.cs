@@ -271,6 +271,7 @@ namespace StrikerZ
         {
             root.gameObject.SetActive(true);
             CardZoom.Close();
+            if (tab != Tab.Deck) CloseDeckGuide();    // 덱 튜토리얼은 덱 화면을 떠나면 닫는다
             CloseShowcaseEdit();
             if (oddsRoot != null) oddsRoot.gameObject.SetActive(false);
             Voice.Stop();   // 다른 화면으로 가면 하던 대사는 끊는다
@@ -517,10 +518,13 @@ namespace StrikerZ
             for (int i = 0; i < 3; i++)
             {
                 int lv = i;
-                var b = UIKit.Button(setup.transform, GameManager.LevelName((CpuLevel)i), () => { Profile.Data.cpuLevel = lv; Profile.Save(); RefreshLevel(); }, Dark, 25);
-                b.rt.Place(new Vector2(0, 0), new Vector2(30 + i * 176, 100), new Vector2(166, 62), new Vector2(0, 0));
+                var b = UIKit.Button(setup.transform, GameManager.LevelName((CpuLevel)i), () => { Profile.Data.cpuLevel = lv; Profile.Save(); RefreshLevel(); }, Dark, 23);
+                b.rt.Place(new Vector2(0, 0), new Vector2(30 + i * 136, 100), new Vector2(128, 62), new Vector2(0, 0));
                 levelBtns.Add(b);
             }
+            // 튜토리얼 칸 (수련 옆): 덱 구성 배우기 · 대전 배우기 안내 창
+            var tut = UIKit.Button(setup.transform, "튜토리얼", OpenTutorial, new Color(0.1f, 0.28f, 0.22f, 0.97f), 23, Color.white);
+            tut.rt.Place(new Vector2(0, 0), new Vector2(30 + 3 * 136, 100), new Vector2(128, 62), new Vector2(0, 0));
             levelDesc = UIKit.Txt(setup.transform, "LevelDesc", "", 18, UIKit.Ink, TextAnchor.UpperLeft);
             levelDesc.rectTransform.Anchor(0, 0, 1, 0, 32, 22, 470, -88);
             duelBtn = UIKit.Button(setup.transform, "듀얼 시작  ▶", StartDuel, Red, 42, Color.white);

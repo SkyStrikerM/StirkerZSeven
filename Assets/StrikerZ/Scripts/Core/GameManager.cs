@@ -136,7 +136,7 @@ namespace StrikerZ
             choiceOptions = null;
 
             players[0] = new PlayerState { index = 0, name = humanName, isHuman = true, avatar = humanAvatar };
-            players[1] = new PlayerState { index = 1, name = raid != null ? raid.boss.name : story != null ? story.battle.oppName : mode == MatchMode.Practice ? GolemName : CpuName, isHuman = false, avatar = Profile.CpuAvatar };
+            players[1] = new PlayerState { index = 1, name = raid != null ? raid.boss.name : story != null ? story.battle.oppName : mode == MatchMode.Practice ? GolemName : mode == MatchMode.Tutorial ? "수련 CPU" : CpuName, isHuman = false, avatar = Profile.CpuAvatar };
             players[0].opponent = players[1];
             players[1].opponent = players[0];
 
@@ -158,6 +158,7 @@ namespace StrikerZ
             hud.BeginMatch(this);
             if (raid != null) hud.BeginRaid(this);
             if (story != null) hud.BeginStory(this);
+            if (mode == MatchMode.Tutorial) hud.BeginTutorial();
             RefreshAll();
             yield return Wait(0.6f);
 
@@ -223,7 +224,7 @@ namespace StrikerZ
             RefreshAll();
             Sfx.StopBgm(0.5f);
             Sfx.Play(winner == Human ? "victory" : "defeat");
-            if (mode != MatchMode.Puzzle && mode != MatchMode.Practice) hud.CpuStamp(winner == Human ? 5 : 1);
+            if (mode != MatchMode.Puzzle && mode != MatchMode.Practice && mode != MatchMode.Tutorial) hud.CpuStamp(winner == Human ? 5 : 1);
             yield return hud.Banner(winner == Human ? "VICTORY" : "DEFEAT", winner == Human ? "승리!" : surrendered ? "항복" : "패배...");
             hud.ShowGameOver(winner == Human);
             OnMatchFinished?.Invoke();

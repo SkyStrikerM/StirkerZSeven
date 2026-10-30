@@ -242,7 +242,7 @@ namespace StrikerZ
                 autoBtn.bg.gameObject.SetActive(inMatch);
                 RefreshAutoBtn();
             }
-            if (!inMatch || Paused || AutoTest.Enabled) { lastInputTime = Time.unscaledTime; return; }   // 자동 테스트는 autoHuman 을 직접 다룬다
+            if (!inMatch || Paused || AutoTest.Enabled || g.mode == MatchMode.Tutorial) { lastInputTime = Time.unscaledTime; return; }   // 자동 테스트는 autoHuman 을 직접 다룬다 · 튜토리얼은 읽는 동안 AFK 로 넘어가지 않게
             bool input = AnyInput();
             if (input) lastInputTime = Time.unscaledTime;
             if (input && g.autoHuman && g.autoByAfk) { g.SetAuto(false); afkRevertFrame = Time.frameCount; RefreshAutoBtn(); }
@@ -1655,6 +1655,12 @@ namespace StrikerZ
                 gameOverTitle.text = "훈련 종료";
                 gameOverSub.text = "훈련장 · 수련 골렘";
                 gameOverRematch.label.text = "다시 훈련";
+            }
+            if (g != null && g.mode == MatchMode.Tutorial)
+            {
+                gameOverTitle.text = won ? "튜토리얼 완료" : "튜토리얼 종료";
+                gameOverSub.text = "튜토리얼 · 수련 CPU";
+                gameOverRematch.label.text = "다시 배우기";
             }
             gameOverRoot.gameObject.SetActive(true);
             gameOverRoot.SetAsLastSibling();

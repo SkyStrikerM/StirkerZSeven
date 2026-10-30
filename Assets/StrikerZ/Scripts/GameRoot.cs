@@ -78,6 +78,7 @@ namespace StrikerZ
             menu.Build();
             menu.onDuel = StartDuel;
             menu.onPractice = StartPractice;
+            menu.onTutorialDuel = StartTutorial;
             menu.onPuzzle = StartPuzzle;
             menu.onEvent = StartEvent;
             menu.onArenaMatch = StartArena;
@@ -118,6 +119,7 @@ namespace StrikerZ
             title.Hide();
             menu.Show(MainMenu.Tab.Home);
             menu.MaybeShowAttendance();     // 오늘 첫 접속이면 출석체크
+            menu.MaybeShowTutorial();       // 처음이면 튜토리얼 안내
             Sfx.PlayBgm("bgm_menu");
         }
 
@@ -146,6 +148,21 @@ namespace StrikerZ
         }
 
         DeckData lastPracticeDeck;
+
+        /// <summary>튜토리얼 대전: 사용 덱(쓸 수 없으면 자동 구성)으로 수련 CPU 와, 기록·보상 없음 · 코치 팁 (TutorialData.MatchTips)</summary>
+        public void StartTutorial()
+        {
+            var deck = Profile.ActiveDeck;
+            if (DeckRules.Validate(deck) != null) deck = DeckRules.AutoBuild("튜토리얼 덱", deck.heroId);
+            var hero = CardDB.Get(deck.heroId) ?? CardList.Heroes[0];
+            gm.humanDeck = DeckRules.ToCards(deck);
+            chronicleDeck = deck.name;
+            gm.cpuLevel = CpuLevel.Trainee;
+            var field = CardList.Fields[Random.Range(0, CardList.Fields.Count)];
+            menu.Hide();
+            nextMode = MatchMode.Tutorial;
+            StartGame(hero, field);
+        }
 
         /// <summary>도전 › 원소 이변전: 사용 덱 · CPU 정예 · 이번 주 규칙</summary>
         void StartEvent(DeckData deck)
@@ -307,7 +324,7 @@ namespace StrikerZ
         {
             bool won = gm.winner == gm.Human;
             Chronicle.Add(gm, chronicleDeck);       // 저장은 아래 기록 함수들의 Save 에서
-            if (gm.mode != MatchMode.Practice && gm.mode != MatchMode.Puzzle)
+            if (gm.mode != MatchMode.Practice && gm.mode != MatchMode.Puzzle && gm.mode != MatchMode.Tutorial)
                 SevenPass.AddXp(SevenPass.XpMatch + (won ? SevenPass.XpWin : 0));
             if (gm.story != null)
             {
@@ -331,6 +348,13 @@ namespace StrikerZ
             if (gm.mode == MatchMode.Practice)
             {
                 hud.SetReward("훈련장 — 기록·보상 없이 끝났습니다");
+                return;
+            }
+            if (gm.mode == MatchMode.Tutorial)
+            {
+                Profile.Data.tutorialDuelDone = true;
+                Profile.Save();
+                hud.SetReward(won ? "튜토리얼 완료!  이제 대전 설정에서 수련 · 정예 · 전설 CPU 와 겨뤄 보세요" : "괜찮아요 — 순서만 익히면 됩니다. 대전 설정에서 수련 CPU 부터 도전해 보세요");
                 return;
             }
             if (gm.mode == MatchMode.Arena)
@@ -397,6 +421,12 @@ namespace StrikerZ
             {
                 hud.HideGameOver();
                 StartPractice(lastPracticeDeck);
+                return;
+            }
+            if (gm.mode == MatchMode.Tutorial)
+            {
+                hud.HideGameOver();
+                StartTutorial();
                 return;
             }
             if (gm.LoserIsHuman)

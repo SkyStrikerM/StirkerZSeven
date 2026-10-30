@@ -97,23 +97,28 @@ namespace StrikerZ
             }
         }
 
-        /// <summary>튜토리얼 코치 팁: 스테이지에 그 key 의 팁이 있으면 한 번만 띄운다</summary>
+        /// <summary>코치 팁 목록: 스토리 스테이지의 팁, 튜토리얼 대전이면 TutorialData.MatchTips, 그 외 없음</summary>
+        List<StoryTip> CoachTips => story != null ? story.battle.tips : mode == MatchMode.Tutorial ? TutorialData.MatchTips : null;
+
+        /// <summary>튜토리얼 코치 팁: 그 key 의 팁이 있으면 한 번만 띄운다 (튜토리얼 대전은 클릭할 때까지 남는다)</summary>
         void StoryCoach(string key)
         {
-            if (story == null || autoHuman || coachShown.Contains(key)) return;
-            var tip = story.battle.tips.FirstOrDefault(t => t.key == key);
+            var tips = CoachTips;
+            if (tips == null || autoHuman || coachShown.Contains(key)) return;
+            var tip = tips.FirstOrDefault(t => t.key == key);
             if (tip == null) return;
             coachShown.Add(key);
-            hud.ShowCoach(tip.title, tip.text);
+            hud.ShowCoach(tip.title, tip.text, mode == MatchMode.Tutorial);
         }
 
-        /// <summary>메인 페이즈 시작 시: 영웅 능력 · 마법 카드 팁은 쓸 수 있는 순간에, 아니면 기본 메인 팁</summary>
+        /// <summary>메인 페이즈 시작 시: 기본 메인 팁을 먼저, 그다음 T 부터 영웅 능력 · 마법 카드 팁을 쓸 수 있는 순간에</summary>
         void StoryMainCoach()
         {
-            if (story == null) return;
-            if (CanUseHero(Human) && story.battle.tips.Any(t => t.key == "hero") && !coachShown.Contains("hero")) { StoryCoach("hero"); return; }
-            if (Human.hand.Any(c => c.IsMagic) && story.battle.tips.Any(t => t.key == "magic") && !coachShown.Contains("magic")) { StoryCoach("magic"); return; }
-            StoryCoach("main");
+            var tips = CoachTips;
+            if (tips == null) return;
+            if (!coachShown.Contains("main")) { StoryCoach("main"); return; }
+            if (CanUseHero(Human) && tips.Any(t => t.key == "hero") && !coachShown.Contains("hero")) { StoryCoach("hero"); return; }
+            if (Human.hand.Any(c => c.IsMagic) && tips.Any(t => t.key == "magic") && !coachShown.Contains("magic")) { StoryCoach("magic"); return; }
         }
 
         /// <summary>스토리 결과: 이겼거나 이벤트 전투면 다음 이야기로 진행</summary>

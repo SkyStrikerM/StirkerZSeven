@@ -74,15 +74,24 @@ namespace StrikerZ
             if (storyToastRt != null) storyToastRt.gameObject.SetActive(false);
         }
 
-        public void ShowCoach(string title, string text)
+        /// <summary>코치 팁 상자. sticky = 클릭할 때까지 남긴다 (튜토리얼 대전)</summary>
+        public void ShowCoach(string title, string text, bool sticky = false)
         {
             coachTitle.text = title;
             coachText.text = text;
             coachRoot.gameObject.SetActive(true);
             coachRoot.SetAsLastSibling();
             coachGroup.alpha = 0;
-            coachUntil = Time.unscaledTime + 14f;
+            coachUntil = sticky ? float.PositiveInfinity : Time.unscaledTime + 14f;
             Sfx.Play("click", 0.6f);
+        }
+
+        /// <summary>튜토리얼 대전: 위쪽 띠에 진행 순서를 늘 보여 준다</summary>
+        public void BeginTutorial()
+        {
+            storyChipText.text = "<color=#ffd05c><b>튜토리얼</b></color>  매 TIME: ① 원소 → ② 배치(뒷면) → ③ 배틀 → ④ 엔드   ·   상대 영웅 HP 0 = 승리";
+            storyChip.sizeDelta = new Vector2(900, 38);
+            storyChip.gameObject.SetActive(true);
         }
 
         public void StoryToast(string who, string msg)

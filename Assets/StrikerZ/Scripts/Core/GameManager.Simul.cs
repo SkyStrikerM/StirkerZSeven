@@ -24,6 +24,8 @@ namespace StrikerZ
         /// <summary>동시 룰 패 최대 9장 · 엔드 타임에 남길 수 있는 패 7장</summary>
         public const int SimulHandMax = 9, EndHandMax = 7;
         float planDeadline = -1f;
+        /// <summary>배치에 시간 제한이 있는가 (스토리·퍼즐·튜토리얼은 없음)</summary>
+        bool PlanTimed => story == null && mode != MatchMode.Puzzle && mode != MatchMode.Tutorial;
 
         /// <summary>배치 남은 시간 (초). 시간 제한이 없거나 배치 중이 아니면 -1</summary>
         public float PlanSecondsLeft => phase == Phase.Main && planDeadline > 0 ? Mathf.Max(0, planDeadline - Time.unscaledTime) : -1f;
@@ -45,7 +47,7 @@ namespace StrikerZ
             RegenMonsters();
             RefreshAll();
             Sfx.Play("turn", 0.7f);
-            yield return hud.Banner($"TIME {time}", (mode != MatchMode.Puzzle ? "원소 1장 · " : "") + "카드를 칸으로 끌어다 놓으세요 (뒷면)" + (story == null && mode != MatchMode.Puzzle ? $" ({PlanTime:0}초)" : ""));
+            yield return hud.Banner($"TIME {time}", (mode != MatchMode.Puzzle ? "원소 1장 · " : "") + "카드를 칸으로 끌어다 놓으세요 (뒷면)" + (PlanTimed ? $" ({PlanTime:0}초)" : ""));
             if (story != null) { yield return StoryTimeStart(); if (gameOver) yield break; }
 
             // 양쪽 드로우: T2 2장 · T3 3장 … T7 부터 7장 (패 최대 9장). 첫 T 는 시작 패 7장으로 시작하므로 드로우 없음
@@ -71,7 +73,7 @@ namespace StrikerZ
                 StoryMainCoach();
                 endMainRequested = battleRequested = false;
                 // 배치 시간은 실제 시간 (2배속·연출 속도와 무관하게 30초). 스토리(튜토리얼)는 시간 제한 없음
-                planDeadline = story == null && mode != MatchMode.Puzzle ? Time.unscaledTime + PlanTime : -1f;
+                planDeadline = PlanTimed ? Time.unscaledTime + PlanTime : -1f;
                 while (!endMainRequested && !gameOver && !autoHuman && !(planDeadline > 0 && Time.unscaledTime >= planDeadline)) yield return null;
                 bool timeUp = planDeadline > 0 && Time.unscaledTime >= planDeadline;
                 if (!endMainRequested && !gameOver && timeUp) { Log("배치 시간 종료 — 놓은 카드로 진행"); hud.CloseMenu(); }
@@ -96,6 +98,7 @@ namespace StrikerZ
             phase = Phase.Battle;
             RefreshAll();
             if (fx != null) fx.TurnSignal(lf, lf.opponent);
+            StoryCoach("battle");
             yield return hud.Banner("BATTLE", lf == Human ? "내 공격 턴 — 왼쪽 칸부터 차례로 공격 (상대는 반격만)" : "수비 턴 — 상대가 왼쪽 칸부터 공격 (내 소환수는 반격만)");
             busy = true;
             // 배틀 시작: 양쪽 칸의 뒷면 카드를 모두 펼쳐 보여 준다 (보여 주기만 — 소환 효과·마법 발동은 지금처럼 그 칸 차례에)

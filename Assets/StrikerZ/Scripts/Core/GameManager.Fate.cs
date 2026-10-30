@@ -22,7 +22,8 @@ namespace StrikerZ
             if (HumanDecides(Human))
             {
                 bool done = false;
-                hud.ShowFate(Human.hand.ToList(), FateSeconds, list => { humanPick = list; done = true; });
+                hud.ShowFate(Human.hand.ToList(), mode == MatchMode.Tutorial ? TutorialSeconds : FateSeconds, list => { humanPick = list; done = true; });
+                StoryCoach("fate");
                 while (!done && !gameOver && !autoHuman) yield return null;
                 if (!done) { hud.CancelPick(); humanPick = ai.FatePick(Human); }   // 오토 전환
             }
