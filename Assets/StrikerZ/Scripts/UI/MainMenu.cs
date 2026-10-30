@@ -233,6 +233,7 @@ namespace StrikerZ
             var cpl = UIKit.Txt(box.transform, "CpLabel", "CP", 16, UIKit.Muted, TextAnchor.MiddleLeft, FontStyle.Bold);
             cpl.rectTransform.Place(new Vector2(0, 0.5f), new Vector2(252, 0), new Vector2(30, 40), new Vector2(0, 0.5f));
             string[] icons = { "cp_common", "cp_uncommon", "cp_rare", "cp_unique" };
+            string[] names = { "Common", "Uncommon", "Rare", "Unique" };
             Color[] tint = { new Color(0.9f, 0.9f, 0.95f), new Color(0.6f, 0.82f, 1f), new Color(1f, 0.82f, 0.45f), new Color(1f, 0.55f, 0.4f) };
             for (int i = 0; i < 4; i++)
             {
@@ -242,7 +243,14 @@ namespace StrikerZ
                 ic.rectTransform.Place(new Vector2(0, 0.5f), new Vector2(x + 22, 0), new Vector2(44, 44), new Vector2(0.5f, 0.5f));
                 topCp[i] = UIKit.Txt(box.transform, "CpN" + i, "", 22, tint[i], TextAnchor.MiddleLeft, FontStyle.Bold);
                 topCp[i].rectTransform.Place(new Vector2(0, 0.5f), new Vector2(x + 48, 0), new Vector2(80, 40), new Vector2(0, 0.5f));
+                // 툴팁: 이 등급 CP 가 무엇인지
+                var hit = UIKit.Rect("TipCp" + i, box.transform);
+                hit.Place(new Vector2(0, 0.5f), new Vector2(x - 4, 0), new Vector2(130, 52), new Vector2(0, 0.5f));
+                UIKit.Tip(hit, $"<b>{names[i]} CP</b>\n{names[i]} 등급 카드를 분해하면 얻는 카드 포인트.\n같은 등급 카드 생성(CP {Crafting.CraftCost}) · 마력부여(가공) 에 씁니다.");
             }
+            var tipOpal = UIKit.Rect("TipOpal", box.transform);
+            tipOpal.Place(new Vector2(0, 0.5f), new Vector2(4, 0), new Vector2(232, 52), new Vector2(0, 0.5f));
+            UIKit.Tip(tipOpal, "<b>오팔</b>\n부스터팩 · 꾸미기 · 상점 특가를 사는 기본 재화.\n퀘스트 · 업적 · 스토리 클리어 · 출석 · 세븐 패스로 얻습니다.");
         }
 
         static Image AvatarCircle(Transform parent, float size) => UIKit.AvatarCircle(parent, size);

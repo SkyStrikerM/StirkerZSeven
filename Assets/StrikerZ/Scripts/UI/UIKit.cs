@@ -46,6 +46,78 @@ namespace StrikerZ
             return img;
         }
 
+        // ══════════════════════════ 툴팁 ══════════════════════════
+
+        static RectTransform tipRoot, tipTarget;
+        static Text tipText;
+
+        /// <summary>마우스를 올리면 대상 바로 아래(또는 위)에 짧은 설명을 띄운다. 대상은 입력을 받게 된다.</summary>
+        public static void Tip(RectTransform target, string text, bool below = true)
+        {
+            target.HitArea();
+            var ev = target.GetComponent<CellEvents>();
+            if (ev == null) ev = target.gameObject.AddComponent<CellEvents>();
+            ev.onEnter += () => ShowTip(target, text, below);
+            ev.onExit += () => { if (tipTarget == target) HideTip(); };
+        }
+
+        static void ShowTip(RectTransform target, string text, bool below)
+        {
+            if (tipRoot == null)
+            {
+                var go = new GameObject("Tooltip", typeof(RectTransform));
+                ScreenCanvas(go, 44, false);   // 카드 확대(45) 아래 · 메뉴(30)·HUD(10) 위
+                go.AddComponent<TooltipWatch>();
+                var bg = Frame(go.transform, "Box", new Color(0.04f, 0.03f, 0.08f, 0.96f));
+                tipRoot = bg.rectTransform;
+                bg.raycastTarget = false;
+                tipText = Txt(bg.transform, "Text", "", 17, Ink, TextAnchor.UpperLeft);
+                tipText.rectTransform.Anchor(0, 0, 1, 1, 14, 10, 14, 10);
+                tipText.lineSpacing = 1.12f;
+                tipText.raycastTarget = false;
+                tipRoot.pivot = new Vector2(0.5f, 1);
+                UnityEngine.Object.DontDestroyOnLoad(go);
+            }
+            tipTarget = target;
+            tipText.text = text;
+            tipRoot.gameObject.SetActive(true);
+            // 글 길이에 맞춘 크기 (최대 480 너비): 너비를 먼저 정한 뒤 그 너비에서 줄바꿈된 높이를 잰다
+            float w = Mathf.Min(480, tipText.preferredWidth + 30);
+            tipRoot.sizeDelta = new Vector2(w, 10);
+            Canvas.ForceUpdateCanvases();
+            float h = tipText.preferredHeight + 22;
+            tipRoot.sizeDelta = new Vector2(w, h);
+            // 대상의 화면 위치 → 툴팁 캔버스 좌표
+            var canvasRt = (RectTransform)tipRoot.parent;
+            var corners = new Vector3[4];
+            target.GetWorldCorners(corners);
+            Vector2 bottom = RectTransformUtility.WorldToScreenPoint(null, (corners[0] + corners[3]) * 0.5f);
+            Vector2 top = RectTransformUtility.WorldToScreenPoint(null, (corners[1] + corners[2]) * 0.5f);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRt, below ? bottom : top, null, out var local);
+            tipRoot.pivot = new Vector2(0.5f, below ? 1 : 0);
+            local.y += below ? -6 : 6;
+            // 화면 밖으로 나가지 않게
+            var half = canvasRt.rect.size * 0.5f;
+            local.x = Mathf.Clamp(local.x, -half.x + w * 0.5f + 8, half.x - w * 0.5f - 8);
+            tipRoot.anchorMin = tipRoot.anchorMax = new Vector2(0.5f, 0.5f);
+            tipRoot.anchoredPosition = local;
+        }
+
+        public static void HideTip()
+        {
+            tipTarget = null;
+            if (tipRoot != null) tipRoot.gameObject.SetActive(false);
+        }
+
+        /// <summary>대상이 사라지거나 숨겨지면 툴팁도 닫는다</summary>
+        class TooltipWatch : MonoBehaviour
+        {
+            void Update()
+            {
+                if (tipTarget != null && tipRoot != null && tipRoot.gameObject.activeSelf && !tipTarget.gameObject.activeInHierarchy) HideTip();
+            }
+        }
+
         /// <summary>한 줄의 버튼들 중 라벨이 selected 인 것만 강조 (필터·탭 줄)</summary>
         public static void HighlightByLabel(Transform row, string selected, Color on, Color off, Color? offText = null)
         {

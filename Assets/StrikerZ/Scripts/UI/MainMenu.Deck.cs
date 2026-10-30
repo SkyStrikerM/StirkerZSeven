@@ -495,6 +495,17 @@ namespace StrikerZ
             }
             RefreshDeckCollection(false);
             if (pinned != null) ShowDetail(pinned, true);
+            else ShowDefaultDetail();
+        }
+
+        /// <summary>아무 카드도 고르지 않은 기본 상태: 빈 칸 대신 덱 영웅을 크게 보여 주고 조작법을 안내한다</summary>
+        void ShowDefaultDetail()
+        {
+            var hero = editing != null ? CardDB.Get(editing.heroId) : null;
+            if (hero == null) { detailRoot.gameObject.SetActive(false); return; }
+            ShowDetail(hero, false);
+            var hint = UIKit.Txt(finishRows, "Hint", "지금 덱의 영웅입니다.\n카드에 마우스를 올리면 여기에 상세가 뜹니다.\n클릭: 카드 선택  ·  더블클릭: 덱에 넣기 / 빼기", 15, UIKit.Muted, TextAnchor.LowerCenter);
+            hint.rectTransform.Fill();
         }
 
         /// <summary>덱 분석: 종류별 장수 · 평균 ATK · 유니크/필드 제한 · 가공 · 몬스터 속성 분포 막대</summary>
