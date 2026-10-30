@@ -36,7 +36,12 @@ namespace StrikerZ
             BuildLights();
             BuildBackdrop();
             BuildEnvironment();
+            ambient = gameObject.AddComponent<FieldAmbient>();
+            ambient.Init(this);
         }
+
+        /// <summary>필드별 주기 연출 (새 떼·낙엽·번개 …)</summary>
+        FieldAmbient ambient;
 
         public void FocusCamera()
         {
@@ -124,6 +129,7 @@ namespace StrikerZ
         public void ApplyFieldTheme(CardData field)
         {
             string id = field != null ? field.id : "";
+            if (ambient != null) ambient.Play(field);
             if (id == themeId || playmat == null) return;
             themeId = id;
             var pm = field != null ? GameAssets.Tex("Fields/playmat_" + id) : null;

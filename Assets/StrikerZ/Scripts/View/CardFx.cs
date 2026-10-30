@@ -100,7 +100,7 @@ namespace StrikerZ
         }
 
         /// <summary>텍스처 이름 꼬리 (무지개는 무속성 그림을 무지개 색으로 물들인다)</summary>
-        static string Suffix(Style s) => s == Style.Rainbow ? "neutral" : s.ToString().ToLower();
+        public static string Suffix(Style s) => s == Style.Rainbow ? "neutral" : s.ToString().ToLower();
 
         /// <summary>속성 텍스처 색: 그림 자체가 속성 색이라 흰색, 무지개만 색을 돌린다</summary>
         static Color StyleTint(Style s) => s == Style.Rainbow ? ColorOf(s) : Color.white;
